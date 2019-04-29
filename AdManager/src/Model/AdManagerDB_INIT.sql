@@ -29,3 +29,26 @@ constraint pk_moderators primary key (User_ID),
 constraint fk_moderators_users foreign key (User_ID)
 references Users (User_ID) ON DELETE RESTRICT
 );
+
+CREATE TABLE IF NOT EXISTS Advertisements
+(Advertisement_ID smallint unsigned not null auto_increment,
+AdvTitle tinytext not null,
+AdvDetails tinytext not null,
+AdvDateTime varchar(20) not null,
+Price integer not null,
+User_ID smallint unsigned not null,
+Moderator_ID smallint unsigned not null,
+Category_ID varchar(3) not null,
+Status_ID varchar(2) not null,
+constraint pk_advertisements primary key(User_ID),
+constraint fk_advertisements_users foreign key(User_ID)
+references Users (User_ID) ON DELETE CASCADE,
+constraint fk_advertisements_moderators foreign key(Moderator_ID)
+references Moderators(User_ID) ON DELETE SET NULL,
+constraint fk_advertisements_categories foreign key(Category_ID)
+references Categories(Category_ID) ON DELETE RESTRICT,
+constraint fk_advertisements_statuses foreign key(Status_ID)
+references Statuses(Status_ID) ON DELETE RESTRICT
+);
+
+/* Data Population */
