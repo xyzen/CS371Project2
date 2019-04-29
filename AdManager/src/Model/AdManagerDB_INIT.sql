@@ -9,3 +9,9 @@ CREATE TABLE IF NOT EXISTS Categories
 CatName varchar(20) not null,
 constraint pk_categories primary key (Category_ID)
 );
+
+CREATE TABLE IF NOT EXISTS Statuses
+(Status_ID varchar(2) not null,
+Status_Name varchar(20) not null,
+constraint pk_statuses primary key(Status_ID)
+);
