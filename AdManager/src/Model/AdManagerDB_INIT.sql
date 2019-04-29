@@ -15,3 +15,12 @@ CREATE TABLE IF NOT EXISTS Statuses
 Status_Name varchar(20) not null,
 constraint pk_statuses primary key(Status_ID)
 );
+
+CREATE TABLE IF NOT EXISTS Users
+(User_ID smallint unsigned not null auto_increment,
+UsrFirst_Name varchar(20) not null,
+UsrLast_Name varchar(20) not null,
+constraint pk_users primary key(User_ID)
+);
+
+
