@@ -52,3 +52,7 @@ references Statuses(Status_ID) ON DELETE RESTRICT
 );
 
 /* Data Population */
+
+insert into Categories(Category_ID, CatName)
+values ('CAT', 'Cars and Trucks'), ('HOU', 'Housing'),
+('ELC', 'Electronics'), ('CCA', 'Child Care');
