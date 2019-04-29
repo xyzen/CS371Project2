@@ -53,6 +53,12 @@ references Statuses(Status_ID) ON DELETE RESTRICT
 
 /* Data Population */
 
+<<<<<<< HEAD
 insert into Statuses(Status_ID,Status_Name)
 values ('PN','Pending'),('AC','Active'),('DI','Disapproved');
 
+=======
+insert into Categories(Category_ID, CatName)
+values ('CAT', 'Cars and Trucks'), ('HOU', 'Housing'),
+('ELC', 'Electronics'), ('CCA', 'Child Care');
+>>>>>>> 502e5dba7ba351dc9b4bf80a94ac258e07f36aca
