@@ -23,4 +23,9 @@ UsrLast_Name varchar(20) not null,
 constraint pk_users primary key(User_ID)
 );
 
-
+CREATE TABLE IF NOT EXISTS Moderators
+(User_ID smallint unsigned not null,
+constraint pk_moderators primary key (User_ID),
+constraint fk_moderators_users foreign key (User_ID)
+references Users (User_ID) ON DELETE RESTRICT
+);
