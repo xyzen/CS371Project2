@@ -1,3 +1,5 @@
+/* Author: Ny Tran */
+
 DROP TABLE IF EXISTS Advertisements;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Categories;
