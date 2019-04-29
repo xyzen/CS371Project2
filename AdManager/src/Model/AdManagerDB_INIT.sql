@@ -52,3 +52,7 @@ references Statuses(Status_ID) ON DELETE RESTRICT
 );
 
 /* Data Population */
+
+insert into Statuses(Status_ID,Status_Name)
+values ('PN','Pending'),('AC','Active'),('DI','Disapproved');
+
