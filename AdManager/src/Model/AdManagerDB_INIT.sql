@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS Advertisements
 (Advertisement_ID smallint unsigned not null auto_increment,
 AdvTitle tinytext not null,
 AdvDetails tinytext not null,
-AdvDateTime varchar(20) not null,
+AdvDateTime DATETIME not null default now(),
 Price integer not null,
 User_ID smallint unsigned not null,
 Moderator_ID smallint unsigned not null,
@@ -61,8 +61,15 @@ insert into Categories(Category_ID, CatName)
 values ('CAT', 'Cars and Trucks'), ('HOU', 'Housing'),
 ('ELC', 'Electronics'), ('CCA', 'Child Care');
 
+insert into Users(UrsFirst_Name,UrsLast_Name)
+values ('John','Smith'),('Ann','Jackson'),('Rania','Kale'),('Samir','Ali');
+
+insert into Moderators(User_ID)
+values ('0'),('1');
+
 insert into Advertisements(AdvTitle, AdvDateTime, Price, Category_ID, User_ID, Moderator_ID, Status_ID)
 values ('2010 Sedan Subaru', '2010 sedan car in great shape for sale',  DATETIME('2017-02-10'), 6000, 'CAT', 2, 1, 'AC'),
 ('Nice Office Desk','',  DATETIME(''), , '', , , ''),
 ('','',  DATETIME(''), , '', , , ''),
-('','',  DATETIME(''), , '', , , ''),
+('','',  DATETIME(''), , '', , , '');
+
