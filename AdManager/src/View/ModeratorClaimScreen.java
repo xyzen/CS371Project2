@@ -6,15 +6,23 @@
 
 package View;
 
+
+import Controller.Controller;
+
+
 /**
  *
  * @author jdh3c4
  */
 public class ModeratorClaimScreen extends javax.swing.JFrame {
 
+    private Controller master;
+    private String category;
+    
     /** Creates new form ModeratorClaimScreen */
-    public ModeratorClaimScreen() {
+    public ModeratorClaimScreen(Controller c) {
         initComponents();
+        master = c;
     }
 
     /** This method is called from within the constructor to
@@ -228,7 +236,7 @@ public class ModeratorClaimScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCategoryBox2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCategoryBox2MouseClicked
-        // TODO add your handling code here:
+        master.handleUnclaimedRequest(this.category, this.date, this.keyword);
     }//GEN-LAST:event_jCategoryBox2MouseClicked
 
     private void jCategoryBox2jCategoryBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCategoryBox2jCategoryBox1ActionPerformed

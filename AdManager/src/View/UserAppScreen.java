@@ -5,17 +5,37 @@
  */
 package View;
 
+import Controller.Controller;
+
+import java.util.LinkedList;
+import java.awt.event.ActionEvent;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
- *
- * @author jdh3c4
+ * @author Christopher
+ * @author Joshua
  */
 public class UserAppScreen extends javax.swing.JFrame {
 
     /**
      * Creates new form UserAppScreen
      */
-    public UserAppScreen() {
+    
+    
+    
+    private Controller master;
+    
+    private String category;
+    private String period;
+    private String description;
+    
+   
+    //Creates new form UserAppScreen
+    public UserAppScreen(Controller c) {
         initComponents();
+        master = c;
     }
 
     /**
@@ -30,12 +50,12 @@ public class UserAppScreen extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
-        jCategoryBox2 = new javax.swing.JComboBox<>();
+        CategoryDropDown = new javax.swing.JComboBox<>();
         PeriodDateBox = new javax.swing.JComboBox<>();
         jFormattedTextField2 = new javax.swing.JFormattedTextField();
-        jButton3 = new javax.swing.JButton();
+        SearchButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        publicAdvertisementsTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -43,7 +63,7 @@ public class UserAppScreen extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        myAdvertisementsTable = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -59,13 +79,13 @@ public class UserAppScreen extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jCategoryBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jCategoryBox2.addMouseListener(new java.awt.event.MouseAdapter() {
+        CategoryDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cars and Trucks", "Housing", "Electronics", "Child Care" }));
+        CategoryDropDown.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jCategoryBox2MouseClicked(evt);
+                CategoryDropDownMouseClicked(evt);
             }
         });
-        jCategoryBox2.addActionListener(new java.awt.event.ActionListener() {
+        CategoryDropDown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCategoryBox1ActionPerformed(evt);
             }
@@ -78,9 +98,9 @@ public class UserAppScreen extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Go");
+        SearchButton.setText("Go");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        publicAdvertisementsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -99,7 +119,7 @@ public class UserAppScreen extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(publicAdvertisementsTable);
 
         jLabel1.setText("Category");
 
@@ -115,23 +135,24 @@ public class UserAppScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jCategoryBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(PeriodDateBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3))
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addGap(29, 29, 29)
-                                .addComponent(jLabel2)
-                                .addGap(146, 146, 146)
-                                .addComponent(jLabel3)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(108, 108, 108)
+                                .addComponent(jLabel2))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(CategoryDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(PeriodDateBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jFormattedTextField2)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SearchButton))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,14 +164,16 @@ public class UserAppScreen extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCategoryBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CategoryDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(PeriodDateBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(SearchButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(10, Short.MAX_VALUE))
         );
+
+        CategoryDropDown.getAccessibleContext().setAccessibleDescription("");
 
         jTabbedPane2.addTab("Advertisements", jPanel4);
 
@@ -158,7 +181,7 @@ public class UserAppScreen extends javax.swing.JFrame {
 
         jButton5.setText("Edit");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        myAdvertisementsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -184,7 +207,7 @@ public class UserAppScreen extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(myAdvertisementsTable);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -226,8 +249,7 @@ public class UserAppScreen extends javax.swing.JFrame {
                     .addComponent(jTabbedPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
-                .addContainerGap())
+                        .addComponent(jButton2))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,82 +258,49 @@ public class UserAppScreen extends javax.swing.JFrame {
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(541, 541, 541))
+                .addGap(35, 35, 35))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCategoryBox2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCategoryBox2MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCategoryBox2MouseClicked
-
+    private void CategoryDropDownMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CategoryDropDownMouseClicked
+//
+    }//GEN-LAST:event_CategoryDropDownMouseClicked
+        
+    
     private void PeriodDateBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PeriodDateBoxActionPerformed
-        // TODO add your handling code here:
+        //When PeriodDateBox has a change in the menu, change what i
     }//GEN-LAST:event_PeriodDateBoxActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UserAppScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UserAppScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UserAppScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserAppScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UserAppScreen().setVisible(true);
-            }
-        });
+    
+    //updates and populates the table on the Advertisements page.
+    public void populateAdvertisementsTable(Controller c){
+        Object[][] advertisements_data = null;
+        this.publicAdvertisementsTable.setModel(new DefaultTableModel(advertisements_data));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> CategoryDropDown;
     private javax.swing.JComboBox<String> PeriodDateBox;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton SearchButton;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jCategoryBox1;
-    private javax.swing.JComboBox<String> jCategoryBox2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTable myAdvertisementsTable;
+    private javax.swing.JTable publicAdvertisementsTable;
     // End of variables declaration//GEN-END:variables
 }
