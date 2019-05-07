@@ -23,8 +23,6 @@ public class UserAppScreen extends javax.swing.JFrame {
      * Creates new form UserAppScreen
      */
     
-    
-    
     private Controller master;
     
     private String category;
