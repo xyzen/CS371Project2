@@ -25,7 +25,7 @@ public class Controller {
     
     Connection connection;
     
-    public class Record{
+    public class AdRecord{
         public String title;
         public String description;
         public String price;
@@ -34,10 +34,10 @@ public class Controller {
         public String username;
         public String type;
         
-        public Record(String title, String description, float price, String status, String date, String username, String type){
+        public AdRecord(String title, String description, String price, String status, String date, String username, String type){
             this.title = title;
             this.description = description;
-            this.price = Float.toString(price);
+            this.price = price;
             this.status = status;
             this.date = date;
             this.username = username;
@@ -70,8 +70,8 @@ public class Controller {
         this.connection=conn;
     }
     
-    public LinkedList<Record> getActiveAds(String category, int months, String keyword){
-        LinkedList<Record> records=new LinkedList();
+    public LinkedList<AdRecord> getActiveAds(String category, int months, String keyword){
+        LinkedList<AdRecord> records=new LinkedList();
         PreparedStatement stmt = null;
         Date date = new Date();
         date.setMonth(date.getMonth() - months);
@@ -92,7 +92,7 @@ public class Controller {
                 String ad_desc = rs.getString("AdvDetails");
                 String ad_price = rs.getString("Price");
                 String ad_date = rs.getString("AdvDateTime");
-                Record record=new Record(ad_title, ad_desc, ad_price, "", ad_date, "", "");
+                AdRecord record=new AdRecord(ad_title, ad_desc, ad_price, "", ad_date, "", "");
                 records.add(record);
             }
         }
