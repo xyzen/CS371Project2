@@ -17,7 +17,7 @@ constraint pk_statuses primary key(Status_ID)
 );
 
 CREATE TABLE IF NOT EXISTS Users
-(User_ID smallint unsigned not null,
+(User_ID smallint unsigned not null auto_increment,
 UsrFirst_Name varchar(20) not null,
 UsrLast_Name varchar(20) not null,
 constraint pk_users primary key(User_ID)
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Moderators
 (User_ID smallint unsigned not null,
 constraint pk_moderators primary key (User_ID),
 constraint fk_moderators_users foreign key (User_ID)
-references Users (User_ID) ON DELETE RESTRICT
+  references Users (User_ID) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Advertisements
@@ -42,13 +42,13 @@ Category_ID varchar(3) not null,
 Status_ID varchar(2) not null,
 constraint pk_advertisements primary key(Advertisement_ID),
 constraint fk_advertisements_users foreign key(User_ID)
-references Users (User_ID) ON DELETE CASCADE,
+  references Users (User_ID) ON DELETE CASCADE,
 constraint fk_advertisements_moderators foreign key(Moderator_ID)
-references Moderators(User_ID) ON DELETE SET NULL,
+  references Moderators(User_ID) ON DELETE SET NULL,
 constraint fk_advertisements_categories foreign key(Category_ID)
-references Categories(Category_ID) ON DELETE RESTRICT,
+  references Categories(Category_ID) ON DELETE RESTRICT,
 constraint fk_advertisements_statuses foreign key(Status_ID)
-references Statuses(Status_ID) ON DELETE RESTRICT
+  references Statuses(Status_ID) ON DELETE RESTRICT
 );
 
 /* Data Population */
