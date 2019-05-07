@@ -1,8 +1,10 @@
-DROP TABLE IF EXISTS Advertisements;
-DROP TABLE IF EXISTS Users;
+/* Author: Ny Tran */
+
 DROP TABLE IF EXISTS Categories;
 DROP TABLE IF EXISTS Statuses;
 DROP TABLE IF EXISTS Moderators;
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Advertisements;
 
 CREATE TABLE IF NOT EXISTS Categories
 (Category_ID varchar(3) not null,
