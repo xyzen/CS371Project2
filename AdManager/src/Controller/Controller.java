@@ -1,8 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Tyler
+ * 
+ * Reference: DBManager.java
+ * 
  */
+
 package Controller;
 
 import java.sql.Connection;
@@ -14,10 +17,7 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.Date;
 
-/**
- *
- * @author Tyler
- */
+
 public class Controller {
     /**
      * @param args the command line arguments
@@ -101,9 +101,5 @@ public class Controller {
             return records;
         }
         return records;
- }
-    
-    public static void main(String[] args) {
-        // TODO code application logic here
     }
 }

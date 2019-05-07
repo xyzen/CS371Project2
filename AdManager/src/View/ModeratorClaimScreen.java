@@ -18,6 +18,8 @@ public class ModeratorClaimScreen extends javax.swing.JFrame {
 
     private Controller master;
     private String category;
+    private String date;
+    private String keyword;
     
     /** Creates new form ModeratorClaimScreen */
     public ModeratorClaimScreen(Controller c) {
@@ -73,6 +75,11 @@ public class ModeratorClaimScreen extends javax.swing.JFrame {
         });
 
         jButton3.setText("Go");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Category");
 
@@ -236,7 +243,7 @@ public class ModeratorClaimScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCategoryBox2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCategoryBox2MouseClicked
-        master.handleUnclaimedRequest(this.category, this.date, this.keyword);
+
     }//GEN-LAST:event_jCategoryBox2MouseClicked
 
     private void jCategoryBox2jCategoryBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCategoryBox2jCategoryBox1ActionPerformed
@@ -246,6 +253,10 @@ public class ModeratorClaimScreen extends javax.swing.JFrame {
     private void PeriodDateBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PeriodDateBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PeriodDateBoxActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        master.handleUnclaimedRequest(this.category, this.date, this.keyword);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

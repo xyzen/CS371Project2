@@ -52,7 +52,7 @@ public class UserAppScreen extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         CategoryDropDown = new javax.swing.JComboBox<>();
         PeriodDateBox = new javax.swing.JComboBox<>();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        descriptionTextBox = new javax.swing.JFormattedTextField();
         SearchButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         publicAdvertisementsTable = new javax.swing.JTable();
@@ -90,6 +90,11 @@ public class UserAppScreen extends javax.swing.JFrame {
                 jCategoryBox1ActionPerformed(evt);
             }
         });
+        CategoryDropDown.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                CategoryDropDownPropertyChange(evt);
+            }
+        });
 
         PeriodDateBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Last 3 months", "Last 6 months", "Last 12 months" }));
         PeriodDateBox.addActionListener(new java.awt.event.ActionListener() {
@@ -99,6 +104,11 @@ public class UserAppScreen extends javax.swing.JFrame {
         });
 
         SearchButton.setText("Go");
+        SearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchButtonActionPerformed(evt);
+            }
+        });
 
         publicAdvertisementsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -149,7 +159,7 @@ public class UserAppScreen extends javax.swing.JFrame {
                                 .addComponent(PeriodDateBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jFormattedTextField2)
+                            .addComponent(descriptionTextBox)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SearchButton))))
@@ -166,7 +176,7 @@ public class UserAppScreen extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CategoryDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(PeriodDateBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(descriptionTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SearchButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -264,22 +274,38 @@ public class UserAppScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+/*
     private void CategoryDropDownMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CategoryDropDownMouseClicked
-//
+
     }//GEN-LAST:event_CategoryDropDownMouseClicked
         
     
     private void PeriodDateBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PeriodDateBoxActionPerformed
         //When PeriodDateBox has a change in the menu, change what i
     }//GEN-LAST:event_PeriodDateBoxActionPerformed
+*/
+    
+    
+    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
+        category = CategoryDropDown.getSelectedItem().toString();
+        period = PeriodDateBox.getSelectedItem().toString();
+        description = descriptionTextBox.getText();
+        master.handleUnclaimedRequest(this.category, this.period, this.description);
+    }//GEN-LAST:event_SearchButtonActionPerformed
 
+    
+    /*
+    private void CategoryDropDownPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_CategoryDropDownPropertyChange
+        
+    }//GEN-LAST:event_CategoryDropDownPropertyChange
+*/
     /**
      * @param args the command line arguments
      */
     
     //updates and populates the table on the Advertisements page.
-    public void populateAdvertisementsTable(Controller c){
-        Object[][] advertisements_data = null;
+    public void populateAdvertisementsTable(){
+        Object[][] advertisements_data ;
         this.publicAdvertisementsTable.setModel(new DefaultTableModel(advertisements_data));
     }
 
@@ -287,10 +313,10 @@ public class UserAppScreen extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> CategoryDropDown;
     private javax.swing.JComboBox<String> PeriodDateBox;
     private javax.swing.JButton SearchButton;
+    private javax.swing.JFormattedTextField descriptionTextBox;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
