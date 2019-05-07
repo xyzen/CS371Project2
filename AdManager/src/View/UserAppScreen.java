@@ -29,6 +29,7 @@ public class UserAppScreen extends javax.swing.JFrame {
     private String period;
     private String description;
     
+    private String[] advertisementTableTitle = {"Title", "Description", "Price", "Date"};
    
     //Creates new form UserAppScreen
     public UserAppScreen(Controller c) {
@@ -302,9 +303,8 @@ public class UserAppScreen extends javax.swing.JFrame {
      */
     
     //updates and populates the table on the Advertisements page.
-    public void populateAdvertisementsTable(){
-        Object[][] advertisements_data ;
-        this.publicAdvertisementsTable.setModel(new DefaultTableModel(advertisements_data));
+    public void populateAdvertisementsTable(String[][] advertisementData){
+        this.publicAdvertisementsTable.setModel(new DefaultTableModel(advertisementData, advertisementTableTitle));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
