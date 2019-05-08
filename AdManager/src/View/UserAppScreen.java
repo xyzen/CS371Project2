@@ -79,6 +79,7 @@ public class UserAppScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         CategoryDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cars and Trucks", "Housing", "Electronics", "Child Care" }));
+        CategoryDropDown.setSelectedIndex(2);
         CategoryDropDown.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 CategoryDropDownMouseClicked(evt);
@@ -289,7 +290,7 @@ public class UserAppScreen extends javax.swing.JFrame {
         category = CategoryDropDown.getSelectedItem().toString();
         period = PeriodDateBox.getSelectedItem().toString();
         description = descriptionTextBox.getText();
-        master.handleUnclaimedRequest(this.category, this.period, this.description);
+        master.handlePublilshedRequest(this.category, this.period, this.description);
     }//GEN-LAST:event_SearchButtonActionPerformed
 
     
