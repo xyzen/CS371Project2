@@ -24,7 +24,7 @@ public class Controller {
     
     Connection connection;
     
-    public class AdRecord{
+    public class AdRecord {
         public String title;
         public String description;
         public String price;
@@ -69,16 +69,14 @@ public class Controller {
         this.connection=conn;
     }
     
-    public LinkedList<AdRecord> getActiveAds(String category, int months, String keyword){
-        LinkedList<AdRecord> records=new LinkedList();
+    public String[][] handlePublishedRequest(String category, int months, String keyword){
         PreparedStatement stmt = null;
         Date date = new Date();
         date.setMonth(date.getMonth() - months);
         String date_arg = date.toString();
-        String query = "select AdvTitle, AdvDetails, Price, AdvDateTime"
+        String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
                 + "FROM Advertisements"
                 + "WHERE Status_ID='AC' AND Category_ID=? AND AdvDateTime<? AND (AdvTitle LIKE ? OR A.AdvDetails LIKE ?);";
-
         try {
             stmt=connection.prepareStatement(query);
             stmt.setString(1, category);
@@ -86,21 +84,35 @@ public class Controller {
             stmt.setString(3, "%" + keyword + "%");
             stmt.setString(4, "%" + keyword + "%");
             ResultSet rs = stmt.executeQuery();
+            int count = getResultSetSize(rs);
+            String[][] published_data = new String[count][4];
+            int index = 0;
             while(rs.next()){
-                String ad_title = rs.getString("AdvTitle");
-                String ad_desc = rs.getString("AdvDetails");
-                String ad_price = rs.getString("Price");
-                String ad_date = rs.getString("AdvDateTime");
-                AdRecord record=new AdRecord(ad_title, ad_desc, ad_price, "", ad_date, "", "");
-                records.add(record);
+                published_data[index][0] = rs.getString("AdvTitle");
+                published_data[index][1] = rs.getString("AdvDetails");
+                published_data[index][2] = rs.getString("Price");
+                published_data[index][3] = rs.getString("AdvDateTime");
+                index++;
             }
-        }
-        catch (SQLException e) {
+            return published_data;   
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return records;
+            return new String[0][4];
         }
-        return records;
- }
+    }
+    
+      private int getResultSetSize(ResultSet rs) {
+        int count = 0;
+        try {
+            while (rs.next()) {
+                count++;
+            }
+            rs.first();
+        } catch (SQLException e) {
+
+        }
+        return count;
+    }
     
     public static void main(String[] args) {
         // TODO code application logic here
