@@ -293,7 +293,7 @@ public class UserAppScreen extends javax.swing.JFrame {
         category = CategoryDropDown.getSelectedItem().toString();
         period = Integer.parseInt(PeriodDateBox.getSelectedItem().toString());
         description = descriptionTextBox.getText();
-        master.handlePublilshedRequest(this.category, this.period, this.description);
+        populateAdvertisementsTable(master.handlePublishedRequest(this.category, this.period, this.description));
     }//GEN-LAST:event_SearchButtonActionPerformed
 
     
