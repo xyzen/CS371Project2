@@ -22,27 +22,7 @@ public class Controller {
      * @param args the command line arguments
      */
     
-    Connection connection;
-    
-    public class AdRecord {
-        public String title;
-        public String description;
-        public String price;
-        public String status;
-        public String date;
-        public String username;
-        public String type;
-        
-        public AdRecord(String title, String description, String price, String status, String date, String username, String type){
-            this.title = title;
-            this.description = description;
-            this.price = price;
-            this.status = status;
-            this.date = date;
-            this.username = username;
-            this.type = type;
-        }
-    }
+    private Connection connection;
     
     public void connect(String userName, String password, String serverName, String portNumber, String dbName) throws SQLException, InstantiationException, IllegalAccessException {
         System.out.println("Loading driver...");
@@ -73,7 +53,7 @@ public class Controller {
         PreparedStatement stmt = null;
         Date date = new Date();
         date.setMonth(date.getMonth() - months);
-        String date_arg = date.toString();
+        String date_arg = Integer.toString(date.getYear())+"-"+Integer.toString(date.getMonth())+"-"+Integer.toString(date.getDate());
         String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
                 + "FROM Advertisements"
                 + "WHERE Status_ID='AC' AND Category_ID=? AND AdvDateTime<? AND (AdvTitle LIKE ? OR A.AdvDetails LIKE ?);";
