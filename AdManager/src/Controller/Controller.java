@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Properties;
 import java.util.Date;
+import View.View;
 
 
 public class Controller {
@@ -23,6 +24,15 @@ public class Controller {
      */
     
     private Connection connection;
+    private View v;
+    
+    public Controller() {
+        v = new View(this);
+    }
+    
+    public void start() {
+        v.showLogin();
+    }
     
     public void connect(String userName, String password, String serverName, String portNumber, String dbName) throws SQLException, InstantiationException, IllegalAccessException {
         System.out.println("Loading driver...");
@@ -49,7 +59,11 @@ public class Controller {
         this.connection=conn;
     }
     
-    public String[][] handlePublishedRequest(String category, int months, String keyword){
+    public void handleAddAdvertisement() {
+        v.showAddAdvertisement();
+    }
+    
+    public void handlePublishedRequest(String category, int months, String keyword){
         PreparedStatement stmt = null;
         Date date = new Date();
         date.setMonth(date.getMonth() - months);
@@ -74,10 +88,8 @@ public class Controller {
                 published_data[index][3] = rs.getString("AdvDateTime");
                 index++;
             }
-            return published_data;   
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return new String[0][4];
         }
     }
     
@@ -93,9 +105,8 @@ public class Controller {
         }
         return count;
     }
-    
     public static void main(String[] args) {
-        // TODO code application logic here
+        Controller c;
+        Controller.start();
     }
-    
 }

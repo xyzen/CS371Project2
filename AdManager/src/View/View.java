@@ -5,10 +5,36 @@
  */
 package View;
 
+import Controller.Controller;
+import UserView.UserView;
+
 /**
  *
  * @author Tyler
  */
 public class View {
+    private Controller master;
+    private UserView uv;
+    private ModView mv;
     
+    public View(Controller master) {
+        this.master = master;
+    }
+    
+    public void populateSTDUserTable(String[][] published_data) {
+        uv.populateSTDTable(published_data);
+    }
+    
+    public void populateMyUserTable(String[][] my_data) {
+        uv.populateMyTable(my_data);
+    }
+    
+    public void populateSTDModTable(String[][] published_data) {
+        mv.populateSTDTable(published_data);
+    }
+    
+    public void populateMyModTable(String[][] my_data) {
+        mv.populateMyTable(my_data);
+    }
+
 }
