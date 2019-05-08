@@ -163,12 +163,8 @@
             </Component>
             <Component class="javax.swing.JComboBox" name="PeriodDateBox">
               <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="3">
-                    <StringItem index="0" value="Last 3 months"/>
-                    <StringItem index="1" value="Last 6 months"/>
-                    <StringItem index="2" value="Last 12 months"/>
-                  </StringArray>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new int[] { 3, 6, 12 })" type="code"/>
                 </Property>
               </Properties>
               <Events>

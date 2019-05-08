@@ -6,6 +6,7 @@
 package View;
 
 import Controller.Controller;
+import java.lang.Integer;
 
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
@@ -28,7 +29,7 @@ public class UserAppScreen extends javax.swing.JFrame {
     private Controller master;
     
     private String category;
-    private String period;
+    private int period;
     private String description;
     
     private String[] advertisementTableTitle = {"Title", "Description", "Price", "Date"};
@@ -98,7 +99,7 @@ public class UserAppScreen extends javax.swing.JFrame {
             }
         });
 
-        PeriodDateBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Last 3 months", "Last 6 months", "Last 12 months" }));
+        PeriodDateBox.setModel(new javax.swing.DefaultComboBoxModel<>(new int[] { 3, 6, 12 }));
         PeriodDateBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PeriodDateBoxActionPerformed(evt);
@@ -290,7 +291,7 @@ public class UserAppScreen extends javax.swing.JFrame {
     
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
         category = CategoryDropDown.getSelectedItem().toString();
-        period = PeriodDateBox.getSelectedItem().toString();
+        period = Integer.parseInt(PeriodDateBox.getSelectedItem().toString());
         description = descriptionTextBox.getText();
         master.handlePublilshedRequest(this.category, this.period, this.description);
     }//GEN-LAST:event_SearchButtonActionPerformed
@@ -301,6 +302,7 @@ public class UserAppScreen extends javax.swing.JFrame {
         
     }//GEN-LAST:event_CategoryDropDownPropertyChange
 */
+    
     /**
      * @param args the command line arguments
      */
