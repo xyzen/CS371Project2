@@ -282,10 +282,9 @@ public class UserView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addAdvertisementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAdvertisementButtonActionPerformed
-        master.handleAddAdvertisement();
+        master.handleAddAdButtonPushed();
         //Controller "master" will open the AddAdvertisement window
         
-        // TODO add your handling code here:
     }//GEN-LAST:event_addAdvertisementButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed

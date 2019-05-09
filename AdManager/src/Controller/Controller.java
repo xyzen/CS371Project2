@@ -47,6 +47,12 @@ public class Controller {
         av = new AddView();
         av.setVisibility(true);
     }
+    //The button pushed tells the controller to create and set the view to be visible.
+    public void handleAddAdButtonPushed(){
+        av = new AddView();
+        av.setVisible(true);
+    }
+    
     
     public void handleEditAdvertisement(int adv_id) {
         ev = new EditView(adv_id);
@@ -55,7 +61,7 @@ public class Controller {
     
     public void handleDeleteAdvertisement(int adv_id) {
         dv = new DeleteView();
-        dv.setVisibility(true);// does not bring up a page only updats the database
+        dv.setVisibility(true);// does not bring up a page only updates the database
     }
     
     public void handleUserSTDTableRequest(String category, int months, String keyword){
@@ -106,6 +112,9 @@ public class Controller {
         try {
             c.connect("user", "1234", "localhost", "3306", "project2");
         } catch(SQLException | InstantiationException | IllegalAccessException e) {}
+        //There is still a remnant of the View Class in this file, we need to change this to likely the instantiate the controller
+        // or the LoginView
+        
         View v = new View(c);
     }
     
