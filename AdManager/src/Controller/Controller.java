@@ -31,6 +31,9 @@ public class Controller {
     private Connection connection;
     private LoginView lv;
     private UserView uv;
+    private AddView av;
+    private EditView ev;
+    private DeleteView dv;
     
     public Controller() {
         lv = new LoginView(this);
@@ -41,15 +44,18 @@ public class Controller {
     }
    
     public void handleAddAdvertisement() {
-        v.showAddAdvertisement();
+        av = new AddView();
+        av.setVisibility(true);
     }
     
     public void handleEditAdvertisement(int adv_id) {
-        v.showEditAdvertisement(adv_id);
+        ev = new EditView(adv_id);
+        ev.setVisibility(true);
     }
     
     public void handleDeleteAdvertisement() {
-        v.showDeleteAdvertisement();
+        dv = new DeleteView();
+        dv.setVisibility(true);
     }
     
     public void handleUserSTDTableRequest(String category, int months, String keyword){
