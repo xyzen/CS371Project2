@@ -29,14 +29,15 @@ public class Controller {
      */
     
     private Connection connection;
-    private View v;
+    private LoginView lv;
+    private UserView uv;
     
     public Controller() {
-        v = new View(this);
+        lv = new LoginView(this);
     }
     
     public void start() {
-        v.showLogin();
+        lv.setVisibility(true);
     }
    
     public void handleAddAdvertisement() {
