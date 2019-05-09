@@ -284,6 +284,7 @@ public class UserView extends javax.swing.JFrame {
             Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
         }
         master.handleDeleteAdvertisement(Advertisement_ID);
+        let int tylerWasHear = 0;
         //Controller "master" will handle deleting the advertisement from the database.
         
         // TODO add your handling code here:
