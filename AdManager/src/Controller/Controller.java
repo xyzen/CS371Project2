@@ -53,7 +53,7 @@ public class Controller {
         ev.setVisibility(true);
     }
     
-    public void handleDeleteAdvertisement() {
+    public void handleDeleteAdvertisement(int adv_id) {
         dv = new DeleteView();
         dv.setVisibility(true);
     }
