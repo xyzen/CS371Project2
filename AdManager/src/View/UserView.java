@@ -24,6 +24,7 @@ public class UserView extends javax.swing.JFrame {
     private String price;
     private String keyword;
     private int date;
+    private int Advertisement_ID;
     
     private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
     
@@ -70,6 +71,11 @@ public class UserView extends javax.swing.JFrame {
         categoryLabel.setText("Category:");
 
         categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
+        categoryComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categoryComboBoxActionPerformed(evt);
+            }
+        });
 
         periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
 
@@ -264,14 +270,24 @@ public class UserView extends javax.swing.JFrame {
     }//GEN-LAST:event_addAdvertisementButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        master.handleEditAdvertisement();
+        int row = this.myAdvertisementsTable.getSelectedRow();
+        
+        if(row>=0){
+            Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
+        }
+        master.handleEditAdvertisement(Advertisement_ID);
         //Controller "master" will open the edit window
         
         // TODO add your handling code here:
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        master.handleDeleteAdvertisement();
+        int row = this.myAdvertisementsTable.getSelectedRow();
+        
+        if(row>=0){
+            Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
+        }
+        master.handleDeleteAdvertisement(Advertisement_ID);
         //Controller "master" will handle deleting the advertisement from the database.
         
         // TODO add your handling code here:
@@ -282,6 +298,10 @@ public class UserView extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_goButtonActionPerformed
+
+    private void categoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_categoryComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
