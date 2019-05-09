@@ -57,26 +57,30 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="584" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="categoryLabel" min="-2" max="-2" attributes="0"/>
                                   <Component id="categoryComboBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="categoryLabel" min="-2" max="-2" attributes="0"/>
-                                  </Group>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="periodComboBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
                                       <Component id="periodLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="lastLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="periodComboBox" min="-2" pref="43" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="monthsLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="descriptionTextField" min="-2" pref="160" max="-2" attributes="0"/>
@@ -110,6 +114,8 @@
                           <Component id="periodComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="descriptionTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="goButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lastLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="monthsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="8" max="32767" attributes="0"/>
                       <Component id="claimAdButton" min="-2" max="-2" attributes="0"/>
@@ -149,13 +155,16 @@
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">
-                    <StringItem index="0" value="Last 3 Months"/>
-                    <StringItem index="1" value="Last 6 Months"/>
-                    <StringItem index="2" value="Last 12 Months"/>
-                    <StringItem index="3" value="Life"/>
+                    <StringItem index="0" value="3"/>
+                    <StringItem index="1" value="6"/>
+                    <StringItem index="2" value="12"/>
+                    <StringItem index="3" value=" "/>
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="periodComboBoxActionPerformed"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
@@ -235,6 +244,16 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="claimAdButtonActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lastLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Last"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="monthsLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Months"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

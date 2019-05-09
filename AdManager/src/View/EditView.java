@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package View;
+import Controller.Controller;
 
 /**
  *
@@ -11,9 +12,10 @@ package View;
  */
 public class EditView extends javax.swing.JFrame {
 
+    private Controller master;
     private String newTitle;
     private String newDescription;
-    private float newPrice;
+    private String newPrice;
     private int ID;
     /**
      * Creates new form EditView
@@ -101,6 +103,10 @@ public class EditView extends javax.swing.JFrame {
         // TODO add your handling code here:
         
        //if field is blank do not update that field
+       this.newTitle = newTitle_Field.getText();
+       this.newDescription = newDescription_Field.getText();
+       this.newPrice = newPrice_Field.getText();
+       master.handleEditRequest(newTitle, newDescription, newPrice);
     }//GEN-LAST:event_submitEdit_ButtonActionPerformed
 
     /**

@@ -18,7 +18,7 @@ import java.util.Date;
 import View.UserView;
 import View.EditView;
 import View.AddView;
-import View.DeleteView;
+import View.ModView;
 import View.LoginView;
 
 
@@ -33,7 +33,7 @@ public class Controller {
     private UserView uv;
     private AddView av;
     private EditView ev;
-    private DeleteView dv;
+    private ModView mv;
     
     public Controller() {
         lv = new LoginView(this);
@@ -55,7 +55,7 @@ public class Controller {
     
     public void handleDeleteAdvertisement(int adv_id) {
         dv = new DeleteView();
-        dv.setVisibility(true);
+        dv.setVisibility(true);// does not bring up a page only updats the database
     }
     
     public void handleUserSTDTableRequest(String category, int months, String keyword){
