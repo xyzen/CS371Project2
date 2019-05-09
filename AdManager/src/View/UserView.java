@@ -275,9 +275,6 @@ public class UserView extends javax.swing.JFrame {
             Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
         }
         master.handleEditAdvertisement(Advertisement_ID);
-        //Controller "master" will open the edit window
-        
-        // TODO add your handling code here:
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -293,7 +290,7 @@ public class UserView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
-        master.handlePublishedRequest(category, date, keyword);
+        master.handleUserSTDTableRequest(category, date, keyword);
 
         // TODO add your handling code here:
     }//GEN-LAST:event_goButtonActionPerformed

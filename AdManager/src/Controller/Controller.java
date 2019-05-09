@@ -33,25 +33,20 @@ public class Controller {
     public void start() {
         v.showLogin();
     }
-    
-    public void handleUserLogin(String username) {
-        v.hideLoginView();
-        v.showUserView();
-    }
-    
+   
     public void handleAddAdvertisement() {
         v.showAddAdvertisement();
     }
     
-    public void handleEditAdvertisement() {
-        v.showEditAdvertisement();
+    public void handleEditAdvertisement(int adv_id) {
+        v.showEditAdvertisement(adv_id);
     }
     
     public void handleDeleteAdvertisement() {
         v.showDeleteAdvertisement();
     }
     
-    public void handlePublishedRequest(String category, int months, String keyword){
+    public void handleUserSTDTableRequest(String category, int months, String keyword){
         PreparedStatement stmt = null;
         Date date = new Date();
         date.setMonth(date.getMonth() - months);
