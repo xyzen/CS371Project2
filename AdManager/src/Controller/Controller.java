@@ -43,7 +43,7 @@ public class Controller {
         lv.setVisibility(true);
     }
    
-    public void handleAddAdvertisement() {
+    public void handleAddAdvertisement(String title, String desc, String cat, float price) {
         av = new AddView();
         av.setVisibility(true);
     }
