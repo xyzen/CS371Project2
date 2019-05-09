@@ -7,6 +7,7 @@ package View;
  */
 
 import Controller.Controller;
+import javax.swing.JTable;
 
 
 /**
@@ -16,6 +17,14 @@ import Controller.Controller;
 public class UserView extends javax.swing.JFrame {
 
     private Controller master;
+    private String category;
+    private String title;
+    private String description;
+    private String price;
+    private int date;
+    
+    private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
+    
     
     /**
      * Creates new form UserView
@@ -65,6 +74,11 @@ public class UserView extends javax.swing.JFrame {
         periodLabel.setText("Period:");
 
         goButton.setText("Go");
+        goButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goButtonActionPerformed(evt);
+            }
+        });
 
         descriptionLabel.setText("Title, Description:");
 
@@ -137,6 +151,11 @@ public class UserView extends javax.swing.JFrame {
         advertisementsTabPane.addTab("Advertisements", advertisementsPanel);
 
         deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         editButton.setText("Edit");
         editButton.addActionListener(new java.awt.event.ActionListener() {
@@ -249,13 +268,26 @@ public class UserView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_editButtonActionPerformed
 
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        master.handleDeleteAdvertisement();
+        //Controller "master" will handle deleting the advertisement from the database.
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
+        master.handlePublishedRequest();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_goButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
     
     //Populates the STD table for users in the view
     public void populateSTDTable(String[][] published_data){
-        
+        this.advertisementsTable.setModel(new DefaultTableModel(published_data, advertisementsTableColumns));
     }
     
     //Populates the personal table for the user in the view
