@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package View;
-
+import Controller.Controller;
 /**
  *
  * @author xjosh
@@ -12,9 +12,10 @@ package View;
 public class AddView extends javax.swing.JFrame {
     
     private String title;
-    private String dest;
+    private String desc;
     private String cat;
     private String price;
+    private Controller master;
 
     /**
      * Creates new form AddView
@@ -61,7 +62,7 @@ public class AddView extends javax.swing.JFrame {
 
         category_Label.setText("Category:");
 
-        category_box.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "\"" }));
+        category_box.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
 
         price_Label.setText("Price:");
 
@@ -137,9 +138,10 @@ public class AddView extends javax.swing.JFrame {
     private void add_Advertisement_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_Advertisement_ButtonActionPerformed
         // TODO add your handling code here:
         this.title = titleField.getText();
-        this.dest = detailsField.getText();
+        this.desc = detailsField.getText();
         this.cat = category_box.getSelectedItem().toString();
         this.price = price_field.getText();
+        master.handleAddAdvertisementRequest(title, desc, cat,price);
     }//GEN-LAST:event_add_Advertisement_ButtonActionPerformed
 
     /**

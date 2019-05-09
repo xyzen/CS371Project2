@@ -23,6 +23,7 @@ public class UserView extends javax.swing.JFrame {
     private String description;
     private String price;
     private String keyword;
+    private String Sdate;
     private int date;
     private int Advertisement_ID;
     
@@ -51,13 +52,15 @@ public class UserView extends javax.swing.JFrame {
         advertisementsPanel = new javax.swing.JPanel();
         categoryLabel = new javax.swing.JLabel();
         categoryComboBox = new javax.swing.JComboBox<>();
-        periodComboBox = new javax.swing.JComboBox<>();
         periodLabel = new javax.swing.JLabel();
         descriptionTextField = new javax.swing.JTextField();
         goButton = new javax.swing.JButton();
         descriptionLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         advertisementsTable = new javax.swing.JTable();
+        monthsLabel = new javax.swing.JLabel();
+        periodComboBox = new javax.swing.JComboBox<>();
+        lastLabel = new javax.swing.JLabel();
         myAdvertisementsPanel = new javax.swing.JPanel();
         deleteButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
@@ -69,14 +72,12 @@ public class UserView extends javax.swing.JFrame {
 
         categoryLabel.setText("Category:");
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
         categoryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoryComboBoxActionPerformed(evt);
             }
         });
-
-        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
 
         periodLabel.setText("Period:");
 
@@ -110,6 +111,17 @@ public class UserView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(advertisementsTable);
 
+        monthsLabel.setText("Months");
+
+        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "6", "12", " " }));
+        periodComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                periodComboBoxActionPerformed(evt);
+            }
+        });
+
+        lastLabel.setText("Last");
+
         javax.swing.GroupLayout advertisementsPanelLayout = new javax.swing.GroupLayout(advertisementsPanel);
         advertisementsPanel.setLayout(advertisementsPanelLayout);
         advertisementsPanelLayout.setHorizontalGroup(
@@ -120,13 +132,18 @@ public class UserView extends javax.swing.JFrame {
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(categoryLabel)))
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(periodLabel)))
-                .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(periodLabel)
+                        .addGap(0, 201, Short.MAX_VALUE))
+                    .addGroup(advertisementsPanelLayout.createSequentialGroup()
+                        .addComponent(lastLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(monthsLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
                         .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -147,12 +164,15 @@ public class UserView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(categoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(goButton))
+                    .addComponent(goButton)
+                    .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lastLabel)
+                        .addComponent(monthsLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         advertisementsTabPane.addTab("Advertisements", advertisementsPanel);
@@ -284,13 +304,18 @@ public class UserView extends javax.swing.JFrame {
             Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
         }
         master.handleDeleteAdvertisement(Advertisement_ID);
-        let int tylerWasHear = 0;
+        
         //Controller "master" will handle deleting the advertisement from the database.
         
         // TODO add your handling code here:
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
+       this.category=categoryComboBox.getSelectedItem().toString();
+        this.Sdate = periodComboBox.getSelectedItem().toString();
+        this.date = Integer.parseInt(Sdate);
+        this.keyword = descriptionTextField.getText();
+
         master.handleUserSTDTableRequest(category, date, keyword);
 
         // TODO add your handling code here:
@@ -299,6 +324,10 @@ public class UserView extends javax.swing.JFrame {
     private void categoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_categoryComboBoxActionPerformed
+
+    private void periodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_periodComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_periodComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -327,6 +356,8 @@ public class UserView extends javax.swing.JFrame {
     private javax.swing.JButton goButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lastLabel;
+    private javax.swing.JLabel monthsLabel;
     private javax.swing.JPanel myAdvertisementsPanel;
     private javax.swing.JTable myAdvertisementsTable;
     private javax.swing.JComboBox<String> periodComboBox;
