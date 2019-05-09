@@ -16,6 +16,7 @@ public class View {
     private Controller master;
     private UserView uv;
     private ModView mv;
+    private LoginView lv;
     
     public View(Controller master) {
         this.master = master;
@@ -41,5 +42,7 @@ public class View {
         uv.showEditAdvertisements();
     }
 
-    public void show
+    public void show(){
+       
+    }
 }
