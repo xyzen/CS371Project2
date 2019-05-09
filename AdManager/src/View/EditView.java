@@ -14,11 +14,13 @@ public class EditView extends javax.swing.JFrame {
     private String newTitle;
     private String newDescription;
     private float newPrice;
+    private int ID;
     /**
      * Creates new form EditView
      */
-    public EditView() {
+    public EditView(int xID) {
         initComponents();
+        ID = xID;
     }
 
     /**
@@ -30,8 +32,6 @@ public class EditView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        edit_Table = new javax.swing.JTable();
         submitEdit_Button = new javax.swing.JButton();
         newTitle_Label = new javax.swing.JLabel();
         newDescription_Label = new javax.swing.JLabel();
@@ -41,16 +41,6 @@ public class EditView extends javax.swing.JFrame {
         newPrice_Field = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        edit_Table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Title", "Description", "Price", "Status", "Date"
-            }
-        ));
-        jScrollPane1.setViewportView(edit_Table);
 
         submitEdit_Button.setText("Submit Edit");
         submitEdit_Button.addActionListener(new java.awt.event.ActionListener() {
@@ -70,32 +60,24 @@ public class EditView extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(newDescription_Label)
+                    .addComponent(newPrice_Label)
+                    .addComponent(newTitle_Label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(newDescription_Label)
-                            .addComponent(newPrice_Label)
-                            .addComponent(newTitle_Label))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(submitEdit_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(newDescription_Field)
-                                .addComponent(newTitle_Field)
-                                .addComponent(newPrice_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)))
-                        .addGap(0, 126, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(submitEdit_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(newDescription_Field)
+                        .addComponent(newTitle_Field)
+                        .addComponent(newPrice_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(90, 90, 90)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newTitle_Label)
                     .addComponent(newTitle_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -157,8 +139,6 @@ public class EditView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable edit_Table;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField newDescription_Field;
     private javax.swing.JLabel newDescription_Label;
     private javax.swing.JTextField newPrice_Field;
