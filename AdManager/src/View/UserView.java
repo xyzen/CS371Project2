@@ -8,6 +8,7 @@ package View;
 
 import Controller.Controller;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -21,6 +22,7 @@ public class UserView extends javax.swing.JFrame {
     private String title;
     private String description;
     private String price;
+    private String keyword;
     private int date;
     
     private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
@@ -276,7 +278,7 @@ public class UserView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
-        master.handlePublishedRequest();
+        master.handlePublishedRequest(category, date, keyword);
 
         // TODO add your handling code here:
     }//GEN-LAST:event_goButtonActionPerformed
