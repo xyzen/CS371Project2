@@ -15,7 +15,12 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Properties;
 import java.util.Date;
-import View.View;
+import View.UserView;
+import View.EditView;
+import View.AddView;
+import View.DeleteView;
+import View.LoginView;
+
 
 
 public class Controller {
