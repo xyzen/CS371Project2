@@ -23,6 +23,7 @@ public class ModeratorClaimScreen extends javax.swing.JFrame {
     private String date;
     private String keyword;
     private int Adv_ID;
+    private int joshWasHere0;
     
     /** Creates new form ModeratorClaimScreen */
     public ModeratorClaimScreen(Controller c) {
