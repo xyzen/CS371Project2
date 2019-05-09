@@ -34,12 +34,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="add_Advertisement_Button" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="category_box" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
-                      <Component id="title_Field" max="32767" attributes="0"/>
-                      <Component id="price_field" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="category_box" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="titleField" alignment="1" max="32767" attributes="0"/>
+                  <Component id="price_field" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="92" max="32767" attributes="0"/>
           </Group>
@@ -51,7 +49,7 @@
               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="title_Lable" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="title_Field" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="titleField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -81,9 +79,9 @@
         <Property name="text" type="java.lang.String" value="Title:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="title_Field">
+    <Component class="javax.swing.JTextField" name="titleField">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="title_FieldActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="titleFieldActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="details_Label">
@@ -98,7 +96,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="details_Field">
+        <Component class="javax.swing.JTextArea" name="detailsField">
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
@@ -114,11 +112,8 @@
     <Component class="javax.swing.JComboBox" name="category_box">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
+          <StringArray count="1">
+            <StringItem index="0" value="&quot;"/>
           </StringArray>
         </Property>
       </Properties>
@@ -140,6 +135,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Add Advertisement"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="add_Advertisement_ButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

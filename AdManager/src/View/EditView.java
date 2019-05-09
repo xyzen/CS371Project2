@@ -7,6 +7,7 @@ package View;
 
 /**
  *
+<<<<<<< HEAD
  * @author Tyler
  */
 
@@ -14,6 +15,15 @@ public class EditView extends javax.swing.JFrame {
     private String title;
     private String desc;
     private float price;
+=======
+ * @author xjosh
+ */
+public class EditView extends javax.swing.JFrame {
+
+    private String newTitle;
+    private String newDescription;
+    private float newPrice;
+>>>>>>> 2609c16ff6e0fba3e741e4727e052e2fda621439
     /**
      * Creates new form EditView
      */
@@ -30,22 +40,113 @@ public class EditView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+<<<<<<< HEAD
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+=======
+        jScrollPane1 = new javax.swing.JScrollPane();
+        edit_Table = new javax.swing.JTable();
+        submitEdit_Button = new javax.swing.JButton();
+        newTitle_Label = new javax.swing.JLabel();
+        newDescription_Label = new javax.swing.JLabel();
+        newPrice_Label = new javax.swing.JLabel();
+        newTitle_Field = new javax.swing.JTextField();
+        newDescription_Field = new javax.swing.JTextField();
+        newPrice_Field = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        edit_Table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Title", "Description", "Price", "Status", "Date"
+            }
+        ));
+        jScrollPane1.setViewportView(edit_Table);
+
+        submitEdit_Button.setText("Submit Edit");
+        submitEdit_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitEdit_ButtonActionPerformed(evt);
+            }
+        });
+
+        newTitle_Label.setText("New Title:");
+
+        newDescription_Label.setText("New Description:");
+
+        newPrice_Label.setText("New Price:");
+
+>>>>>>> 2609c16ff6e0fba3e741e4727e052e2fda621439
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+<<<<<<< HEAD
             .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
+=======
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(newDescription_Label)
+                            .addComponent(newPrice_Label)
+                            .addComponent(newTitle_Label))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(submitEdit_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(newDescription_Field)
+                                .addComponent(newTitle_Field)
+                                .addComponent(newPrice_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)))
+                        .addGap(0, 126, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newTitle_Label)
+                    .addComponent(newTitle_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newDescription_Label)
+                    .addComponent(newDescription_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newPrice_Label)
+                    .addComponent(newPrice_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(submitEdit_Button)
+                .addContainerGap(94, Short.MAX_VALUE))
+>>>>>>> 2609c16ff6e0fba3e741e4727e052e2fda621439
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+<<<<<<< HEAD
+=======
+    private void submitEdit_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitEdit_ButtonActionPerformed
+        // TODO add your handling code here:
+        
+       //if field is blank do not update that field
+    }//GEN-LAST:event_submitEdit_ButtonActionPerformed
+
+>>>>>>> 2609c16ff6e0fba3e741e4727e052e2fda621439
     /**
      * @param args the command line arguments
      */
@@ -82,5 +183,17 @@ public class EditView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+<<<<<<< HEAD
+=======
+    private javax.swing.JTable edit_Table;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField newDescription_Field;
+    private javax.swing.JLabel newDescription_Label;
+    private javax.swing.JTextField newPrice_Field;
+    private javax.swing.JLabel newPrice_Label;
+    private javax.swing.JTextField newTitle_Field;
+    private javax.swing.JLabel newTitle_Label;
+    private javax.swing.JButton submitEdit_Button;
+>>>>>>> 2609c16ff6e0fba3e741e4727e052e2fda621439
     // End of variables declaration//GEN-END:variables
 }
