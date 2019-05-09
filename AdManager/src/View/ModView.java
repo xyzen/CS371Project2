@@ -19,9 +19,6 @@ public class ModView extends javax.swing.JFrame {
 
     private Controller master;
     private String category;
-    private String title;
-    private String description;
-    private String price;
     private String keyword;
     private int date;
     private int Advertisement_ID;
@@ -262,16 +259,22 @@ public class ModView extends javax.swing.JFrame {
 
     private void approveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveButtonActionPerformed
         // TODO add your handling code here:
-                int row = this.unclaimedAdvertisementsTable.getSelectedRow();
+                int row = this.myAdvertisementsTable.getSelectedRow();
         
         if(row>=0){
-            Advertisement_ID=Integer.parseInt((String)unclaimedAdvertisementsTable.getValueAt(row, 0));
+            Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
         }
         master.handleApproveAdvertisement(Advertisement_ID);
     }//GEN-LAST:event_approveButtonActionPerformed
 
     private void claimAdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claimAdButtonActionPerformed
         // TODO add your handling code here:
+                        int row = this.unclaimedAdvertisementsTable.getSelectedRow();
+        
+        if(row>=0){
+            Advertisement_ID=Integer.parseInt((String)unclaimedAdvertisementsTable.getValueAt(row, 0));
+        }
+        master.handleClaimAdvertisement(Advertisement_ID);
     }//GEN-LAST:event_claimAdButtonActionPerformed
 
     /**
