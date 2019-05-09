@@ -26,6 +26,7 @@ public class UserView extends javax.swing.JFrame {
     private int date;
     
     private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
+    private String[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
     
     
     /**
@@ -35,8 +36,6 @@ public class UserView extends javax.swing.JFrame {
         initComponents();
         master = c;
     }
-
-    
     
     /**
      * This method is called from within the constructor to initialize the form.

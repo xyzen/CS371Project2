@@ -34,33 +34,21 @@ public class Controller {
         v.showLogin();
     }
     
-    public void connect(String userName, String password, String serverName, String portNumber, String dbName) throws SQLException, InstantiationException, IllegalAccessException {
-        System.out.println("Loading driver...");
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            System.out.println("Driver loaded!");
-        } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("Cannot find the driver in the classpath!", e);
-        }
-
-        Connection conn = null;
-        Properties connectionProps = new Properties();
-        connectionProps.put("user", userName);
-        connectionProps.put("password", password);
-
-        conn = DriverManager.getConnection(
-                "jdbc:mysql://"
-                + serverName
-                + ":" + portNumber + "/" + dbName,
-                connectionProps);
-
-        System.out.println("Connected to database");
-        this.connection=conn;
+    public void handleUserLogin(String username) {
+        v.hideLoginView();
+        v.showUserView();
     }
     
     public void handleAddAdvertisement() {
         v.showAddAdvertisement();
+    }
+    
+    public void handleEditAdvertisement() {
+        v.showEditAdvertisement();
+    }
+    
+    public void handleDeleteAdvertisement() {
+        v.showDeleteAdvertisement();
     }
     
     public void handlePublishedRequest(String category, int months, String keyword){
@@ -91,6 +79,7 @@ public class Controller {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        
     }
     
       private int getResultSetSize(ResultSet rs) {
@@ -106,7 +95,35 @@ public class Controller {
         return count;
     }
     public static void main(String[] args) {
-        Controller c;
-        Controller.start();
+        Controller c = new Controller();
+        try {
+            c.connect("user", "1234", "localhost", "3306", "project2");
+        } catch(SQLException | InstantiationException | IllegalAccessException e) {}
+        View v = new View(c);
     }
+    
+    public void connect(String userName, String password, String serverName, String portNumber, String dbName) throws SQLException, InstantiationException, IllegalAccessException {
+        System.out.println("Loading driver...");
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            System.out.println("Driver loaded!");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException("Cannot find the driver in the classpath!", e);
+        }
+
+        Connection conn = null;
+        Properties connectionProps = new Properties();
+        connectionProps.put("user", userName);
+        connectionProps.put("password", password);
+
+        conn = DriverManager.getConnection(
+                "jdbc:mysql://"
+                + serverName
+                + ":" + portNumber + "/" + dbName,
+                connectionProps);
+        System.out.println("Connected to database");
+        this.connection=conn;
+    }
+    
 }

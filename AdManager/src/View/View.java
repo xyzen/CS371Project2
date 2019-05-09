@@ -36,5 +36,10 @@ public class View {
     public void populateMyModTable(String[][] my_data) {
         mv.populateMyTable(my_data);
     }
+    
+    public void showEditAdvertisements() {
+        uv.showEditAdvertisements();
+    }
 
+    public void show
 }
