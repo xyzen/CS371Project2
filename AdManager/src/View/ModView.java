@@ -68,8 +68,8 @@ public class ModView extends javax.swing.JFrame {
         unclaimedAdvertisementsTabPane = new javax.swing.JTabbedPane();
         advertisementsPanel = new javax.swing.JPanel();
         categoryLabel = new javax.swing.JLabel();
-        categoryComboBox = new javax.swing.JComboBox<>();
-        periodComboBox = new javax.swing.JComboBox<>();
+        categoryComboBox = new javax.swing.JComboBox<String>();
+        periodComboBox = new javax.swing.JComboBox<String>();
         periodLabel = new javax.swing.JLabel();
         descriptionTextField = new javax.swing.JTextField();
         goButton = new javax.swing.JButton();
@@ -92,14 +92,14 @@ public class ModView extends javax.swing.JFrame {
 
         categoryLabel.setText("Category:");
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
         categoryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoryComboBoxActionPerformed(evt);
             }
         });
 
-        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
+        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
         periodComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 periodComboBoxActionPerformed(evt);
@@ -128,9 +128,16 @@ public class ModView extends javax.swing.JFrame {
                 "Title", "Description", "Price", "Date"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
