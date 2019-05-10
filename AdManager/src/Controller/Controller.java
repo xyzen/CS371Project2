@@ -38,7 +38,7 @@ public class Controller {
     
     public void handleLoginRequest(String username, String userType) {
         PreparedStatement stmt = null;
-        int size; int user_id; ResultSet rs;
+        int size; String user_id; ResultSet rs;
         String query = "SELECT User_ID FROM ";
         switch(userType) {
             
@@ -51,7 +51,7 @@ public class Controller {
                     size = getResultSetSize(rs);
                     if (size == 0)
                         return;
-                    user_id = rs.getInt("User_ID");
+                    user_id = rs.getString("User_ID");
                     uv = new UserView(this, user_id);
                     uv.setVisible(true);
                     lv.setVisible(false);
@@ -67,7 +67,7 @@ public class Controller {
                     stmt.setString(0, username);
                     rs = stmt.executeQuery();
                     size = getResultSetSize(rs);
-                    user_id = rs.getInt("User_ID");
+                    user_id = rs.getString("User_ID");
                     if (size == 0)
                         return;
                     mv = new ModView(this, user_id);
@@ -80,7 +80,7 @@ public class Controller {
         }
     }
    
-    public void handleAddAdvertisement(String title, String desc, String cat, float price, int user_id) {
+    public void handleAddRequest(String title, String desc, String cat, String price, String user_id) {
         switch (cat) {
             case "Housing":
                 cat = "HOU";
@@ -107,9 +107,9 @@ public class Controller {
             stmt.setString(1, title);
             stmt.setString(2, desc);
             stmt.setString(3, date_arg);
-            stmt.setString(4, Float.toString(price));
+            stmt.setString(4, price);
             stmt.setString(5, cat);
-            stmt.setString(6, Integer.toString(user_id));
+            stmt.setString(6, user_id);
             stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -117,12 +117,12 @@ public class Controller {
     }
     
     //The button pushed tells the controller to create and set the view to be visible.
-    public void handleAddButton(){
-        av = new AddView();
+    public void handleAddButton(String userID){
+        av = new AddView(this, userID);
         av.setVisible(true);
     }
     
-    public void handleEditButton(int adv_id, int user_id) {
+    public void handleEditButton(String adv_id, String user_id) {
         ev = new EditView(this, adv_id, user_id);
         ev.setVisible(true);
     }

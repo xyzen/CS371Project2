@@ -20,7 +20,7 @@ public class UserView extends javax.swing.JFrame {
     private Controller master;
     
     private String username;
-    private int userID;
+    private String userID;
     
     private String category;
     private String title;
@@ -29,7 +29,7 @@ public class UserView extends javax.swing.JFrame {
     private String keyword;
     private String Sdate;
     private int date;
-    private int Advertisement_ID;
+    private String Advertisement_ID;
     
     private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
     private String[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
@@ -38,7 +38,7 @@ public class UserView extends javax.swing.JFrame {
     /**
      * Creates new form UserView
      */
-    public UserView(Controller c, int usrID) {
+    public UserView(Controller c, String usrID) {
         initComponents();
         userID = usrID;
         master = c;
@@ -288,7 +288,7 @@ public class UserView extends javax.swing.JFrame {
     //When the "Add Advertisement" button is pushed, the view will tell the controller
     //that the button was pushed. The controller will handle the action afterwards.
     private void addAdvertisementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAdvertisementButtonActionPerformed
-        master.handleAddButton();
+        master.handleAddButton(userID);
         //Controller "master" will open the AddAdvertisement window
         
     }//GEN-LAST:event_addAdvertisementButtonActionPerformed
@@ -300,7 +300,7 @@ public class UserView extends javax.swing.JFrame {
         int row = this.myAdvertisementsTable.getSelectedRow();
         
         if(row>=0){
-            Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
+            Advertisement_ID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
         master.handleEditButton(Advertisement_ID, userID);
     }//GEN-LAST:event_editButtonActionPerformed
@@ -312,7 +312,7 @@ public class UserView extends javax.swing.JFrame {
         int row = this.myAdvertisementsTable.getSelectedRow();
         
         if(row>=0){
-            Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
+            Advertisement_ID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
         master.handleDeleteRequest(Advertisement_ID);
         

@@ -14,16 +14,16 @@ import static java.lang.Float.parseFloat;
 public class EditView extends javax.swing.JFrame {
 
     
-    private int userID;
+    private String userID;
     private Controller master;
     private String newTitle;
     private String newDescription;
-    private float newPrice;
-    private int advID;
+    private String newPrice;
+    private String advID;
     /**
      * Creates new form EditView
      */
-    public EditView(Controller c, int advID, int usrID) {
+    public EditView(Controller c, String advID, String usrID) {
         initComponents();
         
         master = c;
@@ -41,7 +41,7 @@ public class EditView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        submitEdit_Button = new javax.swing.JButton();
+        submitButton = new javax.swing.JButton();
         newTitle_Label = new javax.swing.JLabel();
         newDescription_Label = new javax.swing.JLabel();
         newPrice_Label = new javax.swing.JLabel();
@@ -51,10 +51,10 @@ public class EditView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        submitEdit_Button.setText("Submit Edit");
-        submitEdit_Button.addActionListener(new java.awt.event.ActionListener() {
+        submitButton.setText("Submit Edit");
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                submitEdit_ButtonActionPerformed(evt);
+                submitButtonActionPerformed(evt);
             }
         });
 
@@ -76,7 +76,7 @@ public class EditView extends javax.swing.JFrame {
                     .addComponent(newTitle_Label))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(submitEdit_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(newDescription_Field)
                         .addComponent(newTitle_Field)
@@ -99,23 +99,23 @@ public class EditView extends javax.swing.JFrame {
                     .addComponent(newPrice_Label)
                     .addComponent(newPrice_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(submitEdit_Button)
+                .addComponent(submitButton)
                 .addContainerGap(94, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void submitEdit_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitEdit_ButtonActionPerformed
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
         
        
        //if field is blank do not update that field
        this.newTitle = newTitle_Field.getText();
        this.newDescription = newDescription_Field.getText();
-       this.newPrice = parseFloat(newPrice_Field.getText());
+       this.newPrice = newPrice_Field.getText();
        master.handleEditRequest(newTitle, newDescription, newPrice, userID);
-    }//GEN-LAST:event_submitEdit_ButtonActionPerformed
+    }//GEN-LAST:event_submitButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,6 +128,6 @@ public class EditView extends javax.swing.JFrame {
     private javax.swing.JLabel newPrice_Label;
     private javax.swing.JTextField newTitle_Field;
     private javax.swing.JLabel newTitle_Label;
-    private javax.swing.JButton submitEdit_Button;
+    private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables
 }

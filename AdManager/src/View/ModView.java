@@ -22,7 +22,8 @@ public class ModView extends javax.swing.JFrame {
     private String keyword;
     private String Sdate;
     private int date;
-    private int Advertisement_ID;
+    private String advID;
+    private String userID;
     
     private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
     private String[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
@@ -31,9 +32,10 @@ public class ModView extends javax.swing.JFrame {
     /**
      * Creates new form UserView
      */
-    public ModView(Controller c) {
+    public ModView(Controller c, String userID) {
         initComponents();
         master = c;
+        this.userID = userID;
     }
     
     /**
@@ -274,7 +276,7 @@ public class ModView extends javax.swing.JFrame {
         this.date = Integer.parseInt(Sdate);
         this.keyword = descriptionTextField.getText();
 
-        master.handleUserSTDTableRequest(category, date, keyword);
+        master.handleModSTDTableRequest(category, date, keyword);
 
         // TODO add your handling code here
     }//GEN-LAST:event_goButtonActionPerformed
@@ -292,9 +294,9 @@ public class ModView extends javax.swing.JFrame {
                 int row = this.myAdvertisementsTable.getSelectedRow();
         
         if(row>=0){
-            Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
+            advID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
-        master.handleApproveAdvertisement(Advertisement_ID);
+        master.handleApproveRequest(advID, userID);
     }//GEN-LAST:event_approveButtonActionPerformed
 
     //Moderator can claim the advertisement, the Button retrieves the selected row,
@@ -302,12 +304,12 @@ public class ModView extends javax.swing.JFrame {
     //the claim status changed.
     private void claimAdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claimAdButtonActionPerformed
         // TODO add your handling code here:
-                        int row = this.unclaimedAdvertisementsTable.getSelectedRow();
+        int row = this.unclaimedAdvertisementsTable.getSelectedRow();
         
         if(row>=0){
-            Advertisement_ID=Integer.parseInt((String)unclaimedAdvertisementsTable.getValueAt(row, 0));
+            advID=(String)unclaimedAdvertisementsTable.getValueAt(row, 0);
         }
-        master.handleClaimAdvertisement(Advertisement_ID);
+        master.handleClaimRequest(advID, userID);
     }//GEN-LAST:event_claimAdButtonActionPerformed
 
     //Acts similar to ComboBox, where the date - the time frame of the ad's creation -

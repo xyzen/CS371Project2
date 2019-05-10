@@ -15,13 +15,17 @@ public class AddView extends javax.swing.JFrame {
     private String desc;
     private String cat;
     private String price;
+    private String userID;
     private Controller master;
 
     /**
      * Creates new form AddView
      */
-    public AddView() {
+    public AddView(Controller c, String userID) {
         initComponents();
+        master = c;
+        this.userID = userID;
+        
     }
 
     /**
@@ -141,7 +145,7 @@ public class AddView extends javax.swing.JFrame {
         this.desc = detailsField.getText();
         this.cat = category_box.getSelectedItem().toString();
         this.price = price_field.getText();
-        master.handleAddAdvertisementRequest(title, desc, cat,price);
+        master.handleAddRequest(title, desc, cat, price, userID);
     }//GEN-LAST:event_add_Advertisement_ButtonActionPerformed
 
     /**
