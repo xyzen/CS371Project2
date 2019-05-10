@@ -84,7 +84,7 @@ public class UserView extends javax.swing.JFrame {
             }
         });
 
-        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "6", "12", " " }));
+        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "all", "3", "6", "12", " " }));
         periodComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 periodComboBoxActionPerformed(evt);
