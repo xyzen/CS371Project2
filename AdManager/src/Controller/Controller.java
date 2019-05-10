@@ -199,6 +199,7 @@ public class Controller {
                 published_data[index][3] = rs.getString("AdvDateTime");
                 index++;
             }
+            uv.populateSTDTable(published_data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -206,7 +207,7 @@ public class Controller {
     
     public void handleUserMyTableRequest(String userID){
         PreparedStatement stmt = null;
-        String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
+        String query = "SELECT User_ID, AdvTitle, AdvDetails, Price, Status, AdvDateTime"
                 + "FROM Advertisements"
                 + "WHERE User_ID=?;";
         try {
@@ -214,15 +215,18 @@ public class Controller {
             stmt.setString(1, userID);
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
-            String[][] published_data = new String[count][4];
+            String[][] user_data = new String[count][6];
             int index = 0;
             while(rs.next()){
-                published_data[index][0] = rs.getString("AdvTitle");
-                published_data[index][1] = rs.getString("AdvDetails");
-                published_data[index][2] = rs.getString("Price");
-                published_data[index][3] = rs.getString("AdvDateTime");
+                user_data[index][0] = rs.getString("User_ID");
+                user_data[index][1] = rs.getString("AdvTitle");
+                user_data[index][2] = rs.getString("AdvDetails");
+                user_data[index][3] = rs.getString("Price");
+                user_data[index][4] = rs.getString("Status");
+                user_data[index][5] = rs.getString("AdvDateTime");
                 index++;
             }
+            uv.populateMyTable(user_data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -254,8 +258,7 @@ public class Controller {
         PreparedStatement stmt = null;
         String query = "INSERT INTO Advertisements(AdvTitle, AdvDetails, AdvDateTime, Price, Category_ID, User_ID, Status_ID)"
                 + "VALUES (?, ?, DATETIME(?), ?, ?, ?, 'PN');";
-        Date date = new Date();
-        String date_arg = Integer.toString(date.getYear())+"-"+Integer.toString(date.getMonth())+"-"+Integer.toString(date.getDate());
+        String date_arg = "";
         try {
             stmt=connection.prepareStatement(query);
             stmt.setString(1, title);
@@ -292,7 +295,7 @@ public class Controller {
         
     }
     
-    public void handleApproveRequest(boolean approve, String advID, String userID) {
+    public void handleDecisionRequest(boolean approve, String advID, String userID) {
         
     }
     
