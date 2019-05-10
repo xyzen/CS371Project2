@@ -6,7 +6,7 @@
 package View;
 import Controller.Controller;
 /**
- *
+ * @author christopheraramswayne
  * @author xjosh
  */
 public class AddView extends javax.swing.JFrame {

@@ -20,6 +20,7 @@ public class UserView extends javax.swing.JFrame {
     private Controller master;
     
     private String username;
+    private int userID;
     
     private String category;
     private String title;
@@ -37,9 +38,9 @@ public class UserView extends javax.swing.JFrame {
     /**
      * Creates new form UserView
      */
-    public UserView(Controller c, String un) {
+    public UserView(Controller c, int usrID) {
         initComponents();
-        username = un;
+        userID = usrID;
         master = c;
     }
     

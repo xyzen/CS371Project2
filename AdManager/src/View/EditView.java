@@ -8,7 +8,7 @@ import Controller.Controller;
 import static java.lang.Float.parseFloat;
 
 /**
- *
+ * @author christopheraramswayne
  * @author xjosh
  */
 public class EditView extends javax.swing.JFrame {
