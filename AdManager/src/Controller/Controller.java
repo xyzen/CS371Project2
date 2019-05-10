@@ -17,9 +17,6 @@ import java.util.Calendar;
 import View.*;
 
 public class Controller {
-    /**
-     * @param args the command line arguments
-     */
     
     private Connection connection;
     private LoginView lv;
@@ -82,7 +79,7 @@ public class Controller {
             }
             rs.first();
         } catch (SQLException e) {
-
+            System.out.println(e.getMessage());
         }
         return count;
     }
@@ -92,20 +89,20 @@ public class Controller {
         String user_id;
         ResultSet rs;
         int size;
-        String query = "SELECT User_ID FROM Users WHERE ";
+        String query = "SELECT User_ID FROM Users WHERE User_Handle=?";
         switch(userType) {
             
             case "User":
-                query += "Username=?;";
                 try {
+                    query += ";";
                     stmt=connection.prepareStatement(query);
-                    stmt.setString(0, username);
+                    stmt.setString(1, username);
                     rs = stmt.executeQuery();
                     size = getResultSetSize(rs);
                     if (size == 0)
                         return;
                     user_id = rs.getString("User_ID");
-                    uv = new UserView(this, user_id);
+                    uv = new UserView(this, user_id, username);
                     uv.setVisible(true);
                     lv.setVisible(false);
                 } catch (SQLException e) {
@@ -114,16 +111,16 @@ public class Controller {
                 break;
                 
             case "Moderator":
-                query += "EXISTS (SELECT 1 FROM Moderators WHERE User_ID=?);";
+                query += "AND EXISTS (SELECT 1 FROM Moderators WHERE User_ID=?);";
                 try {
                     stmt=connection.prepareStatement(query);
-                    stmt.setString(0, username);
+                    stmt.setString(1, username);
                     rs = stmt.executeQuery();
                     size = getResultSetSize(rs);
                     if (size == 0)
                         return;
                     user_id = rs.getString("User_ID");
-                    mv = new ModView(this, user_id);
+                    mv = new ModView(this, user_id, username);
                     mv.setVisible(true);
                     lv.setVisible(false);
                 } catch (SQLException e) {
@@ -136,12 +133,29 @@ public class Controller {
     public void handleUserSTDTableRequest(String category, int months_ago, String keyword){
         PreparedStatement stmt = null;
         
+        switch (category) {
+            case "Housing":
+                category = "HOU";
+                break;
+            case "Electronics":
+                category = "ELC";
+                break;
+            case "Cars and Trucks":
+                category = "CAT";
+                break;
+            case "Child Care":
+                category = "CCA";
+                break;
+            default:
+                return;
+        }
+        
         // Keeps count of question marks in the query
         int var_count = 0;
         
         String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
                 + " FROM Advertisements"
-                + " WHERE Status_ID='AC' AND Category_ID='?'";
+                + " WHERE Status_ID='AC' AND Category_ID=?";
         // We will always have at least one var
         var_count++;
 
@@ -156,12 +170,12 @@ public class Controller {
             String month = Integer.toString(cal.get(Calendar.MONTH));
             String year = Integer.toString(cal.get(Calendar.YEAR));
             date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime<DATETIME('?')";
+            query += " AND AdvDateTime<DATETIME(?)";
             var_count++; // 
         }
         // We now either have 1 var or 2
         if (!"".equals(keyword)) {
-            query += " AND (AdvTitle LIKE '?' OR A.AdvDetails LIKE '?')";
+            query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
             var_count += 2;
         }
         // We will either have 1, 2, 3, or 4 variables, each corresponding to a specific case
@@ -190,15 +204,21 @@ public class Controller {
             }
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
-            String[][] published_data = new String[count][4];
-            int index = 0;
-            while(rs.next()){
-                published_data[index][0] = rs.getString("AdvTitle");
-                published_data[index][1] = rs.getString("AdvDetails");
-                published_data[index][2] = rs.getString("Price");
-                published_data[index][3] = rs.getString("AdvDateTime");
-                index++;
+            if (count == 0) {
+                return;
             }
+            Object[][] published_data = new Object[count][4];
+            System.out.println("Before loop...");
+            int index = 0;
+            do {
+                String title = rs.getString("AdvTitle");
+                String details = rs.getString("AdvDetails");
+                String price = rs.getString("Price");
+                String datetime = rs.getString("AdvDateTime");
+                System.out.println(title + " " + details + " " + price + " " + datetime);
+                published_data[index++] = new Object[] {title, details, price, datetime};
+            } while (rs.next());
+            System.out.println("After loop... " + Integer.toString(index));
             uv.populateSTDTable(published_data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -207,25 +227,30 @@ public class Controller {
     
     public void handleUserMyTableRequest(String userID){
         PreparedStatement stmt = null;
-        String query = "SELECT User_ID, AdvTitle, AdvDetails, Price, Status, AdvDateTime"
-                + "FROM Advertisements"
+        String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, S.Status_Name State, AdvDateTime"
+                + " FROM Advertisements A "
+                + "INNER JOIN Statuses S "
+                + "ON A.Status_ID=S.Status_ID "
                 + "WHERE User_ID=?;";
         try {
             stmt=connection.prepareStatement(query);
-            stmt.setString(1, userID);
+            stmt.setInt(1, Integer.parseInt(userID));
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
-            String[][] user_data = new String[count][6];
+            System.out.println("Count: " + Integer.toString(count));
+            if (count == 0)
+                return;
+            Object[][] user_data = new Object[count][6];
             int index = 0;
-            while(rs.next()){
-                user_data[index][0] = rs.getString("User_ID");
-                user_data[index][1] = rs.getString("AdvTitle");
-                user_data[index][2] = rs.getString("AdvDetails");
-                user_data[index][3] = rs.getString("Price");
-                user_data[index][4] = rs.getString("Status");
-                user_data[index][5] = rs.getString("AdvDateTime");
-                index++;
-            }
+            do {
+                String id = rs.getString("Advertisement_ID");
+                String title = rs.getString("AdvTitle");
+                String details = rs.getString("AdvDetails");
+                String price = rs.getString("Price");
+                String status = rs.getString("State");
+                String datetime = rs.getString("AdvDateTime");
+                user_data[index++] = new Object[] {id, title, details, price, status, datetime};
+            } while(rs.next());
             uv.populateMyTable(user_data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -233,8 +258,8 @@ public class Controller {
     }
     
     //The button pushed tells the controller to create and set the view to be visible.
-    public void handleAddButton(String userID){
-        av = new AddView(this, userID);
+    public void handleAddButton(String userID, String username){
+        av = new AddView(this, userID, username);
         av.setVisible(true);
     }
     

@@ -24,6 +24,7 @@ public class ModView extends javax.swing.JFrame {
     private int date;
     private String advID;
     private String userID;
+    private String username;
     private boolean status;
     
     private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
@@ -33,7 +34,7 @@ public class ModView extends javax.swing.JFrame {
     /**
      * Creates new form UserView
      */
-    public ModView(Controller c, String userID) {
+    public ModView(Controller c, String userID, String username) {
         initComponents();
         master = c;
         this.userID = userID;

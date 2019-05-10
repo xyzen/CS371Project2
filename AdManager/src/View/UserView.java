@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class UserView extends javax.swing.JFrame {
 
-    private Controller master;
+    private final Controller master;
     
     private String username;
     private String userID;
@@ -27,24 +27,30 @@ public class UserView extends javax.swing.JFrame {
     private String description;
     private String price;
     private String keyword;
+    private String str_date;
     private int date;
     private String advID;
     
-    private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
-    private String[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
+    private Object[] advertisementsTableColumns = { "Title", "Description", "Price" , "Date" };
+    private Object[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
     
     
     /**
      * Creates new form UserView
+     * @param c
+     * @param usrID
      */
-    public UserView(Controller c, String usrID) {
+    public UserView(Controller c, String usrID, String usrName) {
         initComponents();
         userID = usrID;
+        username = usrName;
         master = c;
         this.category=categoryComboBox.getSelectedItem().toString();
-        this.date = Integer.parseInt(periodComboBox.getSelectedItem().toString());
+        str_date = "0";
+        this.date = 0;
         this.keyword = descriptionTextField.getText();
         master.handleUserSTDTableRequest(category, date, keyword);
+        master.handleUserMyTableRequest(userID);
     }
     
     /**
@@ -286,7 +292,7 @@ public class UserView extends javax.swing.JFrame {
     //When the "Add Advertisement" button is pushed, the view will tell the controller
     //that the button was pushed. The controller will handle the action afterwards.
     private void addAdvertisementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAdvertisementButtonActionPerformed
-        master.handleAddButton(userID);
+        master.handleAddButton(userID, username);
         //Controller "master" will open the AddAdvertisement window
     }//GEN-LAST:event_addAdvertisementButtonActionPerformed
 
@@ -322,8 +328,11 @@ public class UserView extends javax.swing.JFrame {
     //button was pushed. The controller will be given the query terms to handle
     //a request to fill the table
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
+        
         this.category=categoryComboBox.getSelectedItem().toString();
-        this.date = Integer.parseInt(periodComboBox.getSelectedItem().toString());
+        str_date = periodComboBox.getSelectedItem().toString();
+        if ("all".equals(str_date)) str_date = "0";
+        this.date = Integer.parseInt(str_date);
         this.keyword = descriptionTextField.getText();
 
         master.handleUserSTDTableRequest(category, date, keyword);
@@ -342,18 +351,23 @@ public class UserView extends javax.swing.JFrame {
     }//GEN-LAST:event_periodComboBoxActionPerformed
 
     /**
-     * @param args the command line arguments
+     * @param published_data the command line arguments
      */
     
     //Populates the STD table for users in the view
-    public void populateSTDTable(String[][] published_data){
+    public void populateSTDTable(Object[][] published_data){
         this.advertisementsTable.setModel(new DefaultTableModel(published_data, advertisementsTableColumns));
     }
     
-    //Populates the personal table for the users in the view
-    public void populateMyTable(String[][] published_data){
-        
+    public void resetSTDTable() {
+        this.advertisementsTable.setModel(new DefaultTableModel(new String[][] {{"None", "None", "None", "None"}}, advertisementsTableColumns));
     }
+    
+    //Populates the personal table for the users in the view
+    public void populateMyTable(Object[][] user_data){
+        this.myAdvertisementsTable.setModel(new DefaultTableModel(user_data, myAdvertisementsTableColumns));
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addAdvertisementButton;
     private javax.swing.JPanel advertisementsPanel;

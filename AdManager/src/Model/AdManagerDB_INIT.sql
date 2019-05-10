@@ -20,6 +20,7 @@ constraint pk_statuses primary key(Status_ID)
 
 CREATE TABLE IF NOT EXISTS Users
 (User_ID smallint unsigned not null auto_increment,
+User_Handle varchar(20) not null,
 UsrFirst_Name varchar(20) not null,
 UsrLast_Name varchar(20) not null,
 constraint pk_users primary key(User_ID)
@@ -63,8 +64,8 @@ insert into Categories(Category_ID, CatName)
 values ('CAT', 'Cars and Trucks'), ('HOU', 'Housing'),
 ('ELC', 'Electronics'), ('CCA', 'Child Care');
 
-insert into Users(User_ID, UsrFirst_Name,UsrLast_Name)
-values (1, 'John','Smith'),(2, 'Ann','Jackson'),(3, 'Rania','Kale'),(4, 'Samir','Ali');
+insert into Users(User_ID, User_Handle, UsrFirst_Name, UsrLast_Name)
+values (1, 'jsmith', 'John','Smith'),(2, 'ajackson', 'Ann','Jackson'),(3, 'rkale', 'Rania','Kale'),(4, 'sali', 'Samir','Ali');
 
 insert into Moderators(User_ID)
 values (1),(2);

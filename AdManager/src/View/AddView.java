@@ -16,16 +16,17 @@ public class AddView extends javax.swing.JFrame {
     private String cat;
     private String price;
     private String userID;
+    private String username;
     private Controller master;
 
     /**
      * Creates new form AddView
      */
-    public AddView(Controller c, String userID) {
+    public AddView(Controller c, String userID, String username) {
         initComponents();
         master = c;
         this.userID = userID;
-        
+        this.username = username;   
     }
 
     /**
