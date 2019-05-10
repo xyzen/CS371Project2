@@ -41,9 +41,39 @@ public class Controller {
         
     }
    
-    public void handleAddAdvertisement(String title, String desc, String cat, float price) {
-        av = new AddView();
-        av.setVisible(true);
+    public void handleAddAdvertisement(String title, String desc, String cat, float price, int user_id) {
+        if (cat == "Housing") {
+            cat = "HOU";
+        }
+        else if (cat == "Electronics") {
+            cat = "ELC";
+        }
+        else if (cat == "Cars and Trucks") {
+            cat = "CAT";
+        }
+        else if (cat == "Child Care") {
+            cat = "CCA";
+        }
+        else {
+            return;
+        }
+        PreparedStatement stmt;
+        String query = "INSERT INTO Advertisements(AdvTitle, AdvDetails, AdvDateTime, Price, Category_ID, User_ID, Status_ID)"
+                + "VALUES (?, ?, DATETIME(?), ?, ?, ?, 'PN');";
+        Date date = new Date();
+        String date_arg = Integer.toString(date.getYear())+"-"+Integer.toString(date.getMonth())+"-"+Integer.toString(date.getDate());
+        try {
+            stmt=connection.prepareStatement(query);
+            stmt.setString(1, title);
+            stmt.setString(2, desc);
+            stmt.setString(3, date_arg);
+            stmt.setString(4, Float.toString(price));
+            stmt.setString(5, cat);
+            stmt.setString(6, Integer.toString(user_id));
+            stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     //The button pushed tells the controller to create and set the view to be visible.
     public void handleAddAdButtonPushed(){
