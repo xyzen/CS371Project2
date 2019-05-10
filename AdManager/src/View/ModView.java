@@ -24,6 +24,7 @@ public class ModView extends javax.swing.JFrame {
     private int date;
     private String advID;
     private String userID;
+    private boolean status;
     
     private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
     private String[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
@@ -48,10 +49,6 @@ public class ModView extends javax.swing.JFrame {
     private void initComponents() {
 
         unclaimedAdvertisementsTabPane = new javax.swing.JTabbedPane();
-        myAdvertisementsPanel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        myAdvertisementsTable = new javax.swing.JTable();
-        approveButton = new javax.swing.JButton();
         advertisementsPanel = new javax.swing.JPanel();
         categoryLabel = new javax.swing.JLabel();
         categoryComboBox = new javax.swing.JComboBox<>();
@@ -65,68 +62,13 @@ public class ModView extends javax.swing.JFrame {
         claimAdButton = new javax.swing.JButton();
         lastLabel = new javax.swing.JLabel();
         monthsLabel = new javax.swing.JLabel();
+        myAdvertisementsPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        myAdvertisementsTable = new javax.swing.JTable();
+        approveButton = new javax.swing.JButton();
+        disapproveButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        myAdvertisementsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Title", "Description", "Price", "Status", "Date"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(myAdvertisementsTable);
-
-        approveButton.setText("Approve");
-        approveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                approveButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout myAdvertisementsPanelLayout = new javax.swing.GroupLayout(myAdvertisementsPanel);
-        myAdvertisementsPanel.setLayout(myAdvertisementsPanelLayout);
-        myAdvertisementsPanelLayout.setHorizontalGroup(
-            myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
-                    .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(approveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        myAdvertisementsPanelLayout.setVerticalGroup(
-            myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(approveButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-                .addGap(6, 6, 6))
-        );
-
-        unclaimedAdvertisementsTabPane.addTab("My Advertisements", myAdvertisementsPanel);
 
         categoryLabel.setText("Category:");
 
@@ -247,6 +189,77 @@ public class ModView extends javax.swing.JFrame {
 
         unclaimedAdvertisementsTabPane.addTab("Unclaimed Advertisements", advertisementsPanel);
 
+        myAdvertisementsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Title", "Description", "Price", "Status", "Date"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(myAdvertisementsTable);
+
+        approveButton.setText("Approve");
+        approveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                approveButtonActionPerformed(evt);
+            }
+        });
+
+        disapproveButton.setText("Disapprove");
+        disapproveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                disapproveButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout myAdvertisementsPanelLayout = new javax.swing.GroupLayout(myAdvertisementsPanel);
+        myAdvertisementsPanel.setLayout(myAdvertisementsPanelLayout);
+        myAdvertisementsPanelLayout.setHorizontalGroup(
+            myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myAdvertisementsPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(approveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(disapproveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        myAdvertisementsPanelLayout.setVerticalGroup(
+            myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(disapproveButton)
+                    .addComponent(approveButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addGap(24, 24, 24))
+        );
+
+        unclaimedAdvertisementsTabPane.addTab("My Advertisements", myAdvertisementsPanel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -291,12 +304,13 @@ public class ModView extends javax.swing.JFrame {
     //ID to to the Controller to have the approval status changed.
     private void approveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveButtonActionPerformed
         // TODO add your handling code here:
-                int row = this.myAdvertisementsTable.getSelectedRow();
-        
+        int row = this.myAdvertisementsTable.getSelectedRow();
+        status = true;  ////true means approved
+                
         if(row>=0){
             advID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
-        master.handleApproveRequest(advID, userID);
+        master.handleDecisionRequest(status, advID, userID);
     }//GEN-LAST:event_approveButtonActionPerformed
 
     //Moderator can claim the advertisement, the Button retrieves the selected row,
@@ -319,6 +333,16 @@ public class ModView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_periodComboBoxActionPerformed
 
+    private void disapproveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disapproveButtonActionPerformed
+        // TODO add your handling code here:
+        int row = this.myAdvertisementsTable.getSelectedRow();
+        status = false; //false means disapproved
+        if(row>=0){
+            advID=(String)myAdvertisementsTable.getValueAt(row, 0);
+        }
+        master.handleDecisionRequest(status, advID, userID);
+    }//GEN-LAST:event_disapproveButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -340,6 +364,7 @@ public class ModView extends javax.swing.JFrame {
     private javax.swing.JButton claimAdButton;
     private javax.swing.JLabel descriptionLabel;
     private javax.swing.JTextField descriptionTextField;
+    private javax.swing.JButton disapproveButton;
     private javax.swing.JButton goButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
