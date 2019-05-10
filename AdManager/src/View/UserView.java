@@ -64,8 +64,8 @@ public class UserView extends javax.swing.JFrame {
         descriptionLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         advertisementsTable = new javax.swing.JTable();
-        lastLabel = new javax.swing.JLabel();
-        monthsLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         myAdvertisementsPanel = new javax.swing.JPanel();
         deleteButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
@@ -84,12 +84,7 @@ public class UserView extends javax.swing.JFrame {
             }
         });
 
-        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "all", "3", "6", "12", " " }));
-        periodComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                periodComboBoxActionPerformed(evt);
-            }
-        });
+        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "all", "3", "6", "12" }));
 
         periodLabel.setText("Period:");
 
@@ -123,9 +118,9 @@ public class UserView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(advertisementsTable);
 
-        lastLabel.setText("Last");
+        jLabel1.setText("Last");
 
-        monthsLabel.setText("Months");
+        jLabel2.setText("Month");
 
         javax.swing.GroupLayout advertisementsPanelLayout = new javax.swing.GroupLayout(advertisementsPanel);
         advertisementsPanel.setLayout(advertisementsPanelLayout);
@@ -140,15 +135,15 @@ public class UserView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
-                        .addComponent(lastLabel)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(monthsLabel))
+                        .addComponent(jLabel2))
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(periodLabel)))
-                .addGap(0, 143, Short.MAX_VALUE)
+                .addGap(0, 148, Short.MAX_VALUE)
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
                         .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,11 +167,11 @@ public class UserView extends javax.swing.JFrame {
                     .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(goButton)
-                    .addComponent(lastLabel)
-                    .addComponent(monthsLabel))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         advertisementsTabPane.addTab("Advertisements", advertisementsPanel);
@@ -370,10 +365,10 @@ public class UserView extends javax.swing.JFrame {
     private javax.swing.JTextField descriptionTextField;
     private javax.swing.JButton editButton;
     private javax.swing.JButton goButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lastLabel;
-    private javax.swing.JLabel monthsLabel;
     private javax.swing.JPanel myAdvertisementsPanel;
     private javax.swing.JTable myAdvertisementsTable;
     private javax.swing.JComboBox<String> periodComboBox;
