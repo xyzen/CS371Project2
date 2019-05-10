@@ -14,10 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Date;
-import View.EditView;
-import View.AddView;
-import View.LoginView;
-
+import View.*;
 
 public class Controller {
     /**
@@ -25,9 +22,11 @@ public class Controller {
      */
     
     private Connection connection;
-    private final LoginView lv;
+    private LoginView lv;
     private AddView av;
     private EditView ev;
+    private ModView mv;
+    private UserView uv;
     
     public Controller() {
         lv = new LoginView(this);
@@ -38,26 +37,65 @@ public class Controller {
     }
     
     public void handleLoginRequest(String username, String userType) {
-        
+        PreparedStatement stmt = null;
+        int size; int user_id; ResultSet rs;
+        String query = "SELECT User_ID FROM ";
+        switch(userType) {
+            
+            case "User":
+                query += "Users WHERE Username=?;";
+                try {
+                    stmt=connection.prepareStatement(query);
+                    stmt.setString(0, username);
+                    rs = stmt.executeQuery();
+                    size = getResultSetSize(rs);
+                    if (size == 0)
+                        return;
+                    user_id = rs.getInt("User_ID");
+                    uv = new UserView(this, user_id);
+                    uv.setVisible(true);
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+                
+            case "Moderator":
+                query += "Users WHERE EXISTS (SELECT 1 FROM Moderators WHERE User_ID=?);";
+                try {
+                    stmt=connection.prepareStatement(query);
+                    stmt.setString(0, username);
+                    rs = stmt.executeQuery();
+                    size = getResultSetSize(rs);
+                    user_id = rs.getInt("User_ID");
+                    if (size == 0)
+                        return;
+                    mv = new ModView(this, user_id);
+                    mv.setVisible(true);
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+        }
     }
    
     public void handleAddAdvertisement(String title, String desc, String cat, float price, int user_id) {
-        if (cat == "Housing") {
-            cat = "HOU";
+        switch (cat) {
+            case "Housing":
+                cat = "HOU";
+                break;
+            case "Electronics":
+                cat = "ELC";
+                break;
+            case "Cars and Trucks":
+                cat = "CAT";
+                break;
+            case "Child Care":
+                cat = "CCA";
+                break;
+            default:
+                return;
         }
-        else if (cat == "Electronics") {
-            cat = "ELC";
-        }
-        else if (cat == "Cars and Trucks") {
-            cat = "CAT";
-        }
-        else if (cat == "Child Care") {
-            cat = "CCA";
-        }
-        else {
-            return;
-        }
-        PreparedStatement stmt;
+        PreparedStatement stmt = null;
         String query = "INSERT INTO Advertisements(AdvTitle, AdvDetails, AdvDateTime, Price, Category_ID, User_ID, Status_ID)"
                 + "VALUES (?, ?, DATETIME(?), ?, ?, ?, 'PN');";
         Date date = new Date();
@@ -75,30 +113,35 @@ public class Controller {
             System.out.println(e.getMessage());
         }
     }
+    
     //The button pushed tells the controller to create and set the view to be visible.
-    public void handleAddAdButtonPushed(){
+    public void handleAddButton(){
         av = new AddView();
         av.setVisible(true);
     }
     
-    
-    public void handleEditAdvertisement(int adv_id) {
+    public void handleEditButton(int adv_id) {
         ev = new EditView(adv_id);
         ev.setVisible(true);
     }
     
-    public void handleDeleteAdvertisement(int adv_id) {
+    public void handleEditRequest(String title, String details, float price, int user_id) {
+        if ("".equals(title) | "".equals(details) | price == 0)
+            return;
+    }
+    
+    public void handleDeleteRequest(int adv_id) {
         
     }
     
     public void handleUserSTDTableRequest(String category, int months, String keyword){
-        PreparedStatement stmt;
+        PreparedStatement stmt = null;
         Date date = new Date();
         date.setMonth(date.getMonth() - months);
         String date_arg = Integer.toString(date.getYear())+"-"+Integer.toString(date.getMonth())+"-"+Integer.toString(date.getDate());
         String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
                 + "FROM Advertisements"
-                + "WHERE Status_ID='AC' AND Category_ID=? AND AdvDateTime<? AND (AdvTitle LIKE ? OR A.AdvDetails LIKE ?);";
+                + "WHERE Status_ID='AC' AND Category_ID='?' AND AdvDateTime<'?' AND (AdvTitle LIKE '?' OR A.AdvDetails LIKE '?');";
         try {
             stmt=connection.prepareStatement(query);
             stmt.setString(1, category);
