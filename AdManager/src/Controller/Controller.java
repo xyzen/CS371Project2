@@ -120,8 +120,8 @@ public class Controller {
         av.setVisible(true);
     }
     
-    public void handleEditButton(int adv_id) {
-        ev = new EditView(adv_id);
+    public void handleEditButton(int adv_id, int user_id) {
+        ev = new EditView(this, adv_id, user_id);
         ev.setVisible(true);
     }
     
