@@ -363,11 +363,15 @@ public class UserView extends javax.swing.JFrame {
     }
     
     public void resetSTDTable() {
-        this.advertisementsTable.setModel(new DefaultTableModel(4, 6));
+        DefaultTableModel model = (DefaultTableModel)advertisementsTable.getModel();
+        model.setRowCount(0);
+        advertisementsTable.setModel(model);
     }
     
     public void resetMyTable() {
-        this.myAdvertisementsTable.setModel(new DefaultTableModel(4, 6));
+        DefaultTableModel model = (DefaultTableModel)myAdvertisementsTable.getModel();
+        model.setRowCount(0);
+        myAdvertisementsTable.setModel(model);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
