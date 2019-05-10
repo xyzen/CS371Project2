@@ -54,6 +54,7 @@ public class Controller {
                     user_id = rs.getInt("User_ID");
                     uv = new UserView(this, user_id);
                     uv.setVisible(true);
+                    lv.setVisible(false);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
@@ -71,6 +72,7 @@ public class Controller {
                         return;
                     mv = new ModView(this, user_id);
                     mv.setVisible(true);
+                    lv.setVisible(false);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
@@ -141,6 +143,42 @@ public class Controller {
         String date_arg = Integer.toString(date.getYear())+"-"+Integer.toString(date.getMonth())+"-"+Integer.toString(date.getDate());
         String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
                 + "FROM Advertisements"
+                + "WHERE Status_ID='AC' AND Category_ID='?' AND (AdvTitle LIKE '?' OR A.AdvDetails LIKE '?')";
+        if (months > 0) {
+            query += "AND AdvDateTime<'?';";
+        }
+        else {
+            query += ";";
+        }
+        try {
+            stmt=connection.prepareStatement(query);
+            stmt.setString(1, category);
+            stmt.setString(2, date_arg);
+            stmt.setString(3, "%" + keyword + "%");
+            stmt.setString(4, "%" + keyword + "%");
+            ResultSet rs = stmt.executeQuery();
+            int count = getResultSetSize(rs);
+            String[][] published_data = new String[count][4];
+            int index = 0;
+            while(rs.next()){
+                published_data[index][0] = rs.getString("AdvTitle");
+                published_data[index][1] = rs.getString("AdvDetails");
+                published_data[index][2] = rs.getString("Price");
+                published_data[index][3] = rs.getString("AdvDateTime");
+                index++;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+        
+    public void handleUserMyTableRequest(String category, int months, String keyword){
+        PreparedStatement stmt = null;
+        Date date = new Date();
+        date.setMonth(date.getMonth() - months);
+        String date_arg = Integer.toString(date.getYear())+"-"+Integer.toString(date.getMonth())+"-"+Integer.toString(date.getDate());
+        String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
+                + "FROM Advertisements"
                 + "WHERE Status_ID='AC' AND Category_ID='?' AND AdvDateTime<'?' AND (AdvTitle LIKE '?' OR A.AdvDetails LIKE '?');";
         try {
             stmt=connection.prepareStatement(query);
@@ -162,7 +200,6 @@ public class Controller {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
     }
     
       private int getResultSetSize(ResultSet rs) {
@@ -202,4 +239,11 @@ public class Controller {
         this.connection=conn;
     }
     
+    /**
+    * @param args
+    */
+    public static void main(String[] args) {
+        Controller c = new Controller();
+        c.start();
+    }
 }

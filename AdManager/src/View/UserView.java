@@ -283,7 +283,7 @@ public class UserView extends javax.swing.JFrame {
     //When the "Add Advertisement" button is pushed, the view will tell the controller
     //that the button was pushed. The controller will handle the action afterwards.
     private void addAdvertisementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAdvertisementButtonActionPerformed
-        master.handleAddAdButtonPushed();
+        master.handleAddButton();
         //Controller "master" will open the AddAdvertisement window
         
     }//GEN-LAST:event_addAdvertisementButtonActionPerformed
@@ -297,7 +297,7 @@ public class UserView extends javax.swing.JFrame {
         if(row>=0){
             Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
         }
-        master.handleEditButton(Advertisement_ID);
+        master.handleEditButton(Advertisement_ID, userID);
     }//GEN-LAST:event_editButtonActionPerformed
 
     //When the "Delete" button is pushed, the view will tell the controller that
