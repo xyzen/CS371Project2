@@ -89,12 +89,11 @@ public class Controller {
         String user_id;
         ResultSet rs;
         int size;
-        String query = "SELECT User_ID FROM Users WHERE User_Handle=?";
+        String query = "SELECT User_ID FROM Users WHERE User_Handle=?;";
         switch(userType) {
             
             case "User":
                 try {
-                    query += ";";
                     stmt=connection.prepareStatement(query);
                     stmt.setString(1, username);
                     rs = stmt.executeQuery();
@@ -111,7 +110,6 @@ public class Controller {
                 break;
                 
             case "Moderator":
-                query += "AND EXISTS (SELECT 1 FROM Moderators WHERE User_ID=?);";
                 try {
                     stmt=connection.prepareStatement(query);
                     stmt.setString(1, username);
@@ -120,6 +118,13 @@ public class Controller {
                     if (size == 0)
                         return;
                     user_id = rs.getString("User_ID");
+                    query = "SELECT User_ID FROM Moderators WHERE User_ID=?;";
+                    stmt=connection.prepareStatement(query);
+                    stmt.setString(1, user_id);
+                    rs = stmt.executeQuery();
+                    size = getResultSetSize(rs);
+                    if (size == 0)
+                        return;
                     mv = new ModView(this, user_id, username);
                     mv.setVisible(true);
                     lv.setVisible(false);
@@ -169,8 +174,10 @@ public class Controller {
             String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
             String month = Integer.toString(cal.get(Calendar.MONTH));
             String year = Integer.toString(cal.get(Calendar.YEAR));
+            if (month.length() == 1) month = "0" + month;
+            if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime<DATETIME(?)";
+            query += " AND AdvDateTime>DATETIME(?)";
             var_count++; // 
         }
         // We now either have 1 var or 2
@@ -204,8 +211,10 @@ public class Controller {
             }
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
-            if (count == 0)
+            if (count == 0) {
+                uv.resetSTDTable();
                 return;
+            }
             Object[][] published_data = new Object[count][4];
             int index = 0;
             do {
@@ -233,8 +242,10 @@ public class Controller {
             stmt.setInt(1, Integer.parseInt(userID));
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
-            if (count == 0)
+            if (count == 0) {
+                uv.resetMyTable();
                 return;
+            }
             Object[][] user_data = new Object[count][6];
             int index = 0;
             do {
@@ -339,8 +350,93 @@ public class Controller {
         }
     }
     
-    public void handleModSTDTableRequest(String category, int months, String keyword) {
+    public void handleModSTDTableRequest(String category, int months_ago, String keyword) {
+        PreparedStatement stmt = null;
+        switch (category) {
+            case "Housing":
+                category = "HOU";
+                break;
+            case "Electronics":
+                category = "ELC";
+                break;
+            case "Cars and Trucks":
+                category = "CAT";
+                break;
+            case "Child Care":
+                category = "CCA";
+                break;
+            default:
+                return;
+        }
+        int var_count = 0;
+        String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, AdvDateTime, U.User_Handle"
+                + " FROM Advertisements A "
+                + " INNER JOIN Users U"
+                + " ON A.User_ID=U.User_ID "
+                + " WHERE Status_ID='PN' AND Moderator_ID IS NULL";
         
+        int days_ago = months_ago*30;
+        String date_arg = "";
+        
+        if (months_ago > 0) {
+            Calendar cal = Calendar.getInstance();
+            cal.getTime();
+            cal.add(Calendar.DATE, -days_ago);
+            String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+            String month = Integer.toString(cal.get(Calendar.MONTH));
+            if (month.length() == 1) month = "0" + month;
+            if (day.length() == 1) day = "0" + day;
+            String year = Integer.toString(cal.get(Calendar.YEAR));
+            date_arg = year + "-" + month + "-" + day;
+            query += " AND AdvDateTime>DATETIME(?)";
+            var_count++;
+        }
+        // We now either have 1 var or 2
+        if (!(keyword == "")) {
+            query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
+            var_count += 2;
+        }
+        // We will either have 1, 2, 3, or 4 variables, each corresponding to a specific case
+        query += ";";
+        try {
+            stmt=connection.prepareStatement(query);
+            switch (var_count) {
+                case(1):
+                    stmt.setString(1, date_arg);
+                    break;
+                case (2):
+                    stmt.setString(1, "%" + keyword + "%");
+                    stmt.setString(2, "%" + keyword + "%");
+                    break;
+                case (3):
+                    stmt.setString(1, date_arg);
+                    stmt.setString(2, "%" + keyword + "%");
+                    stmt.setString(3, "%" + keyword + "%");
+                    break;
+                default:
+                    break;
+            }
+            ResultSet rs = stmt.executeQuery();
+            int count = getResultSetSize(rs);
+            if (count == 0) {
+                mv.resetSTDTable();
+                return;
+            }
+            Object[][] user_data = new Object[count][6];
+            int index = 0;
+            do {
+                String id = rs.getString("Advertisement_ID");
+                String title = rs.getString("AdvTitle");
+                String details = rs.getString("AdvDetails");
+                String price = rs.getString("Price");
+                String status = rs.getString("AdvDateTime");
+                String datetime = rs.getString("Username");
+                user_data[index++] = new Object[] {id, title, details, price, status, datetime};
+            } while(rs.next());
+            mv.populateSTDTable(user_data);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     public void handleModMyTableRequest(String userID) {

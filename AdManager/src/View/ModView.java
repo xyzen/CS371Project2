@@ -20,15 +20,14 @@ public class ModView extends javax.swing.JFrame {
     private Controller master;
     private String category;
     private String keyword;
-    private String Sdate;
     private int date;
     private String advID;
     private String userID;
     private String username;
     private boolean status;
     
-    private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
-    private String[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
+    private Object[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
+    private Object[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
     
     
     /**
@@ -38,6 +37,23 @@ public class ModView extends javax.swing.JFrame {
         initComponents();
         master = c;
         this.userID = userID;
+        this.category=categoryComboBox.getSelectedItem().toString();
+        this.date = getDate(periodComboBox.getSelectedItem().toString());
+        this.keyword = descriptionTextField.getText();
+        master.handleModSTDTableRequest(category, date, keyword);
+    }
+    
+    private int getDate(String date) {
+        switch(date) {
+            case "Last 3 Months":
+                return 3;
+            case "Last 6 Months":
+                return 6;
+            case "Last 12 Months":
+                return 12;
+            default:
+                return 0;
+        }
     }
     
     /**
@@ -61,26 +77,29 @@ public class ModView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         unclaimedAdvertisementsTable = new javax.swing.JTable();
         claimAdButton = new javax.swing.JButton();
-        lastLabel = new javax.swing.JLabel();
-        monthsLabel = new javax.swing.JLabel();
         myAdvertisementsPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         myAdvertisementsTable = new javax.swing.JTable();
         approveButton = new javax.swing.JButton();
-        disapproveButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        unclaimedAdvertisementsTabPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                unclaimedAdvertisementsTabPaneMouseClicked(evt);
+            }
+        });
+
         categoryLabel.setText("Category:");
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
         categoryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoryComboBoxActionPerformed(evt);
             }
         });
 
-        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "6", "12", " " }));
+        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
         periodComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 periodComboBoxActionPerformed(evt);
@@ -126,33 +145,26 @@ public class ModView extends javax.swing.JFrame {
             }
         });
 
-        lastLabel.setText("Last");
-
-        monthsLabel.setText("Months");
-
         javax.swing.GroupLayout advertisementsPanelLayout = new javax.swing.GroupLayout(advertisementsPanel);
         advertisementsPanel.setLayout(advertisementsPanelLayout);
         advertisementsPanelLayout.setHorizontalGroup(
             advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1)
             .addGroup(advertisementsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(categoryLabel)
+                    .addComponent(categoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(categoryLabel)
-                            .addComponent(categoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(16, 16, 16)
                         .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(advertisementsPanelLayout.createSequentialGroup()
+                                .addGap(16, 16, 16)
                                 .addComponent(periodLabel)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(advertisementsPanelLayout.createSequentialGroup()
-                                .addComponent(lastLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(monthsLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(advertisementsPanelLayout.createSequentialGroup()
@@ -161,7 +173,7 @@ public class ModView extends javax.swing.JFrame {
                                 .addComponent(goButton))
                             .addComponent(descriptionLabel)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, advertisementsPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(348, 348, 348)
                         .addComponent(claimAdButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -176,11 +188,9 @@ public class ModView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(categoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(goButton)
-                    .addComponent(lastLabel)
-                    .addComponent(monthsLabel))
+                    .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(claimAdButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -225,13 +235,6 @@ public class ModView extends javax.swing.JFrame {
             }
         });
 
-        disapproveButton.setText("Disapprove");
-        disapproveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                disapproveButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout myAdvertisementsPanelLayout = new javax.swing.GroupLayout(myAdvertisementsPanel);
         myAdvertisementsPanel.setLayout(myAdvertisementsPanelLayout);
         myAdvertisementsPanelLayout.setHorizontalGroup(
@@ -240,23 +243,19 @@ public class ModView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myAdvertisementsPanelLayout.createSequentialGroup()
+                    .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(approveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(disapproveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(approveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         myAdvertisementsPanelLayout.setVerticalGroup(
             myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(disapproveButton)
-                    .addComponent(approveButton))
+                .addContainerGap()
+                .addComponent(approveButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                .addGap(24, 24, 24))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
 
         unclaimedAdvertisementsTabPane.addTab("My Advertisements", myAdvertisementsPanel);
@@ -286,10 +285,8 @@ public class ModView extends javax.swing.JFrame {
     //a request to fill the table
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
         this.category=categoryComboBox.getSelectedItem().toString();
-        this.Sdate = periodComboBox.getSelectedItem().toString();
-        this.date = Integer.parseInt(Sdate);
+        this.date = getDate(periodComboBox.getSelectedItem().toString());
         this.keyword = descriptionTextField.getText();
-
         master.handleModSTDTableRequest(category, date, keyword);
 
         // TODO add your handling code here
@@ -344,19 +341,35 @@ public class ModView extends javax.swing.JFrame {
         master.handleDecisionRequest(status, advID, userID);
     }//GEN-LAST:event_disapproveButtonActionPerformed
 
+    private void unclaimedAdvertisementsTabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unclaimedAdvertisementsTabPaneMouseClicked
+        this.category=categoryComboBox.getSelectedItem().toString();
+        date = getDate(periodComboBox.getSelectedItem().toString());
+        this.keyword = descriptionTextField.getText();
+        master.handleModSTDTableRequest(category, date, keyword);
+    }//GEN-LAST:event_unclaimedAdvertisementsTabPaneMouseClicked
+
     /**
      * @param args the command line arguments
      */
     
     //Populates the STD table for users in the view
-    public void populateSTDTable(String[][] published_data){
-        this.unclaimedAdvertisementsTable.setModel(new DefaultTableModel(published_data, advertisementsTableColumns));
+    public void populateSTDTable(Object[][] pending_data){
+        this.unclaimedAdvertisementsTable.setModel(new DefaultTableModel(pending_data, advertisementsTableColumns));
     }
     
     //Populates the personal table for the user in the view
-    public void populateMyTable(String[][] published_data){
-        this.myAdvertisementsTable.setModel(new DefaultTableModel(published_data, myAdvertisementsTableColumns));
+    public void populateMyTable(Object[][] claimed_data){
+        this.myAdvertisementsTable.setModel(new DefaultTableModel(claimed_data, myAdvertisementsTableColumns));
     }
+    
+    public void resetSTDTable() {
+        this.unclaimedAdvertisementsTable.setModel(new DefaultTableModel(advertisementsTableColumns, 4));
+    }
+    
+    public void resetMyTable() {
+        this.myAdvertisementsTable.setModel(new DefaultTableModel(myAdvertisementsTableColumns, 4));
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel advertisementsPanel;
     private javax.swing.JButton approveButton;
@@ -365,12 +378,9 @@ public class ModView extends javax.swing.JFrame {
     private javax.swing.JButton claimAdButton;
     private javax.swing.JLabel descriptionLabel;
     private javax.swing.JTextField descriptionTextField;
-    private javax.swing.JButton disapproveButton;
     private javax.swing.JButton goButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lastLabel;
-    private javax.swing.JLabel monthsLabel;
     private javax.swing.JPanel myAdvertisementsPanel;
     private javax.swing.JTable myAdvertisementsTable;
     private javax.swing.JComboBox<String> periodComboBox;

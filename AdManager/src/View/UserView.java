@@ -324,16 +324,20 @@ public class UserView extends javax.swing.JFrame {
         switch(str_date) {
             case "Last 3 Months":
                 date = 3;
+                break;
             case "Last 6 Months":
                 date = 6;
+                break;
             case "Last 12 Months":
                 date = 12;
+                break;
             default:
                 date = 0;
+                break;
+        }
         this.keyword = descriptionTextField.getText();
 
         master.handleUserSTDTableRequest(category, date, keyword);
-        }
     }//GEN-LAST:event_goButtonActionPerformed
 
     private void periodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_periodComboBoxActionPerformed
@@ -353,15 +357,17 @@ public class UserView extends javax.swing.JFrame {
         this.advertisementsTable.setModel(new DefaultTableModel(published_data, advertisementsTableColumns));
     }
     
-    public void resetSTDTable() {
-        Object[][] result = new Object[1][4];
-        result[0] = new Object[] {"None", "None", "None", "None"};
-        this.advertisementsTable.setModel(new DefaultTableModel(result, advertisementsTableColumns));
-    }
-    
     //Populates the personal table for the users in the view
     public void populateMyTable(Object[][] user_data){
         this.myAdvertisementsTable.setModel(new DefaultTableModel(user_data, myAdvertisementsTableColumns));
+    }
+    
+    public void resetSTDTable() {
+        this.advertisementsTable.setModel(new DefaultTableModel(4, 6));
+    }
+    
+    public void resetMyTable() {
+        this.myAdvertisementsTable.setModel(new DefaultTableModel(4, 6));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

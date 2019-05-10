@@ -42,6 +42,9 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JTabbedPane" name="unclaimedAdvertisementsTabPane">
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="unclaimedAdvertisementsTabPaneMouseClicked"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
@@ -59,25 +62,22 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="categoryLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="categoryComboBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                          <Component id="categoryLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="categoryComboBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                                       <Component id="periodLabel" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="lastLabel" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="periodComboBox" min="-2" pref="43" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="monthsLabel" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="periodComboBox" min="-2" pref="120" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
@@ -91,7 +91,7 @@
                               </Group>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="348" max="-2" attributes="0"/>
                               <Component id="claimAdButton" min="-2" pref="96" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -111,11 +111,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="categoryComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="periodComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="descriptionTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="goButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lastLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="monthsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="periodComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="8" max="32767" attributes="0"/>
                       <Component id="claimAdButton" min="-2" max="-2" attributes="0"/>
@@ -135,12 +133,11 @@
             <Component class="javax.swing.JComboBox" name="categoryComboBox">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="5">
-                    <StringItem index="0" value="All"/>
-                    <StringItem index="1" value="Electronics"/>
-                    <StringItem index="2" value="Cars and Trucks"/>
-                    <StringItem index="3" value="Housing"/>
-                    <StringItem index="4" value="Child Care"/>
+                  <StringArray count="4">
+                    <StringItem index="0" value="Electronics"/>
+                    <StringItem index="1" value="Cars and Trucks"/>
+                    <StringItem index="2" value="Housing"/>
+                    <StringItem index="3" value="Child Care"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -155,10 +152,10 @@
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">
-                    <StringItem index="0" value="3"/>
-                    <StringItem index="1" value="6"/>
-                    <StringItem index="2" value="12"/>
-                    <StringItem index="3" value=" "/>
+                    <StringItem index="0" value="Last 3 Months"/>
+                    <StringItem index="1" value="Last 6 Months"/>
+                    <StringItem index="2" value="Last 12 Months"/>
+                    <StringItem index="3" value="Life"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -244,16 +241,6 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="claimAdButtonActionPerformed"/>
               </Events>
-            </Component>
-            <Component class="javax.swing.JLabel" name="lastLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Last"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="monthsLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Months"/>
-              </Properties>
             </Component>
           </SubComponents>
         </Container>
