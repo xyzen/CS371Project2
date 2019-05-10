@@ -265,6 +265,9 @@ public class ModView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //When the "Go" button is pressed, the view will tell the controller that the
+    //button was pushed. The controller will be given the query terms to handle
+    //a request to fill the table
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
         this.category=categoryComboBox.getSelectedItem().toString();
         this.Sdate = periodComboBox.getSelectedItem().toString();
@@ -276,10 +279,14 @@ public class ModView extends javax.swing.JFrame {
         // TODO add your handling code here
     }//GEN-LAST:event_goButtonActionPerformed
 
+    //Combobox should change the String "Category" to whatever is currently selected
+    //in the ComboBox
     private void categoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_categoryComboBoxActionPerformed
 
+    //Approve button retrieves the selected row, and passes the selected Advertisement's 
+    //ID to to the Controller to have the approval status changed.
     private void approveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveButtonActionPerformed
         // TODO add your handling code here:
                 int row = this.myAdvertisementsTable.getSelectedRow();
@@ -290,6 +297,9 @@ public class ModView extends javax.swing.JFrame {
         master.handleApproveAdvertisement(Advertisement_ID);
     }//GEN-LAST:event_approveButtonActionPerformed
 
+    //Moderator can claim the advertisement, the Button retrieves the selected row,
+    //and passes the selected advertisement's ID to the controller to have 
+    //the claim status changed.
     private void claimAdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claimAdButtonActionPerformed
         // TODO add your handling code here:
                         int row = this.unclaimedAdvertisementsTable.getSelectedRow();
@@ -300,6 +310,9 @@ public class ModView extends javax.swing.JFrame {
         master.handleClaimAdvertisement(Advertisement_ID);
     }//GEN-LAST:event_claimAdButtonActionPerformed
 
+    //Acts similar to ComboBox, where the date - the time frame of the ad's creation -
+    //is searched on a basis between "last 3, 6, 12, or all" months. The box will 
+    //only change the variable "date".
     private void periodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_periodComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_periodComboBoxActionPerformed
@@ -315,7 +328,7 @@ public class ModView extends javax.swing.JFrame {
     
     //Populates the personal table for the user in the view
     public void populateMyTable(String[][] published_data){
-        
+        this.myAdvertisementsTable.setModel(new DefaultTableModel(published_data, myAdvertisementsTableColumns));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel advertisementsPanel;
