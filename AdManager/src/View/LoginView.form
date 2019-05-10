@@ -32,10 +32,8 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="loginButton" pref="128" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="usernameField" max="32767" attributes="0"/>
-                      <Component id="userTypeComboBox" pref="128" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="usernameField" max="32767" attributes="0"/>
+                  <Component id="userTypeComboBox" pref="128" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="129" max="32767" attributes="0"/>
           </Group>
