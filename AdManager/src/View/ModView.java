@@ -20,7 +20,7 @@ public class ModView extends javax.swing.JFrame {
     private Controller master;
     private String category;
     private String keyword;
-    private String Sdate 
+    private String Sdate;
     private int date;
     private int Advertisement_ID;
     

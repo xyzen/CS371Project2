@@ -5,7 +5,7 @@
  */
 package View;
 import Controller.Controller;
-import java.lang.Integer;
+import static java.lang.Integer.parseInt;
 
 /**
  *
@@ -93,9 +93,10 @@ public class LoginView extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
-        this.userID = parseInt(usernameField.getText());
+        //this.userID = parseInt(usernameField.getText());
+        
         this.userType = userTypeComboBox.getSelectedItem().toString();
-        master.handleLoginRequest(userID, userType);
+        master.handleLoginRequest(usernameField.getText(), userType);
         
     }//GEN-LAST:event_loginButtonActionPerformed
 
