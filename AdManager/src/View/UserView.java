@@ -18,6 +18,9 @@ import javax.swing.table.DefaultTableModel;
 public class UserView extends javax.swing.JFrame {
 
     private Controller master;
+    
+    private String username;
+    
     private String category;
     private String title;
     private String description;
@@ -34,8 +37,9 @@ public class UserView extends javax.swing.JFrame {
     /**
      * Creates new form UserView
      */
-    public UserView(Controller c) {
+    public UserView(Controller c, String un) {
         initComponents();
+        username = un;
         master = c;
     }
     
