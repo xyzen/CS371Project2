@@ -27,7 +27,6 @@ public class UserView extends javax.swing.JFrame {
     private String description;
     private String price;
     private String keyword;
-    private String Sdate;
     private int date;
     private String advID;
     
@@ -42,6 +41,10 @@ public class UserView extends javax.swing.JFrame {
         initComponents();
         userID = usrID;
         master = c;
+        this.category=categoryComboBox.getSelectedItem().toString();
+        this.date = Integer.parseInt(periodComboBox.getSelectedItem().toString());
+        this.keyword = descriptionTextField.getText();
+        master.handleUserSTDTableRequest(category, date, keyword);
     }
     
     /**
@@ -285,7 +288,6 @@ public class UserView extends javax.swing.JFrame {
     private void addAdvertisementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAdvertisementButtonActionPerformed
         master.handleAddButton(userID);
         //Controller "master" will open the AddAdvertisement window
-        
     }//GEN-LAST:event_addAdvertisementButtonActionPerformed
 
     //When the "Edit" button is pushed, the view will tell the controller that the
@@ -320,9 +322,8 @@ public class UserView extends javax.swing.JFrame {
     //button was pushed. The controller will be given the query terms to handle
     //a request to fill the table
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
-       this.category=categoryComboBox.getSelectedItem().toString();
-        this.Sdate = periodComboBox.getSelectedItem().toString();
-        this.date = Integer.parseInt(Sdate);
+        this.category=categoryComboBox.getSelectedItem().toString();
+        this.date = Integer.parseInt(periodComboBox.getSelectedItem().toString());
         this.keyword = descriptionTextField.getText();
 
         master.handleUserSTDTableRequest(category, date, keyword);
