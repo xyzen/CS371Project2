@@ -18,6 +18,9 @@ import javax.swing.table.DefaultTableModel;
 public class UserView extends javax.swing.JFrame {
 
     private Controller master;
+    
+    private String username;
+    
     private String category;
     private String title;
     private String description;
@@ -34,8 +37,9 @@ public class UserView extends javax.swing.JFrame {
     /**
      * Creates new form UserView
      */
-    public UserView(Controller c) {
+    public UserView(Controller c, String un) {
         initComponents();
+        username = un;
         master = c;
     }
     
@@ -287,7 +291,7 @@ public class UserView extends javax.swing.JFrame {
         if(row>=0){
             Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
         }
-        master.handleEditAdvertisement(Advertisement_ID);
+        master.handleEditButton(Advertisement_ID);
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -296,7 +300,7 @@ public class UserView extends javax.swing.JFrame {
         if(row>=0){
             Advertisement_ID=Integer.parseInt((String)myAdvertisementsTable.getValueAt(row, 0));
         }
-        master.handleDeleteAdvertisement(Advertisement_ID);
+        master.handleDeleteRequest(Advertisement_ID);
         
         //Controller "master" will handle deleting the advertisement from the database.
         
