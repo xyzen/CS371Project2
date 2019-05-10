@@ -23,8 +23,11 @@ public class EditView extends javax.swing.JFrame {
     /**
      * Creates new form EditView
      */
-    public EditView(int advID, int usrID) {
+    public EditView(Controller c, int advID, int usrID) {
         initComponents();
+        
+        master = c;
+        
         this.advID = advID;
         this.userID = usrID;
     }
