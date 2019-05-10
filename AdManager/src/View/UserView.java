@@ -279,12 +279,17 @@ public class UserView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //When the "Add Advertisement" button is pushed, the view will tell the controller
+    //that the button was pushed. The controller will handle the action afterwards.
     private void addAdvertisementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAdvertisementButtonActionPerformed
         master.handleAddAdButtonPushed();
         //Controller "master" will open the AddAdvertisement window
         
     }//GEN-LAST:event_addAdvertisementButtonActionPerformed
 
+    //When the "Edit" button is pushed, the view will tell the controller that the
+    //button was pressed. The controller will be given the Advertisement ID to handle
+    //editing the correct ad.
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         int row = this.myAdvertisementsTable.getSelectedRow();
         
@@ -294,6 +299,9 @@ public class UserView extends javax.swing.JFrame {
         master.handleEditButton(Advertisement_ID);
     }//GEN-LAST:event_editButtonActionPerformed
 
+    //When the "Delete" button is pushed, the view will tell the controller that
+    //the button was pushed. The controller will be given the Advertisement ID to 
+    //handle deleting the correct ad.
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int row = this.myAdvertisementsTable.getSelectedRow();
         
@@ -307,6 +315,9 @@ public class UserView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    //When the "Go" button is pressed, the view will tell the controller that the
+    //button was pushed. The controller will be given the query terms to handle
+    //a request to fill the table
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
        this.category=categoryComboBox.getSelectedItem().toString();
         this.Sdate = periodComboBox.getSelectedItem().toString();
@@ -318,10 +329,12 @@ public class UserView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_goButtonActionPerformed
 
+    //Add description for method
     private void categoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_categoryComboBoxActionPerformed
 
+    //Add description for method
     private void periodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_periodComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_periodComboBoxActionPerformed
@@ -335,7 +348,7 @@ public class UserView extends javax.swing.JFrame {
         this.advertisementsTable.setModel(new DefaultTableModel(published_data, advertisementsTableColumns));
     }
     
-    //Populates the personal table for the user in the view
+    //Populates the personal table for the users in the view
     public void populateMyTable(String[][] published_data){
         
     }
