@@ -77,14 +77,19 @@ public class UserView extends javax.swing.JFrame {
 
         categoryLabel.setText("Category:");
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
         categoryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoryComboBoxActionPerformed(evt);
             }
         });
 
-        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "6", "12", " " }));
+        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "all", "3", "6", "12", " " }));
+        periodComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                periodComboBoxActionPerformed(evt);
+            }
+        });
 
         periodLabel.setText("Period:");
 
@@ -171,7 +176,7 @@ public class UserView extends javax.swing.JFrame {
                     .addComponent(monthsLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         advertisementsTabPane.addTab("Advertisements", advertisementsPanel);
