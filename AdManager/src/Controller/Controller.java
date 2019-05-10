@@ -174,7 +174,7 @@ public class Controller {
             var_count++; // 
         }
         // We now either have 1 var or 2
-        if (!"".equals(keyword)) {
+        if (!(keyword == "")) {
             query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
             var_count += 2;
         }
@@ -204,21 +204,17 @@ public class Controller {
             }
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
-            if (count == 0) {
+            if (count == 0)
                 return;
-            }
             Object[][] published_data = new Object[count][4];
-            System.out.println("Before loop...");
             int index = 0;
             do {
                 String title = rs.getString("AdvTitle");
                 String details = rs.getString("AdvDetails");
                 String price = rs.getString("Price");
                 String datetime = rs.getString("AdvDateTime");
-                System.out.println(title + " " + details + " " + price + " " + datetime);
                 published_data[index++] = new Object[] {title, details, price, datetime};
             } while (rs.next());
-            System.out.println("After loop... " + Integer.toString(index));
             uv.populateSTDTable(published_data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -237,7 +233,6 @@ public class Controller {
             stmt.setInt(1, Integer.parseInt(userID));
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
-            System.out.println("Count: " + Integer.toString(count));
             if (count == 0)
                 return;
             Object[][] user_data = new Object[count][6];
@@ -282,8 +277,13 @@ public class Controller {
         }
         PreparedStatement stmt = null;
         String query = "INSERT INTO Advertisements(AdvTitle, AdvDetails, AdvDateTime, Price, Category_ID, User_ID, Status_ID)"
-                + "VALUES (?, ?, DATETIME(?), ?, ?, ?, 'PN');";
-        String date_arg = "";
+                + "VALUES (?, ?, ?, ?, ?, ?, 'PN');";
+        Calendar cal = Calendar.getInstance();
+        cal.getTime();
+        String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+        String month = Integer.toString(cal.get(Calendar.MONTH));
+        String year = Integer.toString(cal.get(Calendar.YEAR));
+        String date_arg = year + "-" + month + "-" + day;
         try {
             stmt=connection.prepareStatement(query);
             stmt.setString(1, title);
@@ -291,11 +291,12 @@ public class Controller {
             stmt.setString(3, date_arg);
             stmt.setString(4, price);
             stmt.setString(5, cat);
-            stmt.setString(6, user_id);
-            stmt.executeQuery();
+            stmt.setInt(6, Integer.parseInt(user_id));
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        av.setVisible(false);
     }
     
     public void handleEditButton(String adv_id, String user_id) {
@@ -303,13 +304,39 @@ public class Controller {
         ev.setVisible(true);
     }
     
-    public void handleEditRequest(String title, String details, String price, String user_id) {
-        if ("".equals(title) | "".equals(details) | "".equals(price))
+    public void handleEditRequest(String advID, String title, String details, String price, String user_id) {
+        if ("".equals(title) | "".equals(details) | "".equals(price)) {
+            ev.setVisible(false);
             return;
+        }
+        PreparedStatement stmt = null;
+        String query = "UPDATE Advertisements"
+                + " SET AdvTitle=?, AdvDetails=?, Price=?"
+                + " WHERE Advertisement_ID=?";
+        try {
+            stmt=connection.prepareStatement(query);
+            stmt.setString(1, title);
+            stmt.setString(2, details);
+            stmt.setString(3, price);
+            stmt.setString(4, advID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        ev.setVisible(false);
     }
     
     public void handleDeleteRequest(String advID) {
-        
+        PreparedStatement stmt = null;
+        String query = "DELETE FROM Advertisements"
+                + " WHERE Advertisement_ID=?";
+        try {
+            stmt=connection.prepareStatement(query);
+            stmt.setString(1, advID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     public void handleModSTDTableRequest(String category, int months, String keyword) {

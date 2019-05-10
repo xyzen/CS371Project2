@@ -1,1 +1,2 @@
-SELECT User_ID, Advertisement_ID, AdvTitle, AdvDetails, Price, S.Status_Name, AdvDateTime FROM Advertisements A INNER JOIN Statuses S ON A.Status_ID=S.Status_ID WHERE User_ID=3;
+INSERT INTO Advertisements(AdvTitle, AdvDetails, AdvDateTime, Price, Category_ID, User_ID, Status_ID)
+                VALUES ("Poop", "Stinky stuff", '2019-5-10', 100.00, 'ELC', 1, 'PN');

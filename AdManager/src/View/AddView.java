@@ -147,6 +147,7 @@ public class AddView extends javax.swing.JFrame {
         this.cat = category_box.getSelectedItem().toString();
         this.price = price_field.getText();
         master.handleAddRequest(title, desc, cat, price, userID);
+        master.handleUserMyTableRequest(userID);
     }//GEN-LAST:event_add_Advertisement_ButtonActionPerformed
 
     /**

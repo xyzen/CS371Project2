@@ -114,7 +114,8 @@ public class EditView extends javax.swing.JFrame {
        this.newTitle = newTitle_Field.getText();
        this.newDescription = newDescription_Field.getText();
        this.newPrice = newPrice_Field.getText();
-       master.handleEditRequest(newTitle, newDescription, newPrice, userID);
+       master.handleEditRequest(advID, newTitle, newDescription, newPrice, userID);
+       master.handleUserMyTableRequest(userID);
     }//GEN-LAST:event_submitButtonActionPerformed
 
     /**

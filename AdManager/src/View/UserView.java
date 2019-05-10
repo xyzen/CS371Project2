@@ -50,7 +50,6 @@ public class UserView extends javax.swing.JFrame {
         this.date = 0;
         this.keyword = descriptionTextField.getText();
         master.handleUserSTDTableRequest(category, date, keyword);
-        master.handleUserMyTableRequest(userID);
     }
     
     /**
@@ -73,8 +72,6 @@ public class UserView extends javax.swing.JFrame {
         descriptionLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         advertisementsTable = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         myAdvertisementsPanel = new javax.swing.JPanel();
         deleteButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
@@ -84,16 +81,17 @@ public class UserView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        categoryLabel.setText("Category:");
-
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
-        categoryComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                categoryComboBoxActionPerformed(evt);
+        advertisementsTabPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                advertisementsTabPaneMouseClicked(evt);
             }
         });
 
-        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "all", "3", "6", "12" }));
+        categoryLabel.setText("Category:");
+
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
+
+        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
 
         periodLabel.setText("Period:");
 
@@ -127,10 +125,6 @@ public class UserView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(advertisementsTable);
 
-        jLabel1.setText("Last");
-
-        jLabel2.setText("Month");
-
         javax.swing.GroupLayout advertisementsPanelLayout = new javax.swing.GroupLayout(advertisementsPanel);
         advertisementsPanel.setLayout(advertisementsPanelLayout);
         advertisementsPanelLayout.setHorizontalGroup(
@@ -143,16 +137,11 @@ public class UserView extends javax.swing.JFrame {
                         .addComponent(categoryLabel)))
                 .addGap(18, 18, 18)
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(advertisementsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2))
+                    .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(periodLabel)))
-                .addGap(0, 148, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
                         .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -175,13 +164,13 @@ public class UserView extends javax.swing.JFrame {
                     .addComponent(categoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(goButton)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(goButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        periodComboBox.getAccessibleContext().setAccessibleName("");
 
         advertisementsTabPane.addTab("Advertisements", advertisementsPanel);
 
@@ -318,6 +307,7 @@ public class UserView extends javax.swing.JFrame {
             advID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
         master.handleDeleteRequest(advID);
+        master.handleUserMyTableRequest(userID);
         
         //Controller "master" will handle deleting the advertisement from the database.
         
@@ -331,24 +321,28 @@ public class UserView extends javax.swing.JFrame {
         
         this.category=categoryComboBox.getSelectedItem().toString();
         str_date = periodComboBox.getSelectedItem().toString();
-        if ("all".equals(str_date)) str_date = "0";
-        this.date = Integer.parseInt(str_date);
+        switch(str_date) {
+            case "Last 3 Months":
+                date = 3;
+            case "Last 6 Months":
+                date = 6;
+            case "Last 12 Months":
+                date = 12;
+            default:
+                date = 0;
         this.keyword = descriptionTextField.getText();
 
         master.handleUserSTDTableRequest(category, date, keyword);
-
-        // TODO add your handling code here:
+        }
     }//GEN-LAST:event_goButtonActionPerformed
 
-    //Add description for method
-    private void categoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_categoryComboBoxActionPerformed
-
-    //Add description for method
     private void periodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_periodComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_periodComboBoxActionPerformed
+
+    private void advertisementsTabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_advertisementsTabPaneMouseClicked
+        master.handleUserMyTableRequest(userID);
+    }//GEN-LAST:event_advertisementsTabPaneMouseClicked
 
     /**
      * @param published_data the command line arguments
@@ -360,7 +354,9 @@ public class UserView extends javax.swing.JFrame {
     }
     
     public void resetSTDTable() {
-        this.advertisementsTable.setModel(new DefaultTableModel(new String[][] {{"None", "None", "None", "None"}}, advertisementsTableColumns));
+        Object[][] result = new Object[1][4];
+        result[0] = new Object[] {"None", "None", "None", "None"};
+        this.advertisementsTable.setModel(new DefaultTableModel(result, advertisementsTableColumns));
     }
     
     //Populates the personal table for the users in the view
@@ -380,8 +376,6 @@ public class UserView extends javax.swing.JFrame {
     private javax.swing.JTextField descriptionTextField;
     private javax.swing.JButton editButton;
     private javax.swing.JButton goButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel myAdvertisementsPanel;
