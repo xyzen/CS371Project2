@@ -29,7 +29,7 @@ public class UserView extends javax.swing.JFrame {
     private String keyword;
     private String Sdate;
     private int date;
-    private String Advertisement_ID;
+    private String advID;
     
     private String[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
     private String[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
@@ -300,9 +300,9 @@ public class UserView extends javax.swing.JFrame {
         int row = this.myAdvertisementsTable.getSelectedRow();
         
         if(row>=0){
-            Advertisement_ID=(String)myAdvertisementsTable.getValueAt(row, 0);
+            advID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
-        master.handleEditButton(Advertisement_ID, userID);
+        master.handleEditButton(advID, userID);
     }//GEN-LAST:event_editButtonActionPerformed
 
     //When the "Delete" button is pushed, the view will tell the controller that
@@ -312,9 +312,9 @@ public class UserView extends javax.swing.JFrame {
         int row = this.myAdvertisementsTable.getSelectedRow();
         
         if(row>=0){
-            Advertisement_ID=(String)myAdvertisementsTable.getValueAt(row, 0);
+            advID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
-        master.handleDeleteRequest(Advertisement_ID);
+        master.handleDeleteRequest(advID);
         
         //Controller "master" will handle deleting the advertisement from the database.
         

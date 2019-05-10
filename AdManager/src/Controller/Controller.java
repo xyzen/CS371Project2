@@ -39,11 +39,11 @@ public class Controller {
     public void handleLoginRequest(String username, String userType) {
         PreparedStatement stmt = null;
         int size; String user_id; ResultSet rs;
-        String query = "SELECT User_ID FROM ";
+        String query = "SELECT User_ID FROM Users WHERE ";
         switch(userType) {
             
             case "User":
-                query += "Users WHERE Username=?;";
+                query += "Username=?;";
                 try {
                     stmt=connection.prepareStatement(query);
                     stmt.setString(0, username);
@@ -61,15 +61,15 @@ public class Controller {
                 break;
                 
             case "Moderator":
-                query += "Users WHERE EXISTS (SELECT 1 FROM Moderators WHERE User_ID=?);";
+                query += "EXISTS (SELECT 1 FROM Moderators WHERE User_ID=?);";
                 try {
                     stmt=connection.prepareStatement(query);
                     stmt.setString(0, username);
                     rs = stmt.executeQuery();
                     size = getResultSetSize(rs);
-                    user_id = rs.getString("User_ID");
                     if (size == 0)
                         return;
+                    user_id = rs.getString("User_ID");
                     mv = new ModView(this, user_id);
                     mv.setVisible(true);
                     lv.setVisible(false);
@@ -127,12 +127,24 @@ public class Controller {
         ev.setVisible(true);
     }
     
-    public void handleEditRequest(String title, String details, float price, int user_id) {
-        if ("".equals(title) | "".equals(details) | price == 0)
+    public void handleEditRequest(String title, String details, String price, String user_id) {
+        if ("".equals(title) | "".equals(details) | "".equals(price))
             return;
     }
     
-    public void handleDeleteRequest(int adv_id) {
+    public void handleDeleteRequest(String advID) {
+        
+    }
+    
+    public void handleApproveRequest(String advID, String userID) {
+        
+    }
+    
+    public void handleClaimRequest(String advID, String userID) {
+        
+    }
+    
+    public void handleModSTDTableRequest(String category, int months, String keyword) {
         
     }
     
@@ -145,11 +157,9 @@ public class Controller {
                 + "FROM Advertisements"
                 + "WHERE Status_ID='AC' AND Category_ID='?' AND (AdvTitle LIKE '?' OR A.AdvDetails LIKE '?')";
         if (months > 0) {
-            query += "AND AdvDateTime<'?';";
+            query += "AND AdvDateTime<'?'";
         }
-        else {
-            query += ";";
-        }
+        query += ";";
         try {
             stmt=connection.prepareStatement(query);
             stmt.setString(1, category);
