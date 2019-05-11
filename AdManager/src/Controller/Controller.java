@@ -368,9 +368,9 @@ public class Controller {
         }
         int var_count = 0;
         String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, AdvDateTime, U.User_Handle Username"
-                + " FROM Advertisements A "
+                + " FROM Advertisements A"
                 + " INNER JOIN Users U"
-                + " ON A.User_ID=U.User_ID "
+                + " ON A.User_ID=U.User_ID"
                 + " WHERE Status_ID='PN' AND Moderator_ID IS NULL";
         
         int days_ago = months_ago*30;
@@ -392,7 +392,7 @@ public class Controller {
             query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
             var_count += 2;
         }
-        // We will either have 1, 2, 3, or 4 variables, each corresponding to a specific case
+        // We will either have 1, 2, 3 variables, each corresponding to a specific case
         query += ";";
         try {
             stmt=connection.prepareStatement(query);
@@ -417,7 +417,7 @@ public class Controller {
             if (count == 0) {
                 return;
             }
-            Object[][] user_data = new Object[count][6];
+            Object[][] pending_data = new Object[count][6];
             int index = 0;
             do {
                 String id = rs.getString("Advertisement_ID");
@@ -426,9 +426,9 @@ public class Controller {
                 String price = rs.getString("Price");
                 String datetime = rs.getString("AdvDateTime");
                 String username = rs.getString("Username");
-                user_data[index++] = new Object[] {id, title, details, price, datetime, username};
+                pending_data[index++] = new Object[] {id, title, details, price, datetime, username};
             } while(rs.next());
-            mv.populateSTDTable(user_data);
+            mv.populateSTDTable(pending_data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
