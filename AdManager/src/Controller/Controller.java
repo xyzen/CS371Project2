@@ -152,6 +152,7 @@ public class Controller {
                     user_id = rs.getInt("User_ID");
                     uv = new UserView(this, Integer.toString(user_id), username);
                     uv.setVisible(true);
+                    lv.setVisible(false);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
@@ -190,66 +191,71 @@ public class Controller {
     public void handleUserSTDTableRequest(String category, int months_ago, String keyword){
         PreparedStatement stmt = null;
         
-        category = getCategory(category);
-        
         // Keeps count of question marks in the query
         int var_count = 0;
+        int cat_ndx;
+        int mnth_ndx;
+        int kywrd_ndx;
         
         String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
                 + " FROM Advertisements"
-                + " WHERE Status_ID='AC' AND Category_ID=?";
-        // We will always have at least one var
-        var_count++;
+                + " WHERE Status_ID='AC'";
+        
+        category = getCategory(category);
+        if (!"All".equals(category)) {
+            query += " AND Category_ID=?";
+            cat_ndx = ++var_count;
+        }
+        else
+            cat_ndx = 0;
 
         int days_ago = months_ago*30;
-        String date_arg = "";
         
+        String date_arg = ""; 
         if (months_ago >= 1) {
+            
             Calendar cal = Calendar.getInstance();
             cal.getTime();
             cal.add(Calendar.DATE, -days_ago);
+            
+            
             String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
             String month = Integer.toString(cal.get(Calendar.MONTH));
             String year = Integer.toString(cal.get(Calendar.YEAR));
+            
+            
             if (month.length() == 1) month = "0" + month;
             if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
+            
             query += " AND AdvDateTime>DATE(?)";
-            var_count++; // 
+            mnth_ndx = ++var_count; // 
         }
-        // We now either have 1 var or 2
-        if (!(keyword == "")) {
+        else
+            mnth_ndx = 0;
+        
+        
+        if (!("".equals(keyword))) {
             query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
-            var_count += 2;
+            kywrd_ndx = ++var_count;
         }
-        // We will either have 1, 2, 3, or 4 variables, each corresponding to a specific case
+        else
+            kywrd_ndx = 0;
+            
         query += ";";
         
         try {
             stmt=connection.prepareStatement(query);
-            stmt.setString(1, category);
-            switch (var_count) {
-                case(1):
-                    break;
-                case (2):
-                    stmt.setString(2, date_arg);
-                    break;
-                case (3):
-                    stmt.setString(2, "%" + keyword + "%");
-                    stmt.setString(3, "%" + keyword + "%");
-                    break;
-                case (4):
-                    stmt.setString(2, date_arg);
-                    stmt.setString(3, "%" + keyword + "%");
-                    stmt.setString(4, "%" + keyword + "%");
-                    break;
-                default:
-                    break;
-            }
+            if (cat_ndx > 0)
+                stmt.setString(cat_ndx, category);
+            if (mnth_ndx > 0)
+                stmt.setString(mnth_ndx, date_arg);
+            if (kywrd_ndx > 0)
+                stmt.setString(kywrd_ndx, keyword);
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count < 1) {
-                mesv = new MessageView("No result found.");
+                uv.resetSTDTable();
                 return;
             }
             Object[][] data = new Object[count][4];
@@ -276,11 +282,11 @@ public class Controller {
                 + " WHERE User_ID=?;";
         try {
             stmt=connection.prepareStatement(query);
-            stmt.setInt(1, Integer.parseInt(userID));
+            stmt.setString(1, userID);
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count == 0) {
-                mesv = new MessageView("No result found.");
+                uv.resetMyTable();
                 return;
             }
             Object[][] data = new Object[count][6];
@@ -444,7 +450,7 @@ public class Controller {
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count < 1) {
-                mesv = new MessageView("No result found.");
+                mv.resetSTDTable();
                 return;
             }
             Object[][] pending_data = new Object[count][6];
@@ -477,7 +483,7 @@ public class Controller {
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count == 0) {
-                mesv = new MessageView("No result found.");
+                mv.resetMyTable();
                 return;
             }
             Object[][] user_data = new Object[count][7];

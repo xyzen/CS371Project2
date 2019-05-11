@@ -42,6 +42,8 @@ public class UserView extends javax.swing.JFrame {
      */
     public UserView(Controller c, String usrID, String usrName) {
         initComponents();
+        noResultLabel.setVisible(false);
+        noResultsLabel1.setVisible(false);
         userID = usrID;
         username = usrName;
         master = c;
@@ -67,12 +69,14 @@ public class UserView extends javax.swing.JFrame {
         descriptionLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         advertisementsTable = new javax.swing.JTable();
+        noResultLabel = new javax.swing.JLabel();
         myAdvertisementsPanel = new javax.swing.JPanel();
         deleteButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         myAdvertisementsTable = new javax.swing.JTable();
         addAdvertisementButton = new javax.swing.JButton();
+        noResultsLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -95,10 +99,7 @@ public class UserView extends javax.swing.JFrame {
 
         advertisementsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title", "Description", "Price", "Date"
@@ -112,32 +113,34 @@ public class UserView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        advertisementsTable.setFillsViewportHeight(true);
         jScrollPane1.setViewportView(advertisementsTable);
+
+        noResultLabel.setText("No results found.");
 
         javax.swing.GroupLayout advertisementsPanelLayout = new javax.swing.GroupLayout(advertisementsPanel);
         advertisementsPanel.setLayout(advertisementsPanelLayout);
         advertisementsPanelLayout.setHorizontalGroup(
             advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(advertisementsPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(categoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(advertisementsPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(categoryLabel)))
-                .addGap(18, 18, 18)
+                    .addComponent(categoryLabel)
+                    .addComponent(categoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(advertisementsPanelLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(periodLabel)))
-                .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(periodLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
-                        .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(goButton))
+                        .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(goButton)
+                        .addGap(25, 25, 25)
+                        .addComponent(noResultLabel))
                     .addComponent(descriptionLabel))
-                .addContainerGap())
+                .addContainerGap(338, Short.MAX_VALUE))
             .addComponent(jScrollPane1)
         );
         advertisementsPanelLayout.setVerticalGroup(
@@ -153,10 +156,10 @@ public class UserView extends javax.swing.JFrame {
                     .addComponent(categoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(periodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(goButton))
+                    .addComponent(goButton)
+                    .addComponent(noResultLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE))
         );
 
         periodComboBox.getAccessibleContext().setAccessibleName("");
@@ -185,10 +188,7 @@ public class UserView extends javax.swing.JFrame {
 
         myAdvertisementsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Title", "Description", "Price", "Status", "Date"
@@ -209,38 +209,8 @@ public class UserView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        myAdvertisementsTable.setColumnSelectionAllowed(true);
+        myAdvertisementsTable.setFillsViewportHeight(true);
         jScrollPane2.setViewportView(myAdvertisementsTable);
-        myAdvertisementsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-
-        javax.swing.GroupLayout myAdvertisementsPanelLayout = new javax.swing.GroupLayout(myAdvertisementsPanel);
-        myAdvertisementsPanel.setLayout(myAdvertisementsPanelLayout);
-        myAdvertisementsPanelLayout.setHorizontalGroup(
-            myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myAdvertisementsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
-                    .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(editButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButton)))
-                .addContainerGap())
-        );
-        myAdvertisementsPanelLayout.setVerticalGroup(
-            myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deleteButton)
-                    .addComponent(editButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        advertisementsTabPane.addTab("My Advertisements", myAdvertisementsPanel);
 
         addAdvertisementButton.setText("Add Advertisement");
         addAdvertisementButton.addActionListener(new java.awt.event.ActionListener() {
@@ -249,27 +219,54 @@ public class UserView extends javax.swing.JFrame {
             }
         });
 
+        noResultsLabel1.setText("No results found.");
+
+        javax.swing.GroupLayout myAdvertisementsPanelLayout = new javax.swing.GroupLayout(myAdvertisementsPanel);
+        myAdvertisementsPanel.setLayout(myAdvertisementsPanelLayout);
+        myAdvertisementsPanelLayout.setHorizontalGroup(
+            myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myAdvertisementsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(addAdvertisementButton)
+                .addGap(18, 18, 18)
+                .addComponent(editButton)
+                .addGap(18, 18, 18)
+                .addComponent(deleteButton)
+                .addGap(18, 18, 18)
+                .addComponent(noResultsLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1042, Short.MAX_VALUE)
+        );
+        myAdvertisementsPanelLayout.setVerticalGroup(
+            myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editButton)
+                    .addComponent(addAdvertisementButton)
+                    .addComponent(deleteButton)
+                    .addComponent(noResultsLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE))
+        );
+
+        advertisementsTabPane.addTab("My Advertisements", myAdvertisementsPanel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(advertisementsTabPane)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(addAdvertisementButton)))
+                .addComponent(advertisementsTabPane)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addAdvertisementButton)
-                .addGap(5, 5, 5)
-                .addComponent(advertisementsTabPane)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(24, Short.MAX_VALUE)
+                .addComponent(advertisementsTabPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         pack();
@@ -339,11 +336,26 @@ public class UserView extends javax.swing.JFrame {
     //Populates the STD table for users in the view
     public void populateSTDTable(Object[][] published_data){
         this.advertisementsTable.setModel(new DefaultTableModel(published_data, advertisementsTableColumns));
+        noResultLabel.setVisible(false);
     }
     
     //Populates the personal table for the users in the view
     public void populateMyTable(Object[][] user_data){
         this.myAdvertisementsTable.setModel(new DefaultTableModel(user_data, myAdvertisementsTableColumns));
+        noResultsLabel1.setVisible(false);
+    }
+    
+    public void resetSTDTable () {
+        DefaultTableModel model = (DefaultTableModel) advertisementsTable.getModel();
+        model.setRowCount(0);
+        noResultLabel.setVisible(true);
+    }
+    
+    public void resetMyTable () {
+        DefaultTableModel model = (DefaultTableModel) myAdvertisementsTable.getModel();
+        model.setRowCount(0);
+        noResultsLabel1.setVisible(true);
+        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -362,6 +374,8 @@ public class UserView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel myAdvertisementsPanel;
     private javax.swing.JTable myAdvertisementsTable;
+    private javax.swing.JLabel noResultLabel;
+    private javax.swing.JLabel noResultsLabel1;
     private javax.swing.JComboBox<String> periodComboBox;
     private javax.swing.JLabel periodLabel;
     // End of variables declaration//GEN-END:variables
