@@ -14,6 +14,7 @@ public class MessageView extends javax.swing.JFrame {
     
     /**
      * Creates new form MessageView
+     * the parameter messageText will instantiate the message upon creation.
      */
     public MessageView(String messageText) {
         initComponents();

@@ -5,7 +5,6 @@
  */
 package View;
 import Controller.Controller;
-import static java.lang.Float.parseFloat;
 
 /**
  * @author christopheraramswayne
@@ -20,8 +19,14 @@ public class EditView extends javax.swing.JFrame {
     private String newDescription;
     private String newPrice;
     private String advID;
+    
     /**
      * Creates new form EditView
+     * with reference to the Controller, the ID of the advertisement to be edited,
+     * and the ID of the user editing.
+     * @param c
+     * @param advID
+     * @param usrID
      */
     public EditView(Controller c, String advID, String usrID) {
         initComponents();
@@ -106,21 +111,16 @@ public class EditView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Pass information from the view to the Controller when the submit button is
+    //pressed. 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        // TODO add your handling code here:
-        
-       
-       //if field is blank do not update that field
+       //if a field is blank do not update that field.
        this.newTitle = newTitle_Field.getText();
        this.newDescription = newDescription_Field.getText();
        this.newPrice = newPrice_Field.getText();
        master.handleEditRequest(advID, newTitle, newDescription, newPrice, userID);
        master.handleUserMyTableRequest(userID);
     }//GEN-LAST:event_submitButtonActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField newDescription_Field;
