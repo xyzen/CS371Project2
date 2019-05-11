@@ -74,12 +74,6 @@ public class ModView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        myAdvertisementsTabPane.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                myAdvertisementsTabPaneMouseClicked(evt);
-            }
-        });
-
         categoryLabel.setText("Category:");
 
         categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
@@ -191,6 +185,12 @@ public class ModView extends javax.swing.JFrame {
         );
 
         myAdvertisementsTabPane.addTab("Unclaimed Advertisements", advertisementsPanel);
+
+        myAdvertisementsPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                myAdvertisementsPanelComponentShown(evt);
+            }
+        });
 
         myAdvertisementsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -342,9 +342,9 @@ public class ModView extends javax.swing.JFrame {
         master.handleModMyTableRequest(userID);
     }//GEN-LAST:event_disapproveButtonActionPerformed
 
-    private void myAdvertisementsTabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myAdvertisementsTabPaneMouseClicked
-        master.handleModMyTableRequest(userID);
-    }//GEN-LAST:event_myAdvertisementsTabPaneMouseClicked
+    private void myAdvertisementsPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_myAdvertisementsPanelComponentShown
+        master.handleModMyTableRequest(userID);        // TODO add your handling code here:
+    }//GEN-LAST:event_myAdvertisementsPanelComponentShown
 
     /**
      * @param args the command line arguments

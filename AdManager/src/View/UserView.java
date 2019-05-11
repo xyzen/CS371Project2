@@ -49,7 +49,7 @@ public class UserView extends javax.swing.JFrame {
         str_date = "0";
         this.date = 0;
         this.keyword = descriptionTextField.getText();
-        master.handleUserSTDTableRequest(category, date, keyword);
+        master.handleUserSTDTableRequest("CAT", 0, "");
     }
     
     /**
@@ -64,8 +64,8 @@ public class UserView extends javax.swing.JFrame {
         advertisementsTabPane = new javax.swing.JTabbedPane();
         advertisementsPanel = new javax.swing.JPanel();
         categoryLabel = new javax.swing.JLabel();
-        categoryComboBox = new javax.swing.JComboBox<String>();
-        periodComboBox = new javax.swing.JComboBox<String>();
+        categoryComboBox = new javax.swing.JComboBox<>();
+        periodComboBox = new javax.swing.JComboBox<>();
         periodLabel = new javax.swing.JLabel();
         descriptionTextField = new javax.swing.JTextField();
         goButton = new javax.swing.JButton();
@@ -81,17 +81,11 @@ public class UserView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        advertisementsTabPane.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                advertisementsTabPaneMouseClicked(evt);
-            }
-        });
-
         categoryLabel.setText("Category:");
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
 
-        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
+        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
 
         periodLabel.setText("Period:");
 
@@ -115,16 +109,9 @@ public class UserView extends javax.swing.JFrame {
                 "Title", "Description", "Price", "Date"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -181,6 +168,12 @@ public class UserView extends javax.swing.JFrame {
 
         advertisementsTabPane.addTab("Advertisements", advertisementsPanel);
 
+        myAdvertisementsPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                myAdvertisementsPanelComponentShown(evt);
+            }
+        });
+
         deleteButton.setText("Delete");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,7 +214,9 @@ public class UserView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        myAdvertisementsTable.setColumnSelectionAllowed(true);
         jScrollPane2.setViewportView(myAdvertisementsTable);
+        myAdvertisementsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         javax.swing.GroupLayout myAdvertisementsPanelLayout = new javax.swing.GroupLayout(myAdvertisementsPanel);
         myAdvertisementsPanel.setLayout(myAdvertisementsPanelLayout);
@@ -337,9 +332,9 @@ public class UserView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_periodComboBoxActionPerformed
 
-    private void advertisementsTabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_advertisementsTabPaneMouseClicked
+    private void myAdvertisementsPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_myAdvertisementsPanelComponentShown
         master.handleUserMyTableRequest(userID);
-    }//GEN-LAST:event_advertisementsTabPaneMouseClicked
+    }//GEN-LAST:event_myAdvertisementsPanelComponentShown
 
     /**
      * @param published_data the command line arguments

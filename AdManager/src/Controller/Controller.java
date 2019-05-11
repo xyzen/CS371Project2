@@ -24,6 +24,7 @@ public class Controller {
     private EditView ev;
     private ModView mv;
     private UserView uv;
+    private MessageView mesv;
     
     public Controller() {
         lv = new LoginView(this);
@@ -144,8 +145,10 @@ public class Controller {
                     stmt.setString(1, username);
                     rs = stmt.executeQuery();
                     size = getResultSetSize(rs);
-                    if (size == 0)
+                    if (size == 0) {
+                        mesv = new MessageView("User not found!");
                         return;
+                    }
                     user_id = rs.getInt("User_ID");
                     uv = new UserView(this, Integer.toString(user_id), username);
                     uv.setVisible(true);
@@ -161,16 +164,20 @@ public class Controller {
                     stmt.setString(1, username);
                     rs = stmt.executeQuery();
                     size = getResultSetSize(rs);
-                    if (size == 0)
+                    if (size == 0) {
+                        mesv = new MessageView("User not found!");
                         return;
+                    }
                     user_id = rs.getInt("User_ID");
                     query = "SELECT User_ID FROM Moderators WHERE User_ID=?;";
                     stmt=connection.prepareStatement(query);
                     stmt.setInt(1, user_id);
                     rs = stmt.executeQuery();
                     size = getResultSetSize(rs);
-                    if (size == 0)
+                    if (size == 0) {
+                        mesv = new MessageView("User is not a Moderator!");
                         return;
+                    }
                     mv = new ModView(this, Integer.toString(user_id), username);
                     mv.setVisible(true);
                     lv.setVisible(false);
@@ -208,7 +215,7 @@ public class Controller {
             if (month.length() == 1) month = "0" + month;
             if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime<?";
+            query += " AND AdvDateTime<DATETIME(?)";
             var_count++; // 
         }
         // We now either have 1 var or 2
@@ -242,10 +249,12 @@ public class Controller {
             }
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
-            if (count == 0) {
+            if (count < 1) {
+                mesv = new MessageView("No result found.");
                 return;
             }
-            Object[][] published_data = new Object[count][4];
+            
+            Object[][] data = new Object[count][4];
             int index = 0;
             rs = stmt.executeQuery();
             do {
@@ -253,9 +262,9 @@ public class Controller {
                 String details = rs.getString("AdvDetails");
                 String price = rs.getString("Price");
                 String datetime = rs.getString("AdvDateTime");
-                published_data[index++] = new Object[] {title, details, price, datetime};
+                data[index++] = new Object[] {title, details, price, datetime};
             } while (rs.next());
-            uv.populateSTDTable(published_data);
+            uv.populateSTDTable(data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -274,9 +283,10 @@ public class Controller {
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count == 0) {
+                mesv = new MessageView("No result found.");
                 return;
             }
-            Object[][] user_data = new Object[count][6];
+            Object[][] data = new Object[count][6];
             int index = 0;
             do {
                 String id = rs.getString("Advertisement_ID");
@@ -285,9 +295,9 @@ public class Controller {
                 String price = rs.getString("Price");
                 String status = rs.getString("State");
                 String datetime = rs.getString("AdvDateTime");
-                user_data[index++] = new Object[] {id, title, details, price, status, datetime};
+                data[index++] = new Object[] {id, title, details, price, status, datetime};
             } while(rs.next());
-            uv.populateMyTable(user_data);
+            uv.populateMyTable(data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -390,7 +400,7 @@ public class Controller {
                 + " FROM Advertisements A"
                 + " INNER JOIN Users U"
                 + " ON A.User_ID=U.User_ID"
-                + " WHERE Status_ID='PN' AND Moderator_ID IS NULL";
+                + " WHERE Moderator_ID IS NULL";
         
         int days_ago = months_ago*30;
         String date_arg = "";
@@ -405,7 +415,7 @@ public class Controller {
             if (month.length() == 1) month = "0" + month;
             if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime>?";
+            query += " AND AdvDateTime>DATETIME(?)";
             var_count++; // 
         }
         // We now either have 1 var or 2
@@ -436,7 +446,8 @@ public class Controller {
             }
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
-            if (count == 0) {
+            if (count < 1) {
+                mesv = new MessageView("No result found.");
                 return;
             }
             Object[][] pending_data = new Object[count][6];
@@ -470,6 +481,7 @@ public class Controller {
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count == 0) {
+                mesv = new MessageView("No result found.");
                 return;
             }
             Object[][] user_data = new Object[count][7];
