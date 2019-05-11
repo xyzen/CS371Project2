@@ -43,7 +43,7 @@ public class ModView extends javax.swing.JFrame {
         this.date = 0;
         str_date = "0";
         this.keyword = descriptionTextField.getText();
-        master.handleModSTDTableRequest(category, 0, "");
+        master.handleModSTDTableRequest("CAT", 0, "");
     }
     
     private int getDate(String date) {
@@ -141,7 +141,7 @@ public class ModView extends javax.swing.JFrame {
         });
         unclaimedAdvertisementsTable.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(unclaimedAdvertisementsTable);
-        unclaimedAdvertisementsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        unclaimedAdvertisementsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         claimAdButton.setText("Claim Ad");
         claimAdButton.addActionListener(new java.awt.event.ActionListener() {
@@ -233,7 +233,7 @@ public class ModView extends javax.swing.JFrame {
         });
         myAdvertisementsTable.setColumnSelectionAllowed(true);
         jScrollPane2.setViewportView(myAdvertisementsTable);
-        myAdvertisementsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        myAdvertisementsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         approveButton.setText("Approve");
         approveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -274,7 +274,7 @@ public class ModView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(myAdvertisementsTabPane)
-                .addContainerGap())
+                .addGap(107, 107, 107))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,6 +317,7 @@ public class ModView extends javax.swing.JFrame {
             advID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
         master.handleDecisionRequest(status, advID, userID);
+        master.handleModMyTableRequest(userID);
     }//GEN-LAST:event_approveButtonActionPerformed
 
     //Moderator can claim the advertisement, the Button retrieves the selected row,
@@ -330,6 +331,11 @@ public class ModView extends javax.swing.JFrame {
             advID=(String)unclaimedAdvertisementsTable.getValueAt(row, 0);
         }
         master.handleClaimRequest(advID, userID);
+        this.category=categoryComboBox.getSelectedItem().toString();
+        str_date = periodComboBox.getSelectedItem().toString();
+        this.date = getDate(str_date);
+        this.keyword = descriptionTextField.getText();
+        master.handleModSTDTableRequest(category, date, keyword);
     }//GEN-LAST:event_claimAdButtonActionPerformed
 
     //Acts similar to ComboBox, where the date - the time frame of the ad's creation -
@@ -347,6 +353,7 @@ public class ModView extends javax.swing.JFrame {
             advID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
         master.handleDecisionRequest(status, advID, userID);
+        master.handleModMyTableRequest(userID);
     }//GEN-LAST:event_disapproveButtonActionPerformed
 
     private void myAdvertisementsTabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myAdvertisementsTabPaneMouseClicked

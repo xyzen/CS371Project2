@@ -245,10 +245,10 @@ public class Controller {
     public void handleUserMyTableRequest(String userID){
         PreparedStatement stmt = null;
         String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, S.Status_Name State, AdvDateTime"
-                + " FROM Advertisements A "
-                + "INNER JOIN Statuses S "
-                + "ON A.Status_ID=S.Status_ID "
-                + "WHERE User_ID=?;";
+                + " FROM Advertisements A"
+                + " INNER JOIN Statuses S"
+                + " ON A.Status_ID=S.Status_ID"
+                + " WHERE User_ID=?;";
         try {
             stmt=connection.prepareStatement(query);
             stmt.setInt(1, Integer.parseInt(userID));
@@ -434,7 +434,7 @@ public class Controller {
             }
             Object[][] pending_data = new Object[count][6];
             int index = 0;
-            while(rs.next()) {
+            do {
                 String id = rs.getString("Advertisement_ID");
                 String title = rs.getString("AdvTitle");
                 String details = rs.getString("AdvDetails");
@@ -442,7 +442,7 @@ public class Controller {
                 String datetime = rs.getString("AdvDateTime");
                 String username = rs.getString("Username");
                 pending_data[index++] = new Object[] {id, title, details, price, datetime, username};
-            }
+            } while(rs.next());
             mv.populateSTDTable(pending_data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -466,9 +466,7 @@ public class Controller {
             }
             Object[][] user_data = new Object[count][7];
             int index = 0;
-            rs = stmt.executeQuery();
-            rs.beforeFirst();
-            while(rs.next()) {
+            do {
                 String id = rs.getString("Advertisement_ID");
                 String title = rs.getString("AdvTitle");
                 String details = rs.getString("AdvDetails");
@@ -477,7 +475,7 @@ public class Controller {
                 String datetime = rs.getString("AdvDateTime");
                 String username = rs.getString("Username");
                 user_data[index++] = new Object[] {id, title, details, price, status, datetime, username};
-            }
+            } while(rs.next());
             mv.populateMyTable(user_data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -485,10 +483,35 @@ public class Controller {
     }
     
     public void handleDecisionRequest(boolean approve, String advID, String userID) {
-        
+        PreparedStatement stmt = null;
+        String query = "UPDATE Advertisements SET Status_ID=? AND Moderator_ID=? WHERE Advertisement_ID=?";
+        try {
+            stmt=connection.prepareStatement(query);
+            stmt.setString(2, userID);
+            stmt.setString(3, advID);
+            if (approve) {
+                stmt.setString(1, "AC");
+            }
+            else {
+                stmt.setString(1, "DI");
+            }
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     public void handleClaimRequest(String advID, String userID) {
-        
+        PreparedStatement stmt = null;
+        String query = "UPDATE Advertisements SET Moderator_ID=? WHERE Advertisement_ID=?";
+        try {
+            stmt=connection.prepareStatement(query);
+            stmt.setString(1, userID);
+            stmt.setString(2, advID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
+
