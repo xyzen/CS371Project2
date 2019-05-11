@@ -83,10 +83,23 @@ public class Controller {
         }
         return count;
     }
+    
+    private String getStatus(String status_id) {
+        switch(status_id) {
+            case "PN":
+                return "Pending";
+            case "AC":
+                return "Active";
+            case "DI":
+                return "Disapproved";
+            default:
+                return "";
+        }
+    }
         
     public void handleLoginRequest(String username, String userType) {
         PreparedStatement stmt = null;
-        String user_id;
+        int user_id;
         ResultSet rs;
         int size;
         String query = "SELECT User_ID FROM Users WHERE User_Handle=?;";
@@ -100,8 +113,8 @@ public class Controller {
                     size = getResultSetSize(rs);
                     if (size == 0)
                         return;
-                    user_id = rs.getString("User_ID");
-                    uv = new UserView(this, user_id, username);
+                    user_id = rs.getInt("User_ID");
+                    uv = new UserView(this, Integer.toString(user_id), username);
                     uv.setVisible(true);
                     lv.setVisible(false);
                 } catch (SQLException e) {
@@ -117,15 +130,15 @@ public class Controller {
                     size = getResultSetSize(rs);
                     if (size == 0)
                         return;
-                    user_id = rs.getString("User_ID");
+                    user_id = rs.getInt("User_ID");
                     query = "SELECT User_ID FROM Moderators WHERE User_ID=?;";
                     stmt=connection.prepareStatement(query);
-                    stmt.setString(1, user_id);
+                    stmt.setInt(1, user_id);
                     rs = stmt.executeQuery();
                     size = getResultSetSize(rs);
                     if (size == 0)
                         return;
-                    mv = new ModView(this, user_id, username);
+                    mv = new ModView(this, Integer.toString(user_id), username);
                     mv.setVisible(true);
                     lv.setVisible(false);
                 } catch (SQLException e) {
@@ -383,8 +396,10 @@ public class Controller {
             String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
             String month = Integer.toString(cal.get(Calendar.MONTH));
             String year = Integer.toString(cal.get(Calendar.YEAR));
+            if (month.length() == 1) month = "0" + month;
+            if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime>?";
+            query += " AND AdvDateTime>DATETIME(?)";
             var_count++;
         }
         // We now either have 1 var or 2
@@ -419,7 +434,7 @@ public class Controller {
             }
             Object[][] pending_data = new Object[count][6];
             int index = 0;
-            do {
+            while(rs.next()) {
                 String id = rs.getString("Advertisement_ID");
                 String title = rs.getString("AdvTitle");
                 String details = rs.getString("AdvDetails");
@@ -427,7 +442,7 @@ public class Controller {
                 String datetime = rs.getString("AdvDateTime");
                 String username = rs.getString("Username");
                 pending_data[index++] = new Object[] {id, title, details, price, datetime, username};
-            } while(rs.next());
+            }
             mv.populateSTDTable(pending_data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -436,31 +451,33 @@ public class Controller {
     
     public void handleModMyTableRequest(String userID) {
         PreparedStatement stmt = null;
-        String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, S.Status_Name State, AdvDateTime, U.User_Handle"
+        String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, Status_ID, AdvDateTime, U.User_Handle Username"
                 + " FROM Advertisements A"
-                + " INNER JOIN Statuses S"
                 + " INNER JOIN Users U"
-                + " ON A.Status_ID=S.Status_ID AND A.User_ID=S.User_ID"
+                + " ON A.User_ID=U.User_ID"
                 + " WHERE Moderator_ID=?;";
         try {
             stmt=connection.prepareStatement(query);
-            stmt.setInt(1, Integer.parseInt(userID));
+            stmt.setString(1, userID);
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count == 0) {
                 return;
             }
-            Object[][] user_data = new Object[count][6];
+            Object[][] user_data = new Object[count][7];
             int index = 0;
-            do {
+            rs = stmt.executeQuery();
+            rs.beforeFirst();
+            while(rs.next()) {
                 String id = rs.getString("Advertisement_ID");
                 String title = rs.getString("AdvTitle");
                 String details = rs.getString("AdvDetails");
                 String price = rs.getString("Price");
-                String status = rs.getString("State");
+                String status = getStatus(rs.getString("Status_ID"));
                 String datetime = rs.getString("AdvDateTime");
-                user_data[index++] = new Object[] {id, title, details, price, status, datetime};
-            } while(rs.next());
+                String username = rs.getString("Username");
+                user_data[index++] = new Object[] {id, title, details, price, status, datetime, username};
+            }
             mv.populateMyTable(user_data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());

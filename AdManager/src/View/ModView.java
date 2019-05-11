@@ -20,6 +20,7 @@ public class ModView extends javax.swing.JFrame {
     private Controller master;
     private String category;
     private String keyword;
+    private String str_date;
     private int date;
     private String advID;
     private String userID;
@@ -37,10 +38,12 @@ public class ModView extends javax.swing.JFrame {
         initComponents();
         master = c;
         this.userID = userID;
+        this.username = username;
         this.category=categoryComboBox.getSelectedItem().toString();
         this.date = 0;
+        str_date = "0";
         this.keyword = descriptionTextField.getText();
-        master.handleModSTDTableRequest(category, date, keyword);
+        master.handleModSTDTableRequest(category, 0, "");
     }
     
     private int getDate(String date) {
@@ -125,18 +128,20 @@ public class ModView extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Advert ID", "Title", "Description", "Price", "Date", "Username"
+                "ID", "Title", "Description", "Price", "Date", "Username"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        unclaimedAdvertisementsTable.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(unclaimedAdvertisementsTable);
+        unclaimedAdvertisementsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         claimAdButton.setText("Claim Ad");
         claimAdButton.addActionListener(new java.awt.event.ActionListener() {
@@ -226,7 +231,9 @@ public class ModView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        myAdvertisementsTable.setColumnSelectionAllowed(true);
         jScrollPane2.setViewportView(myAdvertisementsTable);
+        myAdvertisementsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         approveButton.setText("Approve");
         approveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -285,7 +292,8 @@ public class ModView extends javax.swing.JFrame {
     //a request to fill the table
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
         this.category=categoryComboBox.getSelectedItem().toString();
-        this.date = getDate(periodComboBox.getSelectedItem().toString());
+        str_date = periodComboBox.getSelectedItem().toString();
+        this.date = getDate(str_date);
         this.keyword = descriptionTextField.getText();
         master.handleModSTDTableRequest(category, date, keyword);
 
@@ -342,10 +350,7 @@ public class ModView extends javax.swing.JFrame {
     }//GEN-LAST:event_disapproveButtonActionPerformed
 
     private void myAdvertisementsTabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myAdvertisementsTabPaneMouseClicked
-        this.category=categoryComboBox.getSelectedItem().toString();
-        date = getDate(periodComboBox.getSelectedItem().toString());
-        this.keyword = descriptionTextField.getText();
-        master.handleModSTDTableRequest(category, date, keyword);
+        master.handleModMyTableRequest(userID);
     }//GEN-LAST:event_myAdvertisementsTabPaneMouseClicked
 
     /**
