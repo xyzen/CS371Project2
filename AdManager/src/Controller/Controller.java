@@ -191,7 +191,7 @@ public class Controller {
         
         String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
                 + " FROM Advertisements"
-                + " WHERE (Status_ID='AC') AND (Category_ID=?)";
+                + " WHERE Status_ID='AC' AND Category_ID=?";
         // We will always have at least one var
         var_count++;
 
@@ -208,12 +208,12 @@ public class Controller {
             if (month.length() == 1) month = "0" + month;
             if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
-            query += " AND (AdvDateTime>?)";
+            query += " AND AdvDateTime<?";
             var_count++; // 
         }
         // We now either have 1 var or 2
         if (!(keyword == "")) {
-            query += " AND ((AdvTitle LIKE ?) OR (AdvDetails LIKE ?))";
+            query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
             var_count += 2;
         }
         // We will either have 1, 2, 3, or 4 variables, each corresponding to a specific case
@@ -247,6 +247,7 @@ public class Controller {
             }
             Object[][] published_data = new Object[count][4];
             int index = 0;
+            rs = stmt.executeQuery();
             do {
                 String title = rs.getString("AdvTitle");
                 String details = rs.getString("AdvDetails");
@@ -404,12 +405,12 @@ public class Controller {
             if (month.length() == 1) month = "0" + month;
             if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
-            query += " AND (AdvDateTime>?)";
+            query += " AND AdvDateTime>?";
             var_count++; // 
         }
         // We now either have 1 var or 2
         if (!(keyword == "")) {
-            query += " AND ((AdvTitle LIKE ?) OR (AdvDetails LIKE ?))";
+            query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
             var_count += 2;
         }
         // We will either have 1, 2, 3, or 4 variables, each corresponding to a specific case
@@ -440,6 +441,7 @@ public class Controller {
             }
             Object[][] pending_data = new Object[count][6];
             int index = 0;
+            rs = stmt.executeQuery();
             do {
                 String id = rs.getString("Advertisement_ID");
                 String title = rs.getString("AdvTitle");
