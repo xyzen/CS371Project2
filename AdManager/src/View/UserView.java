@@ -369,18 +369,6 @@ public class UserView extends javax.swing.JFrame {
         this.myAdvertisementsTable.setModel(new DefaultTableModel(user_data, myAdvertisementsTableColumns));
     }
     
-    public void resetSTDTable() {
-        DefaultTableModel model = (DefaultTableModel)advertisementsTable.getModel();
-        model.setRowCount(0);
-        advertisementsTable.setModel(model);
-    }
-    
-    public void resetMyTable() {
-        DefaultTableModel model = (DefaultTableModel)myAdvertisementsTable.getModel();
-        model.setRowCount(0);
-        myAdvertisementsTable.setModel(model);
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addAdvertisementButton;
     private javax.swing.JPanel advertisementsPanel;

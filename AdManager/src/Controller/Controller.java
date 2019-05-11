@@ -212,7 +212,6 @@ public class Controller {
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count == 0) {
-                uv.resetSTDTable();
                 return;
             }
             Object[][] published_data = new Object[count][4];
@@ -243,7 +242,6 @@ public class Controller {
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count == 0) {
-                uv.resetMyTable();
                 return;
             }
             Object[][] user_data = new Object[count][6];
@@ -369,7 +367,7 @@ public class Controller {
                 return;
         }
         int var_count = 0;
-        String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, AdvDateTime, U.User_Handle"
+        String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, AdvDateTime, U.User_Handle Username"
                 + " FROM Advertisements A "
                 + " INNER JOIN Users U"
                 + " ON A.User_ID=U.User_ID "
@@ -384,11 +382,9 @@ public class Controller {
             cal.add(Calendar.DATE, -days_ago);
             String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
             String month = Integer.toString(cal.get(Calendar.MONTH));
-            if (month.length() == 1) month = "0" + month;
-            if (day.length() == 1) day = "0" + day;
             String year = Integer.toString(cal.get(Calendar.YEAR));
             date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime>DATETIME(?)";
+            query += " AND AdvDateTime>?";
             var_count++;
         }
         // We now either have 1 var or 2
@@ -419,7 +415,6 @@ public class Controller {
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count == 0) {
-                mv.resetSTDTable();
                 return;
             }
             Object[][] user_data = new Object[count][6];
@@ -429,9 +424,9 @@ public class Controller {
                 String title = rs.getString("AdvTitle");
                 String details = rs.getString("AdvDetails");
                 String price = rs.getString("Price");
-                String status = rs.getString("AdvDateTime");
-                String datetime = rs.getString("Username");
-                user_data[index++] = new Object[] {id, title, details, price, status, datetime};
+                String datetime = rs.getString("AdvDateTime");
+                String username = rs.getString("Username");
+                user_data[index++] = new Object[] {id, title, details, price, datetime, username};
             } while(rs.next());
             mv.populateSTDTable(user_data);
         } catch (SQLException e) {
@@ -440,7 +435,36 @@ public class Controller {
     }
     
     public void handleModMyTableRequest(String userID) {
-        
+        PreparedStatement stmt = null;
+        String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, S.Status_Name State, AdvDateTime, U.User_Handle"
+                + " FROM Advertisements A"
+                + " INNER JOIN Statuses S"
+                + " INNER JOIN Users U"
+                + " ON A.Status_ID=S.Status_ID AND A.User_ID=S.User_ID"
+                + " WHERE Moderator_ID=?;";
+        try {
+            stmt=connection.prepareStatement(query);
+            stmt.setInt(1, Integer.parseInt(userID));
+            ResultSet rs = stmt.executeQuery();
+            int count = getResultSetSize(rs);
+            if (count == 0) {
+                return;
+            }
+            Object[][] user_data = new Object[count][6];
+            int index = 0;
+            do {
+                String id = rs.getString("Advertisement_ID");
+                String title = rs.getString("AdvTitle");
+                String details = rs.getString("AdvDetails");
+                String price = rs.getString("Price");
+                String status = rs.getString("State");
+                String datetime = rs.getString("AdvDateTime");
+                user_data[index++] = new Object[] {id, title, details, price, status, datetime};
+            } while(rs.next());
+            mv.populateMyTable(user_data);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     public void handleDecisionRequest(boolean approve, String advID, String userID) {

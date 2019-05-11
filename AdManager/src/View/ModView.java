@@ -26,8 +26,8 @@ public class ModView extends javax.swing.JFrame {
     private String username;
     private boolean status;
     
-    private Object[] advertisementsTableColumns = { "Category", "Title", "Description", "Price" , "Date" };
-    private Object[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
+    private Object[] unclaimedAdvertisementsTableColumns = { "ID", "Title", "Description", "Price" , "Date", "Username" };
+    private Object[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date", "Username" };
     
     
     /**
@@ -38,7 +38,7 @@ public class ModView extends javax.swing.JFrame {
         master = c;
         this.userID = userID;
         this.category=categoryComboBox.getSelectedItem().toString();
-        this.date = getDate(periodComboBox.getSelectedItem().toString());
+        this.date = 0;
         this.keyword = descriptionTextField.getText();
         master.handleModSTDTableRequest(category, date, keyword);
     }
@@ -65,11 +65,11 @@ public class ModView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        unclaimedAdvertisementsTabPane = new javax.swing.JTabbedPane();
+        myAdvertisementsTabPane = new javax.swing.JTabbedPane();
         advertisementsPanel = new javax.swing.JPanel();
         categoryLabel = new javax.swing.JLabel();
-        categoryComboBox = new javax.swing.JComboBox<String>();
-        periodComboBox = new javax.swing.JComboBox<String>();
+        categoryComboBox = new javax.swing.JComboBox<>();
+        periodComboBox = new javax.swing.JComboBox<>();
         periodLabel = new javax.swing.JLabel();
         descriptionTextField = new javax.swing.JTextField();
         goButton = new javax.swing.JButton();
@@ -84,22 +84,22 @@ public class ModView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        unclaimedAdvertisementsTabPane.addMouseListener(new java.awt.event.MouseAdapter() {
+        myAdvertisementsTabPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                unclaimedAdvertisementsTabPaneMouseClicked(evt);
+                myAdvertisementsTabPaneMouseClicked(evt);
             }
         });
 
         categoryLabel.setText("Category:");
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
         categoryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoryComboBoxActionPerformed(evt);
             }
         });
 
-        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
+        periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
         periodComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 periodComboBoxActionPerformed(evt);
@@ -119,25 +119,18 @@ public class ModView extends javax.swing.JFrame {
 
         unclaimedAdvertisementsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title", "Description", "Price", "Date"
+                "Advert ID", "Title", "Description", "Price", "Date", "Username"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -205,24 +198,24 @@ public class ModView extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        unclaimedAdvertisementsTabPane.addTab("Unclaimed Advertisements", advertisementsPanel);
+        myAdvertisementsTabPane.addTab("Unclaimed Advertisements", advertisementsPanel);
 
         myAdvertisementsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Title", "Description", "Price", "Status", "Date"
+                "ID", "Title", "Description", "Price", "Status", "Date", "Username"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -265,7 +258,7 @@ public class ModView extends javax.swing.JFrame {
                 .addGap(6, 6, 6))
         );
 
-        unclaimedAdvertisementsTabPane.addTab("My Advertisements", myAdvertisementsPanel);
+        myAdvertisementsTabPane.addTab("My Advertisements", myAdvertisementsPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -273,14 +266,14 @@ public class ModView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(unclaimedAdvertisementsTabPane)
+                .addComponent(myAdvertisementsTabPane)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(unclaimedAdvertisementsTabPane)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(39, Short.MAX_VALUE)
+                .addComponent(myAdvertisementsTabPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -348,12 +341,12 @@ public class ModView extends javax.swing.JFrame {
         master.handleDecisionRequest(status, advID, userID);
     }//GEN-LAST:event_disapproveButtonActionPerformed
 
-    private void unclaimedAdvertisementsTabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unclaimedAdvertisementsTabPaneMouseClicked
+    private void myAdvertisementsTabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myAdvertisementsTabPaneMouseClicked
         this.category=categoryComboBox.getSelectedItem().toString();
         date = getDate(periodComboBox.getSelectedItem().toString());
         this.keyword = descriptionTextField.getText();
         master.handleModSTDTableRequest(category, date, keyword);
-    }//GEN-LAST:event_unclaimedAdvertisementsTabPaneMouseClicked
+    }//GEN-LAST:event_myAdvertisementsTabPaneMouseClicked
 
     /**
      * @param args the command line arguments
@@ -361,22 +354,14 @@ public class ModView extends javax.swing.JFrame {
     
     //Populates the STD table for users in the view
     public void populateSTDTable(Object[][] pending_data){
-        this.unclaimedAdvertisementsTable.setModel(new DefaultTableModel(pending_data, advertisementsTableColumns));
+        this.unclaimedAdvertisementsTable.setModel(new DefaultTableModel(pending_data, unclaimedAdvertisementsTableColumns));
     }
     
     //Populates the personal table for the user in the view
     public void populateMyTable(Object[][] claimed_data){
         this.myAdvertisementsTable.setModel(new DefaultTableModel(claimed_data, myAdvertisementsTableColumns));
     }
-    
-    public void resetSTDTable() {
-        this.unclaimedAdvertisementsTable.setModel(new DefaultTableModel(advertisementsTableColumns, 4));
-    }
-    
-    public void resetMyTable() {
-        this.myAdvertisementsTable.setModel(new DefaultTableModel(myAdvertisementsTableColumns, 4));
-    }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel advertisementsPanel;
     private javax.swing.JButton approveButton;
@@ -389,10 +374,10 @@ public class ModView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel myAdvertisementsPanel;
+    private javax.swing.JTabbedPane myAdvertisementsTabPane;
     private javax.swing.JTable myAdvertisementsTable;
     private javax.swing.JComboBox<String> periodComboBox;
     private javax.swing.JLabel periodLabel;
-    private javax.swing.JTabbedPane unclaimedAdvertisementsTabPane;
     private javax.swing.JTable unclaimedAdvertisementsTable;
     // End of variables declaration//GEN-END:variables
 }
