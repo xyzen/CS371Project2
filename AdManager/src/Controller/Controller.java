@@ -84,7 +84,7 @@ public class Controller {
         return count;
     }
     
-    private String getStatus(String status_id) {
+    public String getStatus(String status_id) {
         switch(status_id) {
             case "PN":
                 return "Pending";
@@ -93,10 +93,43 @@ public class Controller {
             case "DI":
                 return "Disapproved";
             default:
-                return "";
+                return "ERROR";
         }
     }
-        
+    
+    public int getDate (String date) {
+        switch(date) {
+            case "Last 3 Months":
+                return 3;
+            case "Last 6 Months":
+                return 6;
+            case "Last 12 Months":
+                return 12;
+            default:
+                return 0;
+        }
+    }
+    
+    public String getCategory(String cat) {
+        switch (cat) {
+            case "Housing":
+                cat = "HOU";
+                break;
+            case "Electronics":
+                cat = "ELC";
+                break;
+            case "Cars and Trucks":
+                cat = "CAT";
+                break;
+            case "Child Care":
+                cat = "CCA";
+                break;
+            default:
+                break;
+        }
+            return cat;
+    }
+    
     public void handleLoginRequest(String username, String userType) {
         PreparedStatement stmt = null;
         int user_id;
@@ -151,29 +184,14 @@ public class Controller {
     public void handleUserSTDTableRequest(String category, int months_ago, String keyword){
         PreparedStatement stmt = null;
         
-        switch (category) {
-            case "Housing":
-                category = "HOU";
-                break;
-            case "Electronics":
-                category = "ELC";
-                break;
-            case "Cars and Trucks":
-                category = "CAT";
-                break;
-            case "Child Care":
-                category = "CCA";
-                break;
-            default:
-                return;
-        }
+        category = getCategory(category);
         
         // Keeps count of question marks in the query
         int var_count = 0;
         
         String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
                 + " FROM Advertisements"
-                + " WHERE Status_ID='AC' AND Category_ID=?";
+                + " WHERE (Status_ID='AC') AND (Category_ID=?)";
         // We will always have at least one var
         var_count++;
 
@@ -190,12 +208,12 @@ public class Controller {
             if (month.length() == 1) month = "0" + month;
             if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime>DATETIME(?)";
+            query += " AND (AdvDateTime>?)";
             var_count++; // 
         }
         // We now either have 1 var or 2
         if (!(keyword == "")) {
-            query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
+            query += " AND ((AdvTitle LIKE ?) OR (AdvDetails LIKE ?))";
             var_count += 2;
         }
         // We will either have 1, 2, 3, or 4 variables, each corresponding to a specific case
@@ -305,6 +323,8 @@ public class Controller {
         String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
         String month = Integer.toString(cal.get(Calendar.MONTH));
         String year = Integer.toString(cal.get(Calendar.YEAR));
+        if (month.length() == 1) month = "0" + month;
+        if (day.length() == 1) day = "0" + day;
         String date_arg = year + "-" + month + "-" + day;
         try {
             stmt=connection.prepareStatement(query);
@@ -363,22 +383,7 @@ public class Controller {
     
     public void handleModSTDTableRequest(String category, int months_ago, String keyword) {
         PreparedStatement stmt = null;
-        switch (category) {
-            case "Housing":
-                category = "HOU";
-                break;
-            case "Electronics":
-                category = "ELC";
-                break;
-            case "Cars and Trucks":
-                category = "CAT";
-                break;
-            case "Child Care":
-                category = "CCA";
-                break;
-            default:
-                return;
-        }
+        category = getCategory(category);
         int var_count = 0;
         String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, AdvDateTime, U.User_Handle Username"
                 + " FROM Advertisements A"
@@ -399,16 +404,17 @@ public class Controller {
             if (month.length() == 1) month = "0" + month;
             if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime>DATETIME(?)";
-            var_count++;
+            query += " AND (AdvDateTime>?)";
+            var_count++; // 
         }
         // We now either have 1 var or 2
         if (!(keyword == "")) {
-            query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
+            query += " AND ((AdvTitle LIKE ?) OR (AdvDetails LIKE ?))";
             var_count += 2;
         }
-        // We will either have 1, 2, 3 variables, each corresponding to a specific case
+        // We will either have 1, 2, 3, or 4 variables, each corresponding to a specific case
         query += ";";
+        
         try {
             stmt=connection.prepareStatement(query);
             switch (var_count) {
@@ -514,4 +520,3 @@ public class Controller {
         }
     }
 }
-

@@ -328,22 +328,8 @@ public class UserView extends javax.swing.JFrame {
         
         this.category=categoryComboBox.getSelectedItem().toString();
         str_date = periodComboBox.getSelectedItem().toString();
-        switch(str_date) {
-            case "Last 3 Months":
-                date = 3;
-                break;
-            case "Last 6 Months":
-                date = 6;
-                break;
-            case "Last 12 Months":
-                date = 12;
-                break;
-            default:
-                date = 0;
-                break;
-        }
+        date = master.getDate(str_date);
         this.keyword = descriptionTextField.getText();
-
         master.handleUserSTDTableRequest(category, date, keyword);
     }//GEN-LAST:event_goButtonActionPerformed
 

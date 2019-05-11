@@ -46,19 +46,6 @@ public class ModView extends javax.swing.JFrame {
         master.handleModSTDTableRequest("CAT", 0, "");
     }
     
-    private int getDate(String date) {
-        switch(date) {
-            case "Last 3 Months":
-                return 3;
-            case "Last 6 Months":
-                return 6;
-            case "Last 12 Months":
-                return 12;
-            default:
-                return 0;
-        }
-    }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -293,7 +280,7 @@ public class ModView extends javax.swing.JFrame {
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
         this.category=categoryComboBox.getSelectedItem().toString();
         str_date = periodComboBox.getSelectedItem().toString();
-        this.date = getDate(str_date);
+        this.date = master.getDate(str_date);
         this.keyword = descriptionTextField.getText();
         master.handleModSTDTableRequest(category, date, keyword);
 
@@ -326,14 +313,13 @@ public class ModView extends javax.swing.JFrame {
     private void claimAdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claimAdButtonActionPerformed
         // TODO add your handling code here:
         int row = this.unclaimedAdvertisementsTable.getSelectedRow();
-        
         if(row>=0){
             advID=(String)unclaimedAdvertisementsTable.getValueAt(row, 0);
         }
         master.handleClaimRequest(advID, userID);
         this.category=categoryComboBox.getSelectedItem().toString();
         str_date = periodComboBox.getSelectedItem().toString();
-        this.date = getDate(str_date);
+        this.date = master.getDate(str_date);
         this.keyword = descriptionTextField.getText();
         master.handleModSTDTableRequest(category, date, keyword);
     }//GEN-LAST:event_claimAdButtonActionPerformed
