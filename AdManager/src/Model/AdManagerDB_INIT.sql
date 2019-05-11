@@ -83,7 +83,7 @@ values ('2010 Sedan Subaru', '2010 sedan car in great shape for sale', '2017-02-
 ('Babby Sitter','Can sit your kids whenever you need', '2018-11-15', 20, 'CCA', 4, 1, 'AC'),
 ('Tonka Truck','Still in the packaging', '2019-03-20', 80, 'CAT', 2, 1, 'AC'),
 ('2011 MacBook Pro', 'I know what I have, no low ballers', '2018-11-14', 314 , 'ELC', 3, NULL, 'PN' ),
-('2013 Windows Desktop', 'Custom Built', '2019-05-09', 1000, 'ELC', 3, 1, 'DI' );
+('2013 Windows Desktop', 'Custom Built', '2019-05-09', 1000, 'ELC', 3, 1, 'DI' ),
 ('Xbox One X', 'Hardly used comes with 2 controllors', '2019-01-20', 224, 'ELC', 2, 1, 'AC'),
 ('bABY Crib', 'Electric baby rocker with ambiant noises', '2019-04-30', 90, 'CCA', 1, 2, 'AC'),
 ('Toyota Corrola','1998, black, miles:207xxx', '2019-4-15', 500, 'CAT', 3, 1, 'AC'),
