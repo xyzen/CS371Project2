@@ -39,11 +39,6 @@ public class ModView extends javax.swing.JFrame {
         master = c;
         this.userID = userID;
         this.username = username;
-        this.category=categoryComboBox.getSelectedItem().toString();
-        this.date = 0;
-        str_date = "0";
-        this.keyword = descriptionTextField.getText();
-        master.handleModSTDTableRequest("CAT", 0, "");
     }
     
     /**
@@ -73,6 +68,12 @@ public class ModView extends javax.swing.JFrame {
         approveButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        advertisementsPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                advertisementsPanelComponentShown(evt);
+            }
+        });
 
         categoryLabel.setText("Category:");
 
@@ -345,6 +346,14 @@ public class ModView extends javax.swing.JFrame {
     private void myAdvertisementsPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_myAdvertisementsPanelComponentShown
         master.handleModMyTableRequest(userID);        // TODO add your handling code here:
     }//GEN-LAST:event_myAdvertisementsPanelComponentShown
+
+    private void advertisementsPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_advertisementsPanelComponentShown
+        category=categoryComboBox.getSelectedItem().toString();
+        str_date = "0";
+        date = 0;
+        keyword = descriptionTextField.getText();
+        master.handleUserSTDTableRequest(category, date, keyword);        // TODO add your handling code here:
+    }//GEN-LAST:event_advertisementsPanelComponentShown
 
     /**
      * @param args the command line arguments

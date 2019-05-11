@@ -205,7 +205,7 @@ public class Controller {
         int days_ago = months_ago*30;
         String date_arg = "";
         
-        if (months_ago > 0) {
+        if (months_ago >= 1) {
             Calendar cal = Calendar.getInstance();
             cal.getTime();
             cal.add(Calendar.DATE, -days_ago);
@@ -215,7 +215,7 @@ public class Controller {
             if (month.length() == 1) month = "0" + month;
             if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime<DATETIME(?)";
+            query += " AND AdvDateTime>DATE(?)";
             var_count++; // 
         }
         // We now either have 1 var or 2
@@ -256,7 +256,6 @@ public class Controller {
             
             Object[][] data = new Object[count][4];
             int index = 0;
-            rs = stmt.executeQuery();
             do {
                 String title = rs.getString("AdvTitle");
                 String details = rs.getString("AdvDetails");
@@ -415,7 +414,7 @@ public class Controller {
             if (month.length() == 1) month = "0" + month;
             if (day.length() == 1) day = "0" + day;
             date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime>DATETIME(?)";
+            query += " AND AdvDateTime>DATE(?)";
             var_count++; // 
         }
         // We now either have 1 var or 2
@@ -452,7 +451,6 @@ public class Controller {
             }
             Object[][] pending_data = new Object[count][6];
             int index = 0;
-            rs = stmt.executeQuery();
             do {
                 String id = rs.getString("Advertisement_ID");
                 String title = rs.getString("AdvTitle");
