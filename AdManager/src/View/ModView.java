@@ -66,18 +66,13 @@ public class ModView extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         myAdvertisementsTable = new javax.swing.JTable();
         approveButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        advertisementsPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                advertisementsPanelComponentShown(evt);
-            }
-        });
-
         categoryLabel.setText("Category:");
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
         categoryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoryComboBoxActionPerformed(evt);
@@ -230,6 +225,13 @@ public class ModView extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Disapprove");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                disapproveButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout myAdvertisementsPanelLayout = new javax.swing.GroupLayout(myAdvertisementsPanel);
         myAdvertisementsPanel.setLayout(myAdvertisementsPanelLayout);
         myAdvertisementsPanelLayout.setHorizontalGroup(
@@ -240,6 +242,8 @@ public class ModView extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
                     .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(approveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -247,9 +251,11 @@ public class ModView extends javax.swing.JFrame {
             myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myAdvertisementsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(approveButton)
+                .addGroup(myAdvertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(approveButton)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                 .addGap(6, 6, 6))
         );
 
@@ -262,7 +268,7 @@ public class ModView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(myAdvertisementsTabPane)
-                .addGap(107, 107, 107))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,14 +353,6 @@ public class ModView extends javax.swing.JFrame {
         master.handleModMyTableRequest(userID);        // TODO add your handling code here:
     }//GEN-LAST:event_myAdvertisementsPanelComponentShown
 
-    private void advertisementsPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_advertisementsPanelComponentShown
-        category=categoryComboBox.getSelectedItem().toString();
-        str_date = "0";
-        date = 0;
-        keyword = descriptionTextField.getText();
-        master.handleUserSTDTableRequest(category, date, keyword);        // TODO add your handling code here:
-    }//GEN-LAST:event_advertisementsPanelComponentShown
-
     /**
      * @param args the command line arguments
      */
@@ -378,6 +376,7 @@ public class ModView extends javax.swing.JFrame {
     private javax.swing.JLabel descriptionLabel;
     private javax.swing.JTextField descriptionTextField;
     private javax.swing.JButton goButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel myAdvertisementsPanel;

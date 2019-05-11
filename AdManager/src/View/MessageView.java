@@ -49,7 +49,7 @@ public class MessageView extends javax.swing.JFrame {
                 okButtonMouseClicked(evt);
             }
         });
-        getContentPane().add(okButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, -1, -1));
+        getContentPane().add(okButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

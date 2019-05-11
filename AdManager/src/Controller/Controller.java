@@ -152,7 +152,6 @@ public class Controller {
                     user_id = rs.getInt("User_ID");
                     uv = new UserView(this, Integer.toString(user_id), username);
                     uv.setVisible(true);
-                    lv.setVisible(false);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
@@ -174,7 +173,7 @@ public class Controller {
                     stmt.setInt(1, user_id);
                     rs = stmt.executeQuery();
                     size = getResultSetSize(rs);
-                    if (size == 0) {
+                    if (size < 1) {
                         mesv = new MessageView("User is not a Moderator!");
                         return;
                     }
@@ -253,7 +252,6 @@ public class Controller {
                 mesv = new MessageView("No result found.");
                 return;
             }
-            
             Object[][] data = new Object[count][4];
             int index = 0;
             do {
@@ -363,7 +361,7 @@ public class Controller {
         }
         PreparedStatement stmt = null;
         String query = "UPDATE Advertisements"
-                + " SET AdvTitle=?, AdvDetails=?, Price=?"
+                + " SET AdvTitle=?, AdvDetails=?, Price=?, Status_ID='PN'"
                 + " WHERE Advertisement_ID=?";
         try {
             stmt=connection.prepareStatement(query);
@@ -399,7 +397,7 @@ public class Controller {
                 + " FROM Advertisements A"
                 + " INNER JOIN Users U"
                 + " ON A.User_ID=U.User_ID"
-                + " WHERE Moderator_ID IS NULL";
+                + " WHERE Status_ID='PN' AND Moderator_ID IS NULL";
         
         int days_ago = months_ago*30;
         String date_arg = "";
@@ -502,17 +500,16 @@ public class Controller {
     
     public void handleDecisionRequest(boolean approve, String advID, String userID) {
         PreparedStatement stmt = null;
-        String query = "UPDATE Advertisements SET Status_ID=? AND Moderator_ID=? WHERE Advertisement_ID=?";
+        String query = "UPDATE Advertisements SET Status_ID=? WHERE Advertisement_ID=?";
         try {
             stmt=connection.prepareStatement(query);
-            stmt.setString(2, userID);
-            stmt.setString(3, advID);
             if (approve) {
-                stmt.setString(1, "AC");
+                stmt.setString(1, new String("AC"));
             }
             else {
-                stmt.setString(1, "DI");
+                stmt.setString(1, new String("DI"));
             }
+            stmt.setString(2, advID);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

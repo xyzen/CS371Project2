@@ -78,7 +78,7 @@ public class UserView extends javax.swing.JFrame {
 
         categoryLabel.setText("Category:");
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
 
         periodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Last 3 Months", "Last 6 Months", "Last 12 Months", "Life" }));
 
@@ -110,11 +110,6 @@ public class UserView extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
-            }
-        });
-        advertisementsTable.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                advertisementsTableComponentShown(evt);
             }
         });
         jScrollPane1.setViewportView(advertisementsTable);
@@ -297,6 +292,7 @@ public class UserView extends javax.swing.JFrame {
             advID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
         master.handleEditButton(advID, userID);
+        master.handleUserMyTableRequest(userID);
     }//GEN-LAST:event_editButtonActionPerformed
 
     //When the "Delete" button is pushed, the view will tell the controller that
@@ -335,14 +331,6 @@ public class UserView extends javax.swing.JFrame {
     private void myAdvertisementsPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_myAdvertisementsPanelComponentShown
         master.handleUserMyTableRequest(userID);
     }//GEN-LAST:event_myAdvertisementsPanelComponentShown
-
-    private void advertisementsTableComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_advertisementsTableComponentShown
-        category=categoryComboBox.getSelectedItem().toString();
-        str_date = "0";
-        date = 0;
-        keyword = descriptionTextField.getText();
-        master.handleUserSTDTableRequest(category, date, keyword);
-    }//GEN-LAST:event_advertisementsTableComponentShown
 
     /**
      * @param published_data the command line arguments
