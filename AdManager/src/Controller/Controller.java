@@ -1,10 +1,8 @@
 // Reference: DB_Classroom/src/db/DBManager.java
-
 /**
- * 
+ *
  * @author Tyler
  */
-
 package Controller;
 
 import java.sql.Connection;
@@ -15,9 +13,10 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Calendar;
 import View.*;
+import Model.QueryBuilder;
 
 public class Controller {
-    
+
     private Connection connection;
     private LoginView lv;
     private AddView av;
@@ -25,18 +24,18 @@ public class Controller {
     private ModView mv;
     private UserView uv;
     private MessageView mesv;
-    
+
     public Controller() {
         lv = new LoginView(this);
     }
-    
+
     public void start() {
         lv.setVisible(true);
     }
-        
+
     /**
-    * @param args
-    */
+     * @param args
+     */
     public static void main(String[] args) {
         Controller c = new Controller();
         try {
@@ -47,7 +46,7 @@ public class Controller {
             System.out.println("Could not connect to database.");
         }
     }
-    
+
     public void connect(String userName, String password, String serverName, String portNumber, String dbName) throws SQLException, InstantiationException, IllegalAccessException {
         System.out.println("Loading driver...");
 
@@ -69,9 +68,9 @@ public class Controller {
                 + ":" + portNumber + "/" + dbName,
                 connectionProps);
         System.out.println("Connected to database");
-        this.connection=conn;
+        this.connection = conn;
     }
-    
+
     private int getResultSetSize(ResultSet rs) {
         int count = 0;
         try {
@@ -84,22 +83,9 @@ public class Controller {
         }
         return count;
     }
-    
-    public String getStatus(String status_id) {
-        switch(status_id) {
-            case "PN":
-                return "Pending";
-            case "AC":
-                return "Active";
-            case "DI":
-                return "Disapproved";
-            default:
-                return "ERROR";
-        }
-    }
-    
-    public int getDate (String date) {
-        switch(date) {
+
+    private int getNumMonths(String period) {
+        switch (period) {
             case "Last 3 Months":
                 return 3;
             case "Last 6 Months":
@@ -111,242 +97,161 @@ public class Controller {
         }
     }
     
-    public String getCategory(String cat) {
-        switch (cat) {
-            case "Housing":
-                cat = "HOU";
+    private QueryBuilder buildUserSTDQuery(String category, String months_ago, String keyword) {
+        QueryBuilder qb = new QueryBuilder();
+        qb.setColumns(new String[] {"Title", "Details", "Price", "Date_Posted"}, 4);
+        qb.setCondition("Status='Active'");
+        if(!"All".equals(category))
+            qb.setCategoryCondition(category);
+        qb.setDateCondition(getNumMonths(months_ago));
+        qb.setKeywordCondition(keyword);
+        return qb;
+    }
+    
+    private QueryBuilder buildModSTDQuery(String modID, String category, String months_ago, String keyword) {
+        QueryBuilder qb = new QueryBuilder();
+        qb.setColumns(new String[] {"ID", "Title", "Details", "Price", "Date_Posted", "Username"}, 6);
+        qb.setCategoryCondition(category);
+        qb.setDateCondition(getNumMonths(months_ago));
+        qb.setKeywordCondition(keyword);
+        qb.setCondition("Status='Pending'");
+        qb.setCondition("User_ID!=?", modID);
+        qb.setCondition("Mod_ID IS NULL");
+        return qb;
+    }
+
+    private PreparedStatement buildStatement(QueryBuilder qb) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement(qb.buildQuery());
+        for (int i = 0; i < qb.num_args; i++) {
+            if (qb.args[i] instanceof Integer) {
+                stmt.setInt(i+1, (int) qb.args[i]);
+            }
+            if (qb.args[i] instanceof String) {
+                stmt.setString(i+1, (String) qb.args[i]);
+            }
+        }
+        return stmt;
+    }
+    
+    private Object[][] buildData(ResultSet rs, int count, QueryBuilder qb) throws SQLException {
+        Object data[][] = new Object[count][qb.num_cols];
+        int index = 0;
+        do {
+            Object[] temp = new Object[qb.num_cols];
+            for(int i = 0; i < qb.num_cols; i++)
+                temp[i] = rs.getString(qb.columns[i]);
+            data[index++] = temp;
+        } while(rs.next());
+        return data;
+    }
+
+    private void handleUserLogin(String username) {
+        String query = "SELECT User_ID from Users WHERE User_Handle=?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            ;
+            if (getResultSetSize(rs) < 1) {
+                mesv = new MessageView("User not found!");
+                return;
+            }
+            uv = new UserView(this, rs.getString("User_ID"), username);
+            uv.setVisible(true);
+            lv.setVisible(false);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void handleModLogin(String username) {
+        String query = "SELECT M.User_ID from Moderators M"
+                + " INNER JOIN Users U"
+                + " ON M.User_ID=U.User_ID"
+                + " WHERE U.User_Handle=?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (getResultSetSize(rs) < 1) {
+                mesv = new MessageView("User not found!");
+                return;
+            }
+            mv = new ModView(this, rs.getString("User_ID"), username);
+            mv.setVisible(true);
+            lv.setVisible(false);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void handleLoginRequest(String username, String userType) {
+        switch (userType) {
+            case "User":
+                handleUserLogin(username);
                 break;
-            case "Electronics":
-                cat = "ELC";
-                break;
-            case "Cars and Trucks":
-                cat = "CAT";
-                break;
-            case "Child Care":
-                cat = "CCA";
+            case "Moderator":
+                handleModLogin(username);
                 break;
             default:
                 break;
         }
-            return cat;
     }
-    
-    public void handleLoginRequest(String username, String userType) {
-        PreparedStatement stmt = null;
-        int user_id;
-        ResultSet rs;
-        int size;
-        String query = "SELECT User_ID FROM Users WHERE User_Handle=?;";
-        switch(userType) {
-            
-            case "User":
-                try {
-                    stmt=connection.prepareStatement(query);
-                    stmt.setString(1, username);
-                    rs = stmt.executeQuery();
-                    size = getResultSetSize(rs);
-                    if (size == 0) {
-                        mesv = new MessageView("User not found!");
-                        return;
-                    }
-                    user_id = rs.getInt("User_ID");
-                    uv = new UserView(this, Integer.toString(user_id), username);
-                    uv.setVisible(true);
-                    lv.setVisible(false);
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
-                
-            case "Moderator":
-                try {
-                    stmt=connection.prepareStatement(query);
-                    stmt.setString(1, username);
-                    rs = stmt.executeQuery();
-                    size = getResultSetSize(rs);
-                    if (size == 0) {
-                        mesv = new MessageView("User not found!");
-                        return;
-                    }
-                    user_id = rs.getInt("User_ID");
-                    query = "SELECT User_ID FROM Moderators WHERE User_ID=?;";
-                    stmt=connection.prepareStatement(query);
-                    stmt.setInt(1, user_id);
-                    rs = stmt.executeQuery();
-                    size = getResultSetSize(rs);
-                    if (size < 1) {
-                        mesv = new MessageView("User is not a Moderator!");
-                        return;
-                    }
-                    mv = new ModView(this, Integer.toString(user_id), username);
-                    mv.setVisible(true);
-                    lv.setVisible(false);
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
-        }
-    }
-    
-    public void handleUserSTDTableRequest(String category, int months_ago, String keyword){
-        PreparedStatement stmt = null;
-        
-        // Keeps count of question marks in the query
-        int var_count = 0;
-        int cat_ndx;
-        int mnth_ndx;
-        int kywrd_ndx;
-        
-        String query = "SELECT AdvTitle, AdvDetails, Price, AdvDateTime"
-                + " FROM Advertisements"
-                + " WHERE Status_ID='AC'";
-        
-        category = getCategory(category);
-        if (!"All".equals(category)) {
-            query += " AND Category_ID=?";
-            cat_ndx = ++var_count;
-        }
-        else
-            cat_ndx = 0;
 
-        int days_ago = months_ago*30;
+    public void handleUserSTDTableRequest(String category, String months_ago, String keyword) {
         
-        String date_arg = ""; 
-        if (months_ago >= 1) {
-            
-            Calendar cal = Calendar.getInstance();
-            cal.getTime();
-            cal.add(Calendar.DATE, -days_ago);
-            
-            
-            String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
-            String month = Integer.toString(cal.get(Calendar.MONTH));
-            String year = Integer.toString(cal.get(Calendar.YEAR));
-            
-            
-            if (month.length() == 1) month = "0" + month;
-            if (day.length() == 1) day = "0" + day;
-            date_arg = year + "-" + month + "-" + day;
-            
-            query += " AND AdvDateTime>DATE(?)";
-            mnth_ndx = ++var_count; // 
-        }
-        else
-            mnth_ndx = 0;
-        
-        
-        if (!("".equals(keyword))) {
-            query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
-            kywrd_ndx = ++var_count;
-        }
-        else
-            kywrd_ndx = 0;
-            
-        query += ";";
-        
+        QueryBuilder qb = buildUserSTDQuery(category, months_ago, keyword);
         try {
-            stmt=connection.prepareStatement(query);
-            if (cat_ndx > 0)
-                stmt.setString(cat_ndx, category);
-            if (mnth_ndx > 0)
-                stmt.setString(mnth_ndx, date_arg);
-            if (kywrd_ndx > 0)
-                stmt.setString(kywrd_ndx, keyword);
+            PreparedStatement stmt = buildStatement(qb);
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count < 1) {
                 uv.resetSTDTable();
                 return;
             }
-            Object[][] data = new Object[count][4];
-            int index = 0;
-            do {
-                String title = rs.getString("AdvTitle");
-                String details = rs.getString("AdvDetails");
-                String price = rs.getString("Price");
-                String datetime = rs.getString("AdvDateTime");
-                data[index++] = new Object[] {title, details, price, datetime};
-            } while (rs.next());
+            Object[][] data = buildData(rs, count, qb);
             uv.populateSTDTable(data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    public void handleUserMyTableRequest(String userID){
-        PreparedStatement stmt = null;
-        String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, S.Status_Name State, AdvDateTime"
-                + " FROM Advertisements A"
-                + " INNER JOIN Statuses S"
-                + " ON A.Status_ID=S.Status_ID"
-                + " WHERE User_ID=?;";
+
+    public void handleUserMyTableRequest(String userID) {
+        QueryBuilder qb = new QueryBuilder();
+        qb.setColumns(new String[]{"ID", "Title", "Details", "Price", "Status", "Date_Posted"}, 6);
+        qb.setCondition("User_ID=?");
         try {
-            stmt=connection.prepareStatement(query);
-            stmt.setString(1, userID);
+            PreparedStatement stmt = connection.prepareStatement(qb.buildQuery());
+            stmt.setInt(1, Integer.parseInt(userID));
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count == 0) {
                 uv.resetMyTable();
                 return;
             }
-            Object[][] data = new Object[count][6];
-            int index = 0;
-            do {
-                String id = rs.getString("Advertisement_ID");
-                String title = rs.getString("AdvTitle");
-                String details = rs.getString("AdvDetails");
-                String price = rs.getString("Price");
-                String status = rs.getString("State");
-                String datetime = rs.getString("AdvDateTime");
-                data[index++] = new Object[] {id, title, details, price, status, datetime};
-            } while(rs.next());
+            Object[][] data = buildData(rs, count, qb);
             uv.populateMyTable(data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     //The button pushed tells the controller to create and set the view to be visible.
-    public void handleAddButton(String userID, String username){
+    public void handleAddButton(String userID, String username) {
         av = new AddView(this, userID, username);
         av.setVisible(true);
     }
-    
+
     public void handleAddRequest(String title, String desc, String cat, String price, String user_id) {
-        switch (cat) {
-            case "Housing":
-                cat = "HOU";
-                break;
-            case "Electronics":
-                cat = "ELC";
-                break;
-            case "Cars and Trucks":
-                cat = "CAT";
-                break;
-            case "Child Care":
-                cat = "CCA";
-                break;
-            default:
-                return;
-        }
-        PreparedStatement stmt = null;
+     
         String query = "INSERT INTO Advertisements(AdvTitle, AdvDetails, AdvDateTime, Price, Category_ID, User_ID, Status_ID)"
-                + "VALUES (?, ?, ?, ?, ?, ?, 'PN');";
-        Calendar cal = Calendar.getInstance();
-        cal.getTime();
-        String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
-        String month = Integer.toString(cal.get(Calendar.MONTH));
-        String year = Integer.toString(cal.get(Calendar.YEAR));
-        if (month.length() == 1) month = "0" + month;
-        if (day.length() == 1) day = "0" + day;
-        String date_arg = year + "-" + month + "-" + day;
+                + "VALUES (?, ?, CURRENT_TIME(), ?, ?, ?, 'PN');";
         try {
-            stmt=connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, title);
             stmt.setString(2, desc);
-            stmt.setString(3, date_arg);
-            stmt.setString(4, price);
-            stmt.setString(5, cat);
+            stmt.setString(3, price);
+            stmt.setString(4, cat);
             stmt.setInt(6, Integer.parseInt(user_id));
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -354,23 +259,23 @@ public class Controller {
         }
         av.setVisible(false);
     }
-    
+
     public void handleEditButton(String adv_id, String user_id) {
         ev = new EditView(this, adv_id, user_id);
         ev.setVisible(true);
     }
-    
+
     public void handleEditRequest(String advID, String title, String details, String price, String user_id) {
         if ("".equals(title) | "".equals(details) | "".equals(price)) {
             ev.setVisible(false);
+            mesv = new MessageView("Please fill all fields.");
             return;
         }
-        PreparedStatement stmt = null;
         String query = "UPDATE Advertisements"
                 + " SET AdvTitle=?, AdvDetails=?, Price=?, Status_ID='PN'"
                 + " WHERE Advertisement_ID=?";
         try {
-            stmt=connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, title);
             stmt.setString(2, details);
             stmt.setString(3, price);
@@ -381,138 +286,64 @@ public class Controller {
         }
         ev.setVisible(false);
     }
-    
+
     public void handleDeleteRequest(String advID) {
-        PreparedStatement stmt = null;
         String query = "DELETE FROM Advertisements"
                 + " WHERE Advertisement_ID=?";
         try {
-            stmt=connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, advID);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    public void handleModSTDTableRequest(String category, int months_ago, String keyword) {
-        PreparedStatement stmt = null;
-        category = getCategory(category);
-        int var_count = 0;
-        String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, AdvDateTime, U.User_Handle Username"
-                + " FROM Advertisements A"
-                + " INNER JOIN Users U"
-                + " ON A.User_ID=U.User_ID"
-                + " WHERE Status_ID='PN' AND Moderator_ID IS NULL";
+
+    public void handleModSTDTableRequest(String modID, String category, String months_ago, String keyword) {
         
-        int days_ago = months_ago*30;
-        String date_arg = "";
-        
-        if (months_ago > 0) {
-            Calendar cal = Calendar.getInstance();
-            cal.getTime();
-            cal.add(Calendar.DATE, -days_ago);
-            String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
-            String month = Integer.toString(cal.get(Calendar.MONTH));
-            String year = Integer.toString(cal.get(Calendar.YEAR));
-            if (month.length() == 1) month = "0" + month;
-            if (day.length() == 1) day = "0" + day;
-            date_arg = year + "-" + month + "-" + day;
-            query += " AND AdvDateTime>DATE(?)";
-            var_count++; // 
-        }
-        // We now either have 1 var or 2
-        if (!(keyword == "")) {
-            query += " AND (AdvTitle LIKE ? OR AdvDetails LIKE ?)";
-            var_count += 2;
-        }
-        // We will either have 1, 2, 3, or 4 variables, each corresponding to a specific case
-        query += ";";
-        
+        QueryBuilder qb = buildModSTDQuery(modID, category, months_ago, keyword);
         try {
-            stmt=connection.prepareStatement(query);
-            switch (var_count) {
-                case(1):
-                    stmt.setString(1, date_arg);
-                    break;
-                case (2):
-                    stmt.setString(1, "%" + keyword + "%");
-                    stmt.setString(2, "%" + keyword + "%");
-                    break;
-                case (3):
-                    stmt.setString(1, date_arg);
-                    stmt.setString(2, "%" + keyword + "%");
-                    stmt.setString(3, "%" + keyword + "%");
-                    break;
-                default:
-                    break;
-            }
+            PreparedStatement stmt = buildStatement(qb);
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count < 1) {
                 mv.resetSTDTable();
                 return;
             }
-            Object[][] pending_data = new Object[count][6];
-            int index = 0;
-            do {
-                String id = rs.getString("Advertisement_ID");
-                String title = rs.getString("AdvTitle");
-                String details = rs.getString("AdvDetails");
-                String price = rs.getString("Price");
-                String datetime = rs.getString("AdvDateTime");
-                String username = rs.getString("Username");
-                pending_data[index++] = new Object[] {id, title, details, price, datetime, username};
-            } while(rs.next());
-            mv.populateSTDTable(pending_data);
+            Object[][] data = buildData(rs, count, qb);
+            mv.populateSTDTable(data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    public void handleModMyTableRequest(String userID) {
-        PreparedStatement stmt = null;
-        String query = "SELECT Advertisement_ID, AdvTitle, AdvDetails, Price, Status_ID, AdvDateTime, U.User_Handle Username"
-                + " FROM Advertisements A"
-                + " INNER JOIN Users U"
-                + " ON A.User_ID=U.User_ID"
-                + " WHERE Moderator_ID=?;";
+
+    public void handleModMyTableRequest(String modID) {
+        QueryBuilder qb = new QueryBuilder();
+        qb.setColumns(new String[] {"ID", "Title", "Details", "Price", "Status", "Date_Posted", "Username"}, 7);
+        qb.setCondition("Mod_ID=?");
         try {
-            stmt=connection.prepareStatement(query);
-            stmt.setString(1, userID);
+            PreparedStatement stmt = connection.prepareStatement(qb.buildQuery());
+            stmt.setInt(1, Integer.parseInt(modID));
             ResultSet rs = stmt.executeQuery();
             int count = getResultSetSize(rs);
             if (count == 0) {
                 mv.resetMyTable();
                 return;
             }
-            Object[][] user_data = new Object[count][7];
-            int index = 0;
-            do {
-                String id = rs.getString("Advertisement_ID");
-                String title = rs.getString("AdvTitle");
-                String details = rs.getString("AdvDetails");
-                String price = rs.getString("Price");
-                String status = getStatus(rs.getString("Status_ID"));
-                String datetime = rs.getString("AdvDateTime");
-                String username = rs.getString("Username");
-                user_data[index++] = new Object[] {id, title, details, price, status, datetime, username};
-            } while(rs.next());
-            mv.populateMyTable(user_data);
+            Object[][] data = buildData(rs, count, qb);
+            mv.populateMyTable(data);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void handleDecisionRequest(boolean approve, String advID, String userID) {
-        PreparedStatement stmt = null;
         String query = "UPDATE Advertisements SET Status_ID=? WHERE Advertisement_ID=?";
         try {
-            stmt=connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query);
             if (approve) {
                 stmt.setString(1, new String("AC"));
-            }
-            else {
+            } else {
                 stmt.setString(1, new String("DI"));
             }
             stmt.setString(2, advID);
@@ -521,12 +352,12 @@ public class Controller {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void handleClaimRequest(String advID, String userID) {
         PreparedStatement stmt = null;
         String query = "UPDATE Advertisements SET Moderator_ID=? WHERE Advertisement_ID=?";
         try {
-            stmt=connection.prepareStatement(query);
+            stmt = connection.prepareStatement(query);
             stmt.setString(1, userID);
             stmt.setString(2, advID);
             stmt.executeUpdate();

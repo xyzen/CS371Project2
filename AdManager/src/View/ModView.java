@@ -20,12 +20,11 @@ public class ModView extends javax.swing.JFrame {
     private Controller master;
     private String category;
     private String keyword;
-    private String str_date;
-    private int date;
+    private String months_ago;
     private String advID;
     private String userID;
     private String username;
-    private boolean status;
+    private boolean approval;
     
     private Object[] unclaimedAdvertisementsTableColumns = { "ID", "Title", "Description", "Price" , "Date", "Username" };
     private Object[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date", "Username" };
@@ -284,11 +283,10 @@ public class ModView extends javax.swing.JFrame {
     //button was pushed. The controller will be given the query terms to handle
     //a request to fill the table
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
-        this.category=categoryComboBox.getSelectedItem().toString();
-        str_date = periodComboBox.getSelectedItem().toString();
-        this.date = master.getDate(str_date);
-        this.keyword = descriptionTextField.getText();
-        master.handleModSTDTableRequest(category, date, keyword);
+        category=categoryComboBox.getSelectedItem().toString();
+        months_ago = periodComboBox.getSelectedItem().toString();
+        keyword = descriptionTextField.getText();
+        master.handleModSTDTableRequest(userID, category, months_ago, keyword);
 
         // TODO add your handling code here
     }//GEN-LAST:event_goButtonActionPerformed
@@ -304,12 +302,12 @@ public class ModView extends javax.swing.JFrame {
     private void approveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveButtonActionPerformed
         // TODO add your handling code here:
         int row = this.myAdvertisementsTable.getSelectedRow();
-        status = true;  ////true means approved
+        approval = true;  ////true means approved
                 
         if(row>=0){
             advID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
-        master.handleDecisionRequest(status, advID, userID);
+        master.handleDecisionRequest(approval, advID, userID);
         master.handleModMyTableRequest(userID);
     }//GEN-LAST:event_approveButtonActionPerformed
 
@@ -323,11 +321,10 @@ public class ModView extends javax.swing.JFrame {
             advID=(String)unclaimedAdvertisementsTable.getValueAt(row, 0);
         }
         master.handleClaimRequest(advID, userID);
-        this.category=categoryComboBox.getSelectedItem().toString();
-        str_date = periodComboBox.getSelectedItem().toString();
-        this.date = master.getDate(str_date);
+        category=categoryComboBox.getSelectedItem().toString();
+        months_ago = periodComboBox.getSelectedItem().toString();
         this.keyword = descriptionTextField.getText();
-        master.handleModSTDTableRequest(category, date, keyword);
+        master.handleModSTDTableRequest(userID, category, months_ago, keyword);
     }//GEN-LAST:event_claimAdButtonActionPerformed
 
     //Acts similar to ComboBox, where the date - the time frame of the ad's creation -
@@ -340,11 +337,11 @@ public class ModView extends javax.swing.JFrame {
     private void disapproveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disapproveButtonActionPerformed
         // TODO add your handling code here:
         int row = this.myAdvertisementsTable.getSelectedRow();
-        status = false; //false means disapproved
+        approval = false; //false means disapproved
         if(row>=0){
             advID=(String)myAdvertisementsTable.getValueAt(row, 0);
         }
-        master.handleDecisionRequest(status, advID, userID);
+        master.handleDecisionRequest(approval, advID, userID);
         master.handleModMyTableRequest(userID);
     }//GEN-LAST:event_disapproveButtonActionPerformed
 

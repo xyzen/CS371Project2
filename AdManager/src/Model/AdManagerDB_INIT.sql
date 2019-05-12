@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS Statuses;
 DROP TABLE IF EXISTS Moderators;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Advertisements;
+DROP VIEW IF EXISTS AppView;
 
 CREATE TABLE IF NOT EXISTS Categories
 (Category_ID varchar(3) not null,
@@ -53,6 +54,16 @@ constraint fk_advertisements_categories foreign key(Category_ID)
 constraint fk_advertisements_statuses foreign key(Status_ID)
   references Statuses(Status_ID) ON DELETE RESTRICT
 );
+
+CREATE VIEW AppView(ID, Title, Details, Price, Date_Posted, Category, Username, Status, User_ID, Mod_ID)
+AS SELECT A.Advertisement_ID, A.AdvTitle, A.AdvDetails, A.Price, A.AdvDateTime, C.CatName, U.User_Handle, S.Status_Name, A.User_ID, A.Moderator_ID
+AS VALUE FROM Advertisements A
+INNER JOIN Statuses S
+ON A.Status_ID=S.Status_ID
+INNER JOIN Users U
+ON A.User_ID=U.User_ID
+INNER JOIN Categories C
+ON A.Category_ID=C.Category_ID;
 
 /* Data Population */
 

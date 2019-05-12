@@ -1,1 +1,0 @@
-select * from Advertisements limit 100;

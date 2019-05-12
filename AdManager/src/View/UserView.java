@@ -21,14 +21,12 @@ public class UserView extends javax.swing.JFrame {
     
     private String username;
     private String userID;
-    
     private String category;
     private String title;
     private String description;
     private String price;
     private String keyword;
     private String str_date;
-    private int date;
     private String advID;
     
     private Object[] advertisementsTableColumns = { "Title", "Description", "Price" , "Date" };
@@ -314,11 +312,10 @@ public class UserView extends javax.swing.JFrame {
     //a request to fill the table
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
         
-        this.category=categoryComboBox.getSelectedItem().toString();
+        category=categoryComboBox.getSelectedItem().toString();
         str_date = periodComboBox.getSelectedItem().toString();
-        date = master.getDate(str_date);
-        this.keyword = descriptionTextField.getText();
-        master.handleUserSTDTableRequest(category, date, keyword);
+        keyword = descriptionTextField.getText();
+        master.handleUserSTDTableRequest(category, str_date, keyword);
     }//GEN-LAST:event_goButtonActionPerformed
 
     private void periodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_periodComboBoxActionPerformed
