@@ -7,13 +7,13 @@ package View;
  */
 
 import Controller.Controller;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 
 /**
- *
  * @author christopheraramswayne
+ * @author xyzen
+ * @author joshua
  */
 public class ModView extends javax.swing.JFrame {
 
@@ -26,12 +26,18 @@ public class ModView extends javax.swing.JFrame {
     private String username;
     private boolean approval;
     
-    private Object[] unclaimedAdvertisementsTableColumns = { "ID", "Title", "Description", "Price" , "Date", "Username" };
-    private Object[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date", "Username" };
+    private final Object[] unclaimedAdvertisementsTableColumns = { "ID", "Title", "Description", "Price" , "Date", "Username" };
+    private final Object[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date", "Username" };
     
     
     /**
-     * Creates new form UserView
+     * Creates new form ModView
+     * Similar to UserView, ModView will create a new frame
+     * and said frame is much like UserView, however with necessary changes for actions
+     * that Moderators have.
+     * @param c
+     * @param userID
+     * @param username
      */
     public ModView(Controller c, String userID, String username) {
         initComponents();
@@ -283,18 +289,26 @@ public class ModView extends javax.swing.JFrame {
     //button was pushed. The controller will be given the query terms to handle
     //a request to fill the table
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
+<<<<<<< HEAD
         category=categoryComboBox.getSelectedItem().toString();
         months_ago = periodComboBox.getSelectedItem().toString();
         keyword = descriptionTextField.getText();
         master.handleModSTDTableRequest(userID, category, months_ago, keyword);
 
         // TODO add your handling code here
+=======
+        this.category=categoryComboBox.getSelectedItem().toString();
+        str_date = periodComboBox.getSelectedItem().toString();
+        this.date = master.getDate(str_date);
+        this.keyword = descriptionTextField.getText();
+        master.handleModSTDTableRequest(category, date, keyword);
+>>>>>>> 74d470ff147fefa54b8feae270ef8d1d96b10499
     }//GEN-LAST:event_goButtonActionPerformed
 
+    //*****Depricated method
     //Combobox should change the String "Category" to whatever is currently selected
     //in the ComboBox
     private void categoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryComboBoxActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_categoryComboBoxActionPerformed
 
     //Approve button retrieves the selected row, and passes the selected Advertisement's 
@@ -326,12 +340,12 @@ public class ModView extends javax.swing.JFrame {
         this.keyword = descriptionTextField.getText();
         master.handleModSTDTableRequest(userID, category, months_ago, keyword);
     }//GEN-LAST:event_claimAdButtonActionPerformed
-
+    
+    //*****Depricated method
     //Acts similar to ComboBox, where the date - the time frame of the ad's creation -
     //is searched on a basis between "last 3, 6, 12, or all" months. The box will 
     //only change the variable "date".
     private void periodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_periodComboBoxActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_periodComboBoxActionPerformed
 
     private void disapproveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disapproveButtonActionPerformed
@@ -349,35 +363,35 @@ public class ModView extends javax.swing.JFrame {
         master.handleModMyTableRequest(userID);        // TODO add your handling code here:
     }//GEN-LAST:event_myAdvertisementsPanelComponentShown
 
-    /**
-     * @param args the command line arguments
-     */
-    
-    //Populates the STD table for users in the view
+    //Populates the STD table for users in the view with query results: pending_data
     public void populateSTDTable(Object[][] pending_data){
         this.unclaimedAdvertisementsTable.setModel(new DefaultTableModel(pending_data, unclaimedAdvertisementsTableColumns));
         noSTDresultsLabel.setVisible(false);
     }
     
-    //Populates the personal table for the user in the view
+    //Populates the personal table for the user in the view with query results: claimed_data
     public void populateMyTable(Object[][] claimed_data){
         this.myAdvertisementsTable.setModel(new DefaultTableModel(claimed_data, myAdvertisementsTableColumns));
         noMyResultsLabel.setVisible(false);
     }
     
+    //When query is empty, or there is nothing to populate the table with,
+    //the table should be reset to the default table - an empty table.
     public void resetSTDTable () {
         DefaultTableModel model = (DefaultTableModel) unclaimedAdvertisementsTable.getModel();
         model.setRowCount(0);
         noSTDresultsLabel.setVisible(true);
     }
     
+    //When query is empty, or there is nothing to populate the table with,
+    //the table should be reset to the default table - an empty table - say a record
+    //is deleted
     public void resetMyTable () {
         DefaultTableModel model = (DefaultTableModel) myAdvertisementsTable.getModel();
         model.setRowCount(0);
         noMyResultsLabel.setVisible(true);
     }
     
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel advertisementsPanel;
     private javax.swing.JButton approveButton;

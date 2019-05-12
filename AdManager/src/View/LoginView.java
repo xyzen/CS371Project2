@@ -5,11 +5,10 @@
  */
 package View;
 import Controller.Controller;
-import static java.lang.Integer.parseInt;
 
 /**
- *
  * @author xjosh
+ * @author xyzen
  */
 public class LoginView extends javax.swing.JFrame {
      
@@ -18,7 +17,9 @@ public class LoginView extends javax.swing.JFrame {
     private String userType;
 
     /**
-     * Creates new form LoginView
+     * Creates new form LoginView 
+     * with reference to the Controller.
+     * @param c
      */
     public LoginView(Controller c) {
         initComponents();
@@ -91,15 +92,14 @@ public class LoginView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //When the login button is pressed, the view sends the information to the controller
+    //to handle the request - passing the username, and userType.
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        // TODO add your handling code here:
-        //this.userID = parseInt(usernameField.getText());
         username = usernameField.getText();
         userType = userTypeComboBox.getSelectedItem().toString();
         master.handleLoginRequest(username, userType);
         
     }//GEN-LAST:event_loginButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton loginButton;

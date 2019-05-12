@@ -7,7 +7,6 @@ package View;
  */
 
 import Controller.Controller;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -22,21 +21,20 @@ public class UserView extends javax.swing.JFrame {
     private String username;
     private String userID;
     private String category;
-    private String title;
-    private String description;
-    private String price;
     private String keyword;
     private String str_date;
     private String advID;
     
-    private Object[] advertisementsTableColumns = { "Title", "Description", "Price" , "Date" };
-    private Object[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
+    private final Object[] advertisementsTableColumns = { "Title", "Description", "Price" , "Date" };
+    private final Object[] myAdvertisementsTableColumns = { "ID" , "Title", "Description", "Price", "Status", "Date" };
     
     
     /**
      * Creates new form UserView
      * @param c
      * @param usrID
+     * @param usrName
+     * Instantiates the UserView window
      */
     public UserView(Controller c, String usrID, String usrName) {
         initComponents();
@@ -302,9 +300,7 @@ public class UserView extends javax.swing.JFrame {
         master.handleDeleteRequest(advID);
         master.handleUserMyTableRequest(userID);
         
-        //Controller "master" will handle deleting the advertisement from the database.
-        
-        // TODO add your handling code here:
+        //Controller "master" will handle deleting the advertisement from the database.        
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     //When the "Go" button is pressed, the view will tell the controller that the
@@ -318,18 +314,16 @@ public class UserView extends javax.swing.JFrame {
         master.handleUserSTDTableRequest(category, str_date, keyword);
     }//GEN-LAST:event_goButtonActionPerformed
 
+    //Unnecessary code, that is unable to be removed. 
     private void periodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_periodComboBoxActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_periodComboBoxActionPerformed
 
+    
+    //When the panel under myAdvertisements are shown to the user, the table is then requested, and populated.
     private void myAdvertisementsPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_myAdvertisementsPanelComponentShown
         master.handleUserMyTableRequest(userID);
     }//GEN-LAST:event_myAdvertisementsPanelComponentShown
 
-    /**
-     * @param published_data the command line arguments
-     */
-    
     //Populates the STD table for users in the view
     public void populateSTDTable(Object[][] published_data){
         this.advertisementsTable.setModel(new DefaultTableModel(published_data, advertisementsTableColumns));
@@ -342,12 +336,16 @@ public class UserView extends javax.swing.JFrame {
         noResultsLabel1.setVisible(false);
     }
     
+    //When an empty table returned from a query, the displayed table needs to be set to a default value.
+    //thus, an empty table.
     public void resetSTDTable () {
         DefaultTableModel model = (DefaultTableModel) advertisementsTable.getModel();
         model.setRowCount(0);
         noResultLabel.setVisible(true);
     }
     
+    //When the user has no advertisements, the query returns empty, and thus the
+    //table displayed will reflect that.
     public void resetMyTable () {
         DefaultTableModel model = (DefaultTableModel) myAdvertisementsTable.getModel();
         model.setRowCount(0);

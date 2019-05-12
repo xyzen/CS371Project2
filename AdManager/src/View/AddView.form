@@ -80,9 +80,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="titleField">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="titleFieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="details_Label">
       <Properties>
@@ -130,9 +127,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="price_field">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="price_fieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="add_Advertisement_Button">
       <Properties>

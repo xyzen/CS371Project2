@@ -21,6 +21,11 @@ public class AddView extends javax.swing.JFrame {
 
     /**
      * Creates new form AddView
+     * with reference to the Controller, the ID of the user creating the ad,
+     * and the username of said user.
+     * @param c
+     * @param userID
+     * @param username
      */
     public AddView(Controller c, String userID, String username) {
         initComponents();
@@ -53,12 +58,6 @@ public class AddView extends javax.swing.JFrame {
 
         title_Lable.setText("Title:");
 
-        titleField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                titleFieldActionPerformed(evt);
-            }
-        });
-
         details_Label.setText("Details:");
 
         detailsField.setColumns(20);
@@ -70,12 +69,6 @@ public class AddView extends javax.swing.JFrame {
         category_box.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronics", "Cars and Trucks", "Housing", "Child Care" }));
 
         price_Label.setText("Price:");
-
-        price_field.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                price_fieldActionPerformed(evt);
-            }
-        });
 
         add_Advertisement_Button.setText("Add Advertisement");
         add_Advertisement_Button.addActionListener(new java.awt.event.ActionListener() {
@@ -131,15 +124,10 @@ public class AddView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void titleFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titleFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_titleFieldActionPerformed
-
-    private void price_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_price_fieldActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_price_fieldActionPerformed
-
+    //When the "Add Advertisemnet" button is pressed, the data from the text fields
+    //for the ad to be created, and added to the database, is taken, and sent to the 
+    //Controller for the data to be handled. After the data is handled, the view should
+    //be closed, and refresh the user's "My Advertisements" table in the UserView.
     private void add_Advertisement_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_Advertisement_ButtonActionPerformed
         // TODO add your handling code here:
         this.title = titleField.getText();
@@ -149,10 +137,6 @@ public class AddView extends javax.swing.JFrame {
         master.handleAddRequest(title, desc, cat, price, userID);
         master.handleUserMyTableRequest(userID);
     }//GEN-LAST:event_add_Advertisement_ButtonActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_Advertisement_Button;
