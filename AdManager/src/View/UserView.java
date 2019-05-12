@@ -18,8 +18,8 @@ public class UserView extends javax.swing.JFrame {
 
     private final Controller master;
     
-    private String username;
-    private String userID;
+    private final String username;
+    private final String userID;
     private String category;
     private String keyword;
     private String str_date;

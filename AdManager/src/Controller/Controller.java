@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.Calendar;
 import View.*;
 import Model.QueryBuilder;
 
@@ -24,15 +23,7 @@ public class Controller {
     private ModView mv;
     private UserView uv;
     private MessageView mesv;
-
-    public Controller() {
-        lv = new LoginView(this);
-    }
-
-    public void start() {
-        lv.setVisible(true);
-    }
-
+    
     /**
      * @param args
      */
@@ -45,6 +36,14 @@ public class Controller {
             System.out.println(e.getMessage());
             System.out.println("Could not connect to database.");
         }
+    }
+
+    public Controller() {
+        lv = new LoginView(this);
+    }
+
+    public void start() {
+        lv.setVisible(true);
     }
 
     public void connect(String userName, String password, String serverName, String portNumber, String dbName) throws SQLException, InstantiationException, IllegalAccessException {
@@ -245,14 +244,16 @@ public class Controller {
     public void handleAddRequest(String title, String desc, String cat, String price, String user_id) {
      
         String query = "INSERT INTO Advertisements(AdvTitle, AdvDetails, AdvDateTime, Price, Category_ID, User_ID, Status_ID)"
-                + "VALUES (?, ?, CURRENT_TIME(), ?, ?, ?, 'PN');";
+                + "VALUES (?, ?, CURRENT_TIME(), ?, ("
+                    + "SELECT Category_ID FROM Categories WHERE CatName=?)"
+                + ", ?, 'PN');";
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, title);
             stmt.setString(2, desc);
             stmt.setString(3, price);
             stmt.setString(4, cat);
-            stmt.setInt(6, Integer.parseInt(user_id));
+            stmt.setString(5, user_id);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

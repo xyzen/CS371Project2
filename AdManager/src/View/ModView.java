@@ -17,13 +17,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ModView extends javax.swing.JFrame {
 
-    private Controller master;
+    private final Controller master;
     private String category;
     private String keyword;
     private String months_ago;
     private String advID;
-    private String userID;
-    private String username;
+    private final String userID;
+    private final String username;
     private boolean approval;
     
     private final Object[] unclaimedAdvertisementsTableColumns = { "ID", "Title", "Description", "Price" , "Date", "Username" };
@@ -155,15 +155,16 @@ public class ModView extends javax.swing.JFrame {
                 .addGroup(advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
                         .addComponent(descriptionLabel)
-                        .addGap(443, 443, 443))
+                        .addGap(0, 660, Short.MAX_VALUE))
                     .addGroup(advertisementsPanelLayout.createSequentialGroup()
                         .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(goButton)
                         .addGap(18, 18, 18)
                         .addComponent(noSTDresultsLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 243, Short.MAX_VALUE)
-                        .addComponent(claimAdButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(claimAdButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         advertisementsPanelLayout.setVerticalGroup(
             advertisementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -289,20 +290,10 @@ public class ModView extends javax.swing.JFrame {
     //button was pushed. The controller will be given the query terms to handle
     //a request to fill the table
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
-<<<<<<< HEAD
         category=categoryComboBox.getSelectedItem().toString();
         months_ago = periodComboBox.getSelectedItem().toString();
         keyword = descriptionTextField.getText();
         master.handleModSTDTableRequest(userID, category, months_ago, keyword);
-
-        // TODO add your handling code here
-=======
-        this.category=categoryComboBox.getSelectedItem().toString();
-        str_date = periodComboBox.getSelectedItem().toString();
-        this.date = master.getDate(str_date);
-        this.keyword = descriptionTextField.getText();
-        master.handleModSTDTableRequest(category, date, keyword);
->>>>>>> 74d470ff147fefa54b8feae270ef8d1d96b10499
     }//GEN-LAST:event_goButtonActionPerformed
 
     //*****Depricated method
@@ -365,13 +356,13 @@ public class ModView extends javax.swing.JFrame {
 
     //Populates the STD table for users in the view with query results: pending_data
     public void populateSTDTable(Object[][] pending_data){
-        this.unclaimedAdvertisementsTable.setModel(new DefaultTableModel(pending_data, unclaimedAdvertisementsTableColumns));
+        unclaimedAdvertisementsTable.setModel(new DefaultTableModel(pending_data, unclaimedAdvertisementsTableColumns));
         noSTDresultsLabel.setVisible(false);
     }
     
     //Populates the personal table for the user in the view with query results: claimed_data
     public void populateMyTable(Object[][] claimed_data){
-        this.myAdvertisementsTable.setModel(new DefaultTableModel(claimed_data, myAdvertisementsTableColumns));
+        myAdvertisementsTable.setModel(new DefaultTableModel(claimed_data, myAdvertisementsTableColumns));
         noMyResultsLabel.setVisible(false);
     }
     
